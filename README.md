@@ -6,4 +6,4 @@ Ensure that you have flask:
 python3 -m pip install Flask
 
 Usage:
-python3 -m flask run
+python(3) -m flask run
