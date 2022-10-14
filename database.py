@@ -20,7 +20,7 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 #-----------------------------------------------------------------------
 
-def get_books(username):
+def get_club_sports(username):
 
     users = []
     with sqlalchemy.orm.Session(engine) as session:
@@ -39,8 +39,7 @@ def get_books(username):
 # For testing:
 
 def _test():
-    books = get_books('yparikh')
-
+    books = get_club_sports('yparikh')
 
 if __name__ == '__main__':
     _test()
