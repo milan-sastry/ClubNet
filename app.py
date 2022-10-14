@@ -18,10 +18,9 @@ def hello():
 @app.route('/application')
 def application():
     print(os.getenv('DB_URL'))
-    netid = str(CASClient().Authenticate())
-    print(netid)
+    netid = CASClient().Authenticate()
+    netid = netid[0:len(netid)-1]
     is_in_club = validation.get_club_status(netid, 1)
-    print(is_in_club)
     return render_template('inside.html', CASValue = netid, validation = is_in_club)
 
 if __name__ == '__main__':

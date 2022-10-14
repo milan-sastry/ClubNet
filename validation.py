@@ -25,6 +25,7 @@ def get_club_status(username, club_id):
     bool = False
     with sqlalchemy.orm.Session(engine) as session:
         print("im getting this username of " + username)
+        # username = "'" + username.trim() + "''"
         query = session.query(Users_Clubs).filter(
             Users_Clubs.username.ilike(username))
         print(query)
