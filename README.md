@@ -8,8 +8,15 @@ python3 -m pip install Flask
 Also make sure your python version is 3.6+ (ideally 3.10)
 python --version
 
-otherwise make a venv
 
+RUN THIS FIRST
+export DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc
+
+
+requirements:
+Flask
+sqlalchemy
+postgresql
 
 Usage:
-flask run
+python3 app.py

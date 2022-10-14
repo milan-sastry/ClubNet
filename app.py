@@ -1,4 +1,5 @@
 from sys import path
+import os
 path.append('src')  #go to src directory to import
 from flask import Flask, render_template, redirect
 from CASClient import CASClient
@@ -11,6 +12,7 @@ app.secret_key = secrets.token_urlsafe(16)
 
 @app.route('/')
 def hello():
+    print(os.getenv('PENNY_DB_URL'))
     return render_template('initial.html')
 
 @app.route('/application')
