@@ -20,26 +20,31 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 #-----------------------------------------------------------------------
 
-def get_club_sports(username):
+def get_club_status(username, club_id):
 
-    users = []
+    bool = False
     with sqlalchemy.orm.Session(engine) as session:
+        print("im getting this username of " + username)
         query = session.query(Users_Clubs).filter(
             Users_Clubs.username.ilike(username))
         print(query)
         table = query.all()
         for row in table:
-            print(row.club_id)
-            users.append(row)
+            print("USER " + row.username + "OKAY " + str(row.club_id))
+            if (row.club_id == club_id):
+                print("yeah that's a hit for " + username)
+                return True
 
-    return users
+    return bool
 
 #-----------------------------------------------------------------------
 
 # For testing:
-
 def _test():
-    books = get_club_sports('yparikh')
+    isInClub = get_club_status("yparikh", 1)
+    if isInClub:
+        print("yeah he's that club")
+
 
 if __name__ == '__main__':
     _test()
