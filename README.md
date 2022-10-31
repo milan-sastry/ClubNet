@@ -17,6 +17,9 @@ requirements:
 Flask
 sqlalchemy
 postgresql
+os
+Bootstrap
+pyscop
 
 Usage:
 python3 app.py
