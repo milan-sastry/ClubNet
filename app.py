@@ -30,6 +30,13 @@ def application():
 def unvalidated():
     return render_template('invalid.html', CASValue = netid, validation = is_in_club)
 
+@app.route('/announcements')
+def announcements():
+    netid = CASClient().Authenticate()
+    netid = netid[0:len(netid)-1]
+    is_in_club = validation.get_club_status(netid, 1)
+    return render_template('announcements.html', CASValue = netid, validation = is_in_club)
+
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555)
