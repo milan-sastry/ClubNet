@@ -1,0 +1,16 @@
+/*
+ * Globals
+ */
+
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: black;
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+
+body {
+background-color: #F6C197;
+}

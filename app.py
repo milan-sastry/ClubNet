@@ -16,15 +16,21 @@ os.putenv("export", "DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk
 
 @app.route('/')
 def hello():
-    return render_template('initial.html')
+    return render_template('landing.html')
 
-@app.route('/application')
+@app.route('/home')
 def application():
     print(os.getenv('DB_URL'))
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
     is_in_club = validation.get_club_status(netid, 1)
     return render_template('inside.html', CASValue = netid, validation = is_in_club)
+
+@app.route('/unvalidated')
+def application():
+    print("you're unvalidated")
+    return render_template('inside.html', CASValue = netid, validation = is_in_club)
+
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555)
