@@ -39,6 +39,13 @@ def unvalidated():
 def members():
     members = [{"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
     return render_template('members.html', members = members)
+@app.route('/announcements')
+def announcements():
+    netid = CASClient().Authenticate()
+    netid = netid[0:len(netid)-1]
+    is_in_club = validation.get_club_status(netid, 1)
+    return render_template('announcements.html', CASValue = netid, validation = is_in_club)
+
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
