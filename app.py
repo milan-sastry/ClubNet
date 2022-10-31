@@ -8,7 +8,9 @@ from flask import Flask, render_template, redirect
 from CASClient import CASClient
 import secrets
 import validation
-import subprocess
+import profile
+
+CLUB_SOCC = 1
 
 # app info
 app = Flask(__name__)
@@ -24,8 +26,9 @@ def application():
     print(os.getenv('DB_URL'))
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
-    is_in_club = validation.get_club_status(netid, 1)
-    print(is_in_club, "huh")
+    user = profile.Profile(user_id = netid)
+    # need to check if in user database OR add to database if not
+    is_in_club = user.validate(CLUB_SOCC)
     if is_in_club:
         return render_template('home.html', CASValue = netid, validation = is_in_club)
     else:

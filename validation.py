@@ -43,7 +43,7 @@ def get_club_status(username, club_id):
 def _test():
     isInClub = get_club_status("yparikh", 1)
     if isInClub:
-        print("yeah he's that club")
+        print("yeah he's in that club")
 
 
 if __name__ == '__main__':

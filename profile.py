@@ -7,7 +7,6 @@ DATABASE_URL = os.getenv('DB_URL')
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-
 class Profile:
     user_id = None
     name = None
@@ -109,7 +108,6 @@ class Profile:
         bool = False
 
         with sqlalchemy.orm.Session(engine) as session:
-            print("im getting this username of " + username)
             query = session.query(database.Users_Clubs).filter(
                 database.Users_Clubs.username.ilike(self.user_id))
             print(query)

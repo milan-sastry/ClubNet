@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.DS_Store
 build/
 develop-eggs/
 dist/
@@ -127,3 +128,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#ref code (local to emilio)
+ref_penny
+db_ref_code

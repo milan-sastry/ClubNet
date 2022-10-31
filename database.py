@@ -2,20 +2,14 @@
 
 #-----------------------------------------------------------------------
 # database.py
-# Author: Bob Dondero
+# Author: ClubNet
 #-----------------------------------------------------------------------
 
 import sqlalchemy.ext.declarative
 import sqlalchemy
 import os
 
-#-----------------------------------------------------------------------
-
-DATABASE_URL = os.getenv('DB_URL')
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 Base = sqlalchemy.ext.declarative.declarative_base()
-
 #-----------------------------------------------------------------------
 class User (Base):
     __tablename__ = 'users'
@@ -53,6 +47,9 @@ class Posts(Base):
 
 def init_database():
     CLUB_SOCC = 1
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
     engine = sqlalchemy.create_engine(DATABASE_URL)
     Base.metadata.drop_all(engine)
