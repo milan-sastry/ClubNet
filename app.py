@@ -32,7 +32,7 @@ def application():
     if is_in_club:
         return render_template('home.html', CASValue = netid, validation = is_in_club)
     else:
-        return render_template('home.html', CASValue = netid)
+        return render_template('invalid.html', CASValue = netid)
 
 @app.route('/unvalidated')
 def unvalidated():
