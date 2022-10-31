@@ -24,12 +24,11 @@ def application():
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
     is_in_club = validation.get_club_status(netid, 1)
-    return render_template('inside.html', CASValue = netid, validation = is_in_club)
+    return render_template('home.html', CASValue = netid, validation = is_in_club)
 
 @app.route('/unvalidated')
-def application():
-    print("you're unvalidated")
-    return render_template('inside.html', CASValue = netid, validation = is_in_club)
+def unvalidated():
+    return render_template('invalid.html', CASValue = netid, validation = is_in_club)
 
 
 if __name__ == '__main__':
