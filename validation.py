@@ -1,32 +1,33 @@
 import os
 import sqlalchemy.ext.declarative
+import sqlalchemy.orm
 import sqlalchemy
+import database
 
 
 #-----------------------------------------------------------------------
+#
 
-DATABASE_URL = os.getenv('DB_URL')
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-Base = sqlalchemy.ext.declarative.declarative_base()
 
-class Users_Clubs (Base):
-    __tablename__ = 'user_club_id'
-    username = sqlalchemy.Column(sqlalchemy.String, primary_key=True)
-    club_id = sqlalchemy.Column(sqlalchemy.Integer)
-
-engine = sqlalchemy.create_engine(DATABASE_URL)
+def initDB():
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
 
 #-----------------------------------------------------------------------
 
 def get_club_status(username, club_id):
-
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
     bool = False
     with sqlalchemy.orm.Session(engine) as session:
         print("im getting this username of " + username)
-        query = session.query(Users_Clubs).filter(
-            Users_Clubs.username.ilike(username))
+        query = session.query(database.Users_Clubs).filter(
+            database.Users_Clubs.username.ilike(username))
         print(query)
         table = query.all()
         for row in table:
@@ -41,6 +42,10 @@ def get_club_status(username, club_id):
 
 # For testing:
 def _test():
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
     isInClub = get_club_status("yparikh", 1)
     if isInClub:
         print("yeah he's in that club")

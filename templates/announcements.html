@@ -22,7 +22,16 @@
         </div>
       </header>
 </div>
-  <h1>Announcements go here</h1>
+{% for post in posts%}
+<center>
+<div class="card" style="width: 90%;">
+  <div class="card-body">
+    <h5 class="card-title">{{post["title"]}}</h5>
+    <p class="card-text"> {{ post["description"] }}</p>
+  </div>
+</div>
+</center>
+{% endfor %}
 
 <center>
   <form>

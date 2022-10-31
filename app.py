@@ -8,9 +8,14 @@ from flask import Flask, render_template, redirect
 from CASClient import CASClient
 import secrets
 import validation
+<<<<<<< Updated upstream
 import profile
 
 CLUB_SOCC = 1
+=======
+import subprocess
+import posts
+>>>>>>> Stashed changes
 
 # app info
 app = Flask(__name__)
@@ -44,10 +49,10 @@ def members():
     return render_template('members.html', members = members)
 @app.route('/announcements')
 def announcements():
-    netid = CASClient().Authenticate()
-    netid = netid[0:len(netid)-1]
-    is_in_club = validation.get_club_status(netid, 1)
-    return render_template('announcements.html', CASValue = netid, validation = is_in_club)
+    post_values = posts.get_posts()
+    print(post_values)
+    # print(posts)
+    return render_template('announcements.html', posts = post_values)
 
 
 if __name__ == '__main__':
