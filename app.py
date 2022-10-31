@@ -2,6 +2,7 @@
 
 from sys import path
 import os
+
 path.append('src')  #go to src directory to import
 from flask import Flask, render_template, redirect
 from CASClient import CASClient
@@ -24,12 +25,20 @@ def application():
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
     is_in_club = validation.get_club_status(netid, 1)
-    return render_template('home.html', CASValue = netid, validation = is_in_club)
+    print(is_in_club, "huh")
+    if is_in_club:
+        return render_template('home.html', CASValue = netid, validation = is_in_club)
+    else:
+        return render_template('invalid.html', CASValue = netid)
 
 @app.route('/unvalidated')
 def unvalidated():
     return render_template('invalid.html', CASValue = netid, validation = is_in_club)
 
+@app.route('/members')
+def members():
+    members = [{"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
+    return render_template('members.html', members = members)
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5555)
+    app.run(host='localhost', port=5555, debug=True)

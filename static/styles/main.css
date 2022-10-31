@@ -53,3 +53,42 @@ background-color: #F6C197;
   padding: .75rem 1.25rem;
   font-weight: 700;
 }
+
+/* members */
+  .profile-pic {
+    height: 50px;
+    width: 50px;
+    margin-top: 10px;
+    background-color: green;
+    border-radius: 50%;
+  }
+
+  .member-card {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+  }
+
+  .member-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .segment-container {
+    margin-bottom: 10px;
+  }
+
+  .pagination-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    flex-direction: column;
+  }
+
+  .page-container {
+    display: flex;
+    flex-direction: column;
+  }
