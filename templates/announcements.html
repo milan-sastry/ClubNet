@@ -34,10 +34,9 @@
 {% endfor %}
 
 <center>
-  <form>
-    <div class="form-group">
+  <form method="post" action="/announcements">
       <label for="postAnnouncement">Post an Announcement Here</label>
-      <input type="text" class="form-control" id="postAnnouncement" placeholder="Post to Thread">
+      <input type="text" value="Post" class="form-control" id="postAnnouncement" placeholder="Post to Thread">
       <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </center>

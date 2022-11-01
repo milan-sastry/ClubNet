@@ -27,7 +27,6 @@ def get_posts():
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     with sqlalchemy.orm.Session(engine) as session:
-        # print("im getting this username of " + username)
         query = session.query(database.Posts)
         print(query)
         table = query.all()

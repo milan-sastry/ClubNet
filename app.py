@@ -1,7 +1,7 @@
 from sys import path
 import os
 path.append('src')  #go to src directory to import
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from CASClient import CASClient
 import secrets
 import posts
@@ -36,9 +36,19 @@ def application():
 def members():
     members = [{"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
     return render_template('members.html', members = members)
-@app.route('/announcements')
+
+@app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
+    if request.method == 'POST':
+        posts.make_posts("Added through the button")
     post_values = posts.get_posts()
+    print(post_values)
+    # print(posts)
+    return render_template('announcements.html', posts = post_values)
+
+@app.route('/announcements/posts')
+def post_announcement():
+    posts.get_posts()
     print(post_values)
     # print(posts)
     return render_template('announcements.html', posts = post_values)
