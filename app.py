@@ -9,11 +9,11 @@ import profile
 
 CLUB_SOCC = 1
 
-
 # app info
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(16)
-os.putenv("export", "DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc")
+os.putenv("export", "DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc") #this didn't work for me
+
 
 @app.route('/')
 def hello():
@@ -48,7 +48,7 @@ def announcements():
 
 @app.route('/announcements/posts')
 def post_announcement():
-    posts.get_posts()
+    post_values = posts.get_posts()
     print(post_values)
     # print(posts)
     return render_template('announcements.html', posts = post_values)
