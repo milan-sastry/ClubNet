@@ -40,7 +40,7 @@ def members():
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
     if request.method == 'POST':
-        posts.make_posts("Added through the button")
+        posts.make_posts(request.form.get('Post Description'))
     post_values = posts.get_posts()
     print(post_values)
     # print(posts)
