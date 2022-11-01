@@ -9,11 +9,11 @@ import profile
 
 CLUB_SOCC = 1
 
+
 # app info
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(16)
-os.putenv("export", "DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc") #this didn't work for me
-
+os.putenv("export", "DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc")
 
 @app.route('/')
 def hello():
@@ -34,7 +34,7 @@ def application():
 
 @app.route('/members')
 def members():
-    members = [{"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "john", "year": 2020, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
+    members = [{"name": "Yash", "year": 2024, "position": "mid"}, {"name": "Emilio", "year": 2023, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "Allen", "year": 2024, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
     return render_template('members.html', members = members)
 
 @app.route('/announcements', methods=['GET', 'POST'])
@@ -43,12 +43,11 @@ def announcements():
         posts.make_posts(request.form.get('Post Description'))
     post_values = posts.get_posts()
     print(post_values)
-    # print(posts)
     return render_template('announcements.html', posts = post_values)
 
 @app.route('/announcements/posts')
 def post_announcement():
-    post_values = posts.get_posts()
+    posts.get_posts()
     print(post_values)
     # print(posts)
     return render_template('announcements.html', posts = post_values)
