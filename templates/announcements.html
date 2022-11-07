@@ -24,9 +24,14 @@
 </div>
 {% for post in posts%}
 <center>
+  <img src="{{club_image_url}}" class="img-fluid" alt="Responsive image" style="width:25%;"">
+  <div class="card" style="width: 90%;">
+    <div class="card-body">
+      <h5 class="card-title">{{post["title"]}}</h5>
+    </div>
+  </div>
 <div class="card" style="width: 90%;">
   <div class="card-body">
-    <h5 class="card-title">{{post["title"]}}</h5>
     <p class="card-text"> {{ post["description"] }}</p>
   </div>
 </div>

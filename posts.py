@@ -4,9 +4,9 @@ import sqlalchemy
 import database
 
 
-#-----------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
-#-----------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 def make_posts(text):
     DATABASE_URL = os.getenv('DB_URL')
@@ -14,12 +14,14 @@ def make_posts(text):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     with sqlalchemy.orm.Session(engine) as session:
-        post1 = database.Posts(creator_id = "yparikh",
-                    title = "hello",
-                    description = text)
+        post1 = database.Posts(creator_id="yparikh",
+                               title="hello",
+                               description=text,
+                               club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg")
         session.add(post1)
         session.commit()
         print("added to database")
+
 
 def get_posts():
     DATABASE_URL = os.getenv('DB_URL')
@@ -37,8 +39,7 @@ def get_posts():
         return list
 
 
-
-#-----------------------------------------------------------------------
+# -----------------------------------------------------------------------
 
 # For testing:
 def _test():
