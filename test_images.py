@@ -1,3 +1,9 @@
+'''
+This file is only meant to be run on Emilio's computer. The code
+however is meant to demonstrate how cloudinary is used.
+'''
+
+
 import cloudinary
 import os
 import cloudinary.uploader
