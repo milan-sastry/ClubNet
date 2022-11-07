@@ -5,7 +5,13 @@ from CASClient import CASClient
 from flask import Flask, render_template, redirect, request
 from sys import path
 import os
-path.append('src')  # go to src directory to import
+path.append('src')  #go to src directory to import
+from flask import Flask, render_template, redirect, request
+from CASClient import CASClient
+import secrets
+import posts
+import profile
+import admin
 
 CLUB_SOCC = 1
 
@@ -13,7 +19,6 @@ CLUB_SOCC = 1
 # app info
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(16)
-os.putenv("export", "DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc")
 
 
 @app.route('/')
@@ -67,6 +72,25 @@ def donations():
 def completed():
     return render_template('donations')
 
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_page():
+    pendingRequests = admin.get_requests()
+    return render_template('admin.html', requests = pendingRequests)
+
+@app.route('/admin/accept', methods=['GET', 'POST'])
+# response.set_cookie('previous_search', ("/?dept=" + str(dept) +
+            # "&coursenum=" + str(coursenum) + "&area=" + str(area) +
+            # "&title=" + str(title)))
+#  previous_search = flask.request.cookies.get('previous_search')
+def admin_accept_page():
+    admin.acceptRequest(user_id, club_id)
+    return redirect(url_for('admin_page'))
+
+
+@app.route('/admin/deny', methods=['GET', 'POST'])
+def admin_deny_page():
+    admin.deleteRequest(user_id, club_id)
+    return redirect(url_for('admin_page'))
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)

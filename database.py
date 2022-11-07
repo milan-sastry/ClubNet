@@ -8,6 +8,8 @@
 import sqlalchemy.ext.declarative
 import sqlalchemy
 import os
+import time
+from datetime import datetime
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 #-----------------------------------------------------------------------
@@ -35,13 +37,20 @@ class Users_Clubs (Base):
 #-----------------------------------------------------------------------
 
 class Posts(Base):
-    __tablename__ = "posts"
+    __tablename__ = 'posts'
     post_id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement = True, primary_key = True)
     club_image_url = sqlalchemy.Column(sqlalchemy.String)
     creator_id = sqlalchemy.Column(sqlalchemy.String)
     title = sqlalchemy.Column(sqlalchemy.String)
     description = sqlalchemy.Column(sqlalchemy.String)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True))
+
+#-----------------------------------------------------------------------
+class Requests(Base):
+    __tablename__ = 'requests'
+    request_timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=False), primary_key = True)
+    club_id = sqlalchemy.Column(sqlalchemy.Integer)
+    user_id = sqlalchemy.Column(sqlalchemy.String)
 
 #-----------------------------------------------------------------------
 
@@ -56,19 +65,19 @@ def init_database():
     Base.metadata.create_all(engine)
 
     with sqlalchemy.orm.Session(engine) as session:
-        user1 = User(user_id = "allenwu", 
-                    name = "Allen Wu", 
+        user1 = User(user_id = "allenwu",
+                    name = "Allen Wu",
                     email = "allenwu@princeton.edu")
         session.add(user1)
-        user2 = User(user_id = "renteria", 
-                    name = "Emilio Cano", 
+        user2 = User(user_id = "renteria",
+                    name = "Emilio Cano",
                     email = "emiliocanor@princeton.edu")
         session.add(user2)
-        user3 = User(user_id = "yparikh", 
-                    name = "Yash Parikh", 
+        user3 = User(user_id = "yparikh",
+                    name = "Yash Parikh",
                     email = "yparikh@princeton.edu")
         session.add(user3)
-        
+
         user_clubs1 = Users_Clubs(username = 'allenwu',
                                     club_id = CLUB_SOCC)
         session.add(user_clubs1)
@@ -85,6 +94,10 @@ def init_database():
                     title = "hello",
                     description = "world")
         session.add(post1)
+        req1 = Requests(user_id = "yparikh",
+                    request_timestamp = datetime.now(),
+                    club_id = CLUB_SOCC)
+        session.add(req1)
         session.commit()
 
 
