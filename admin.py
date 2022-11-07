@@ -12,6 +12,7 @@ from sqlalchemy import delete
 # test this
 # add in a login to the invalidated
 # and then figure out the button stuff so they are actually clickable
+# fix navbar information
 def delete_request(user_id, club_id):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):

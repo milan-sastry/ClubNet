@@ -1,17 +1,12 @@
 import profile
 import posts
 import secrets
-from CASClient import CASClient
 from flask import Flask, render_template, redirect, request
 from sys import path
 import os
-path.append('src')  #go to src directory to import
-from flask import Flask, render_template, redirect, request
-from CASClient import CASClient
-import secrets
-import posts
-import profile
 import admin
+path.append('src')  #go to src directory to import
+from CASClient import CASClient
 
 CLUB_SOCC = 1
 
