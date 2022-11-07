@@ -32,8 +32,19 @@ def application():
     if is_in_club:
         return render_template('home.html', CASValue=netid, validation=is_in_club)
     else:
-        return render_template('invalid.html', CASValue=netid)
-
+        is_in_requests = admin.check_request(netid, CLUB_SOCC)
+        if is_in_requests:
+            return render_template('pending_request.html')
+        else:
+            return render_template('invalid.html', CASValue=netid)
+    
+@app.route("/pending_request")
+def pending_request():
+    netid = request.form.get('user_id')
+    print(netid)
+    admin.create_request(netid, CLUB_SOCC)
+    return render_template('pending_request.html')
+    
 
 @app.route('/members')
 def members():
