@@ -6,7 +6,6 @@ import sqlalchemy
 DATABASE_URL = os.getenv('DB_URL')
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-
 class Profile:
     user_id = None
     name = None
@@ -118,3 +117,22 @@ class Profile:
                     return True
 
         return bool
+
+def get_profile_from_id(user_id):
+        engine = sqlalchemy.create_engine(DATABASE_URL)
+        with sqlalchemy.orm.Session(engine) as session:
+            query = session.query(database.User).filter(database.User.user_id == user_id).all()
+            if len(query) > 0:
+                profile = query[0]
+                return profile
+
+def get_profiles_from_club(club_id):
+    profiles = []
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    with sqlalchemy.orm.Session(engine) as session:
+        user_ids = session.query(database.Users_Clubs).filter(database.Users_Clubs.club_id == club_id).all()
+        for user in user_ids:
+            profile = session.query(database.User).filter(database.User.user_id == user.username).all()
+            if len(profile) > 0:
+                profiles.append(session.query(database.User).filter(database.User.user_id == user.username).all()[0])
+        return profiles

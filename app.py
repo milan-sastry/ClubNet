@@ -34,7 +34,8 @@ def application():
 
 @app.route('/members')
 def members():
-    members = [{"name": "Yash", "year": 2024, "position": "mid"}, {"name": "Emilio", "year": 2023, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "Allen", "year": 2024, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
+    # members = [{"name": "Yash", "year": 2024, "position": "mid"}, {"name": "Emilio", "year": 2023, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "Allen", "year": 2024, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
+    members = profile.get_profiles_from_club(1)
     return render_template('members.html', members = members)
 
 @app.route('/announcements', methods=['GET', 'POST'])
@@ -51,6 +52,12 @@ def post_announcement():
     print(post_values)
     # print(posts)
     return render_template('announcements.html', posts = post_values)
+
+@app.route('/profile')
+def profiles():
+    net_id = request.args.get("net_id", None)
+    user = profile.get_profile_from_id(net_id)
+    return render_template('profile.html', user=user)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
