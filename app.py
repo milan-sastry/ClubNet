@@ -45,12 +45,5 @@ def announcements():
     print(post_values)
     return render_template('announcements.html', posts = post_values)
 
-@app.route('/announcements/posts')
-def post_announcement():
-    posts.get_posts()
-    print(post_values)
-    # print(posts)
-    return render_template('announcements.html', posts = post_values)
-
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
