@@ -20,7 +20,8 @@ def delete_request(user_id, club_id):
     engine = sqlalchemy.create_engine(DATABASE_URL)
 
     with sqlalchemy.orm.Session(engine) as session:
-        stmt = delete(database.Requests).where(database.Requests.user_id == user_id)
+        stmt = delete(database.Requests).where((database.Requests.user_id == user_id)&(database.Requests.club_id == 1))
+        session.execute(stmt)
         session.commit()
         print("deleted")
 
@@ -61,7 +62,7 @@ def get_requests():
 # For testing:
 def _test():
     print(get_requests())
-    delete_request("yparikh",1)
+    approve_request('yparikh',1)
     print(get_requests())
 
 
