@@ -46,13 +46,6 @@ def announcements():
     print(post_values)
     return render_template('announcements.html', posts = post_values)
 
-@app.route('/announcements/posts')
-def post_announcement():
-    posts.get_posts()
-    print(post_values)
-    # print(posts)
-    return render_template('announcements.html', posts = post_values)
-
 @app.route('/profile')
 def profiles():
     net_id = request.args.get("net_id", None)

@@ -11,7 +11,7 @@ python --version
 
 RUN THIS FIRST
 export DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc
-
+export CLOUDINARY_URL=cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@dyjgefpmu
 
 requirements:
 Flask

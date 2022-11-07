@@ -1,4 +1,6 @@
-Flask==2.2.2
+Flask
 Jinja2
 psycopg2-binary
 SQLAlchemy
+gunicorn
+cloudinary
