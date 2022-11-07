@@ -1,7 +1,7 @@
 import profile
 import posts
 import secrets
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from sys import path
 import os
 import admin
@@ -34,17 +34,29 @@ def application():
     else:
         is_in_requests = admin.check_request(netid, CLUB_SOCC)
         if is_in_requests:
-            return render_template('pending_request.html')
+            return redirect(url_for('pending_request'))
         else:
-            return render_template('invalid.html', CASValue=netid)
-    
+            return redirect(url_for('invalid'))
+
 @app.route("/pending_request")
 def pending_request():
-    netid = request.form.get('user_id')
-    print(netid)
-    admin.create_request(netid, CLUB_SOCC)
-    return render_template('pending_request.html')
-    
+    netid = CASClient().Authenticate()
+    netid = netid[0:len(netid)-1]
+    user = profile.Profile(user_id=netid)
+    return render_template('pending_request.html', CASValue=netid)
+
+@app.route("/invalid", methods=['GET', 'POST'])
+def invalid():
+    netid = CASClient().Authenticate()
+    netid = netid[0:len(netid)-1]
+    user = profile.Profile(user_id=netid)
+    print(request)
+    if request.method == 'POST':
+        admin.create_request(request.args.get('user_id'), CLUB_SOCC)
+        return redirect(url_for('pending_request'))
+    return render_template('invalid.html', CASValue = netid)
+
+
 
 @app.route('/members')
 def members():

@@ -80,9 +80,9 @@ def init_database():
         user_clubs1 = Users_Clubs(username = 'allenwu',
                                     club_id = CLUB_SOCC)
         session.add(user_clubs1)
-        user_clubs2 = Users_Clubs(username = 'yparikh',
-                                    club_id = CLUB_SOCC)
-        session.add(user_clubs2)
+        # user_clubs2 = Users_Clubs(username = 'yparikh',
+        #                             club_id = CLUB_SOCC)
+        # session.add(user_clubs2)
         user_clubs3 = Users_Clubs(username = 'oguntola',
                                     club_id = CLUB_SOCC)
         session.add(user_clubs3)
@@ -93,10 +93,10 @@ def init_database():
                     title = "hello",
                     description = "world")
         session.add(post1)
-        req1 = Requests(user_id = "yparikh",
-                    request_timestamp = datetime.now(),
-                    club_id = CLUB_SOCC)
-        session.add(req1)
+        # req1 = Requests(user_id = "yparikh",
+        #             request_timestamp = datetime.now(),
+        #             club_id = CLUB_SOCC)
+        # session.add(req1)
         session.commit()
 
 
