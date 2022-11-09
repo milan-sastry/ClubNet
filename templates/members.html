@@ -18,60 +18,61 @@
           <a class="nav-link" href="#">More</a>
         </nav>
       </div>
-<div class="page-container">
-    <h1>Men's Club Soccer</h1>
-    <div>
-        <!-- Filters -->
-        <div class="btn-group-vertical" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary">2023</button>
-            <button type="button" class="btn btn-secondary">2024</button>
-            <button type="button" class="btn btn-secondary">2025</button>
-            <button type="button" class="btn btn-secondary">2026</button>
-        </div>
-        <!-- members -->
-        <div class="member-container">
-            <!-- segment control -->
-            <div class="segment-container">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button  type="button" class="btn btn-secondary">Members</button>
-                    <button type="button" class="btn btn-secondary">Alumni</button>
-                </div>
-            </div>
-            <!-- user list -->
-            <div class="container">
-                <div class="row">
-                    {% for user in members %}
-                        <div class="col-4">
-                            <div onclick="window.location='/profile?net_id={{user.name}}';" class="member-card">
-                                <!-- profile picture -->
-                                <div class="profile-pic">
-                                    <img style="width: 150px; height: 150px; resize: both; border-radius: 75px;" src="{{user.profile_image_url}}" alt="profile_picture" />
-                                </div>
-                                <!-- user information -->
-                                <div>
-                                    <b>{{user.name}}</b>
-                                    <p>{{user.year}}</p>
-                                    <p>{{user.position}}</p>
+    </header>
+    <div class="page-container">
+        <h1>Men's Club Soccer</h1>
+        <div>
+            <!-- Filters -->
+            <!-- <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary">2023</button>
+                <button type="button" class="btn btn-secondary">2024</button>
+                <button type="button" class="btn btn-secondary">2025</button>
+                <button type="button" class="btn btn-secondary">2026</button>
+            </div> -->
+            <!-- members -->
+            <div class="member-container">
+                <!-- segment control -->
+                <!-- <div class="segment-container">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button  type="button" class="btn btn-secondary">Members</button>
+                        <button type="button" class="btn btn-secondary">Alumni</button>
+                    </div>
+                </div> -->
+                <!-- user list -->
+                <div class="container">
+                    <div class="row">
+                        {% for user in members %}
+                            <div class="col-4">
+                                <div onclick="window.location='/profile?net_id={{user.user_id}}';" class="member-card">
+                                    <!-- profile picture -->
+                                    <div class="profile-pic">
+                                        <img style="width: 150px; height: 150px; border-radius: 75px;" src="{{user.profile_image_url}}" alt="profile_picture" />
+                                    </div>
+                                    <!-- user information -->
+                                    <div class="d-flex flex-column align-items-center">
+                                        <b>{{user.name}}</b>
+                                        <p>{{user.user_id}}</p>
+                                        <p>{{user.email}}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- pagination -->
-    <div class="pagination-container">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-      </nav>
-    </div>
+        <!-- pagination -->
+        <!-- <div class="pagination-container">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+        </nav>
+        </div> -->
 </div>
 </body>
 </html>

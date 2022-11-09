@@ -10,15 +10,15 @@
 {% include 'navbar.html' %}
 <div class="page-container">
     <h1>Profile</h1>
-    <div style="background-color: aqua;" class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         <!-- Profile Card -->
-        <div style="background-color: red;" class="d-flex align-items-center flex-column">
+        <div class="d-flex align-items-center flex-column">
             <!-- Name -->
             <h2>{{user.name}}</h2>
             <!-- Email -->
             <a href="mailto:{{user.email}}">{{user.email}}</a>
             <!-- Profile Picture -->
-            <img style="width: 150px; height: 150px; resize: both; border-radius: 75px;" src="{{user.profile_image_url}}" alt="profile_picture" />
+            <img style="width: 300px; height: 300px; margin-top: 50px;" src="{{user.profile_image_url}}" alt="profile_picture" />
         </div>
     </div>
 </div>

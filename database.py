@@ -66,15 +66,18 @@ def init_database():
     with sqlalchemy.orm.Session(engine) as session:
         user1 = User(user_id = "allenwu",
                     name = "Allen Wu",
-                    email = "allenwu@princeton.edu")
+                    email = "allenwu@princeton.edu",
+                    profile_image_url = "https://picsum.photos/500/500")
         session.add(user1)
         user2 = User(user_id = "renteria",
                     name = "Emilio Cano",
-                    email = "emiliocanor@princeton.edu")
+                    email = "emiliocanor@princeton.edu",
+                    profile_image_url = "https://picsum.photos/500/500")
         session.add(user2)
         user3 = User(user_id = "yparikh",
                     name = "Yash Parikh",
-                    email = "yparikh@princeton.edu")
+                    email = "yparikh@princeton.edu",
+                    profile_image_url = "https://picsum.photos/500/500")
         session.add(user3)
 
         user_clubs1 = Users_Clubs(username = 'allenwu',
