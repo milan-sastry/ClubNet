@@ -1,3 +1,5 @@
+
+
 import profile
 import posts
 import secrets
@@ -5,8 +7,11 @@ from flask import Flask, render_template, redirect, request, url_for
 from sys import path
 import os
 import admin
-path.append('src')  #go to src directory to import
+
+# separation
+path.append('src')  # go to src directory to import
 from CASClient import CASClient
+
 
 CLUB_SOCC = 1
 
@@ -38,12 +43,14 @@ def application():
         else:
             return redirect(url_for('invalid'))
 
+
 @app.route("/pending_request")
 def pending_request():
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
     user = profile.Profile(user_id=netid)
     return render_template('pending_request.html', CASValue=netid)
+
 
 @app.route("/invalid", methods=['GET', 'POST'])
 def invalid():
@@ -54,8 +61,7 @@ def invalid():
     if request.method == 'POST':
         admin.create_request(request.args.get('user_id'), CLUB_SOCC)
         return redirect(url_for('pending_request'))
-    return render_template('invalid.html', CASValue = netid)
-
+    return render_template('invalid.html', CASValue=netid)
 
 
 @app.route('/members')
@@ -90,15 +96,17 @@ def donations():
 def completed():
     return render_template('donations')
 
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_page():
     pendingRequests = admin.get_requests()
-    return render_template('admin.html', requests = pendingRequests)
+    return render_template('admin.html', requests=pendingRequests)
+
 
 @app.route('/admin/accept', methods=['GET', 'POST'])
 # response.set_cookie('previous_search', ("/?dept=" + str(dept) +
-            # "&coursenum=" + str(coursenum) + "&area=" + str(area) +
-            # "&title=" + str(title)))
+# "&coursenum=" + str(coursenum) + "&area=" + str(area) +
+# "&title=" + str(title)))
 #  previous_search = flask.request.cookies.get('previous_search')
 def admin_accept_page():
     admin.acceptRequest(user_id, club_id)
@@ -109,6 +117,7 @@ def admin_accept_page():
 def admin_deny_page():
     admin.deleteRequest(user_id, club_id)
     return redirect(url_for('admin_page'))
+
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
