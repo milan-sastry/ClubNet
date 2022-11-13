@@ -36,6 +36,7 @@ def get_posts():
         for row in table:
             print(row.__dict__)
             list.append(row)
+        session.commit()
         return list
 
 

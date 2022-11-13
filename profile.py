@@ -116,7 +116,9 @@ class Profile:
             for row in table:
                 print("USER " + row.username + "OKAY " + str(row.club_id))
                 if (row.club_id == club_id):
+                    session.commit()
                     return True
+            session.commit()
 
         return bool
 
@@ -128,7 +130,9 @@ def get_profile_from_id(user_id):
             database.User.user_id == user_id).all()
         if len(query) > 0:
             profile = query[0]
+            session.commit()
             return profile
+        session.commit()
 
 
 def get_profiles_from_club(club_id):
@@ -143,4 +147,5 @@ def get_profiles_from_club(club_id):
             if len(profile) > 0:
                 profiles.append(session.query(database.User).filter(
                     database.User.user_id == user.username).all()[0])
+        session.commit()
         return profiles

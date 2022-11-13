@@ -15,6 +15,10 @@ from CASClient import CASClient
 
 CLUB_SOCC = 1
 
+INVALID = 0
+REQUEST = 1
+VALIDATED = 2
+
 
 # app info
 app = Flask(__name__)
@@ -29,43 +33,48 @@ def hello():
 @app.route('/home')
 def application():
     print(os.getenv('DB_URL'))
-    netid = CASClient().Authenticate()
-    netid = netid[0:len(netid)-1]
-    user = profile.Profile(user_id=netid)
-    # need to check if in user database OR add to database if not
-    is_in_club = user.validate(CLUB_SOCC)
-    if is_in_club:
-        return render_template('home.html', CASValue=netid, validation=is_in_club)
-    else:
-        is_in_requests = admin.check_request(netid, CLUB_SOCC)
-        if is_in_requests:
-            return redirect(url_for('pending_request'))
-        else:
-            return redirect(url_for('invalid'))
+
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    return render_template('home.html', CASValue=response[0], validation=response[1])
 
 
 @app.route("/pending_request")
 def pending_request():
-    netid = CASClient().Authenticate()
-    netid = netid[0:len(netid)-1]
-    user = profile.Profile(user_id=netid)
-    return render_template('pending_request.html', CASValue=netid)
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == VALIDATED:
+        return redirect(url_for('home'))
+    
+    return render_template('pending_request.html', CASValue=response[0])
 
 
 @app.route("/invalid", methods=['GET', 'POST'])
 def invalid():
-    netid = CASClient().Authenticate()
-    netid = netid[0:len(netid)-1]
-    user = profile.Profile(user_id=netid)
+    response = validate_user(CLUB_SOCC)
+    if response[1] == VALIDATED:
+        return redirect(url_for('home'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     print(request)
     if request.method == 'POST':
         admin.create_request(request.args.get('user_id'), CLUB_SOCC)
         return redirect(url_for('pending_request'))
-    return render_template('invalid.html', CASValue=netid)
+    return render_template('invalid.html', CASValue=response[0])
 
 
 @app.route('/members')
 def members():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     # members = [{"name": "Yash", "year": 2024, "position": "mid"}, {"name": "Emilio", "year": 2023, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "Allen", "year": 2024, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
     members = profile.get_profiles_from_club(1)
     return render_template('members.html', members=members)
@@ -73,6 +82,11 @@ def members():
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     if request.method == 'POST':
         posts.make_posts(request.form.get('Post Description'))
     post_values = posts.get_posts()
@@ -82,6 +96,11 @@ def announcements():
 
 @app.route('/profile')
 def profiles():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     net_id = request.args.get("net_id", None)
     user = profile.get_profile_from_id(net_id)
     return render_template('profile.html', user=user)
@@ -89,16 +108,31 @@ def profiles():
 
 @app.route('/donations')
 def donations():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     return render_template('donations.html')
 
 
 @app.route('/donations/completed')
 def completed():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     return render_template('donations')
 
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_page():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     pendingRequests = admin.get_requests()
     return render_template('admin.html', requests=pendingRequests)
 
@@ -109,15 +143,40 @@ def admin_page():
 # "&title=" + str(title)))
 #  previous_search = flask.request.cookies.get('previous_search')
 def admin_accept_page():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     admin.acceptRequest(user_id, club_id)
     return redirect(url_for('admin_page'))
 
 
 @app.route('/admin/deny', methods=['GET', 'POST'])
 def admin_deny_page():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     admin.deleteRequest(user_id, club_id)
     return redirect(url_for('admin_page'))
 
+def validate_user(club_id):
+    netid = CASClient().Authenticate()
+    netid = netid[0:len(netid)-1]
+    user = profile.Profile(user_id=netid)
+    is_in_club = user.validate(club_id)
+    if is_in_club:
+        return (user.user_id, VALIDATED)
+    else:
+        is_in_requests = admin.check_request(user.user_id, CLUB_SOCC)
+        if is_in_requests:
+            return (user.user_id, REQUEST)
+        else:
+            return (user.user_id, INVALID)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
+
+
