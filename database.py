@@ -82,12 +82,13 @@ def init_database():
             user2 = User(user_id = "renteria",
                         name = "Emilio Cano",
                         email = "emiliocanor@princeton.edu",
-                        profile_image_url = "https://picsum.photos/500/500")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1667797176/renteria_profile_picture.jpg")
             session.add(user2)
             user3 = User(user_id = "yparikh",
                         name = "Yash Parikh",
                         email = "yparikh@princeton.edu",
-                        profile_image_url = "https://picsum.photos/500/500")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668444358/IMG_4394_hcpx3y.jpg")
+                        # profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
             user4 = User(user_id = "oguntola",
                         name = "Ayo Oguntola",
