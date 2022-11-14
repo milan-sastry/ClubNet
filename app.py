@@ -47,7 +47,9 @@ def application():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
 
-    return render_template('home.html', CASValue=response[0], validation=response[1])
+    return render_template('home.html', CASValue=response[0], validation=response[1],
+    img1="https://upload.wikimedia.org/wikipedia/commons/d/d0/Princeton_seal.svg",
+    img2="https://www.princeton.edu/~clubsocc/img/team_main.jpeg")
 
 
 @app.route("/pending_request")
