@@ -50,6 +50,8 @@ class Requests(Base):
     request_timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=False), primary_key = True)
     club_id = sqlalchemy.Column(sqlalchemy.Integer)
     user_id = sqlalchemy.Column(sqlalchemy.String)
+    name = sqlalchemy.Column(sqlalchemy.String)
+    year = sqlalchemy.Column(sqlalchemy.Integer)
 
 #-----------------------------------------------------------------------
 class Admins(Base):
@@ -86,11 +88,11 @@ def init_database():
                         email = "yparikh@princeton.edu",
                         profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
-            user4 = User(user_id = "oguntola",
-                        name = "Ayo Oguntola",
-                        email = "oguntola@princeton.edu",
-                        profile_image_url = "https://picsum.photos/500/500")
-            session.add(user4)
+            # user4 = User(user_id = "oguntola",
+            #             name = "Ayo Oguntola",
+            #             email = "oguntola@princeton.edu",
+            #             profile_image_url = "https://picsum.photos/500/500")
+            # session.add(user4)
 
             user_clubs1 = Users_Clubs(username = 'allenwu',
                                         club_id = CLUB_SOCC)
@@ -98,9 +100,9 @@ def init_database():
             user_clubs2 = Users_Clubs(username = 'yparikh',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs2)
-            user_clubs3 = Users_Clubs(username = 'oguntola',
-                                        club_id = CLUB_SOCC)
-            session.add(user_clubs3)
+            # user_clubs3 = Users_Clubs(username = 'oguntola',
+            #                             club_id = CLUB_SOCC)
+            # session.add(user_clubs3)
             user_clubs4 = Users_Clubs(username = 'renteria',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs4)
@@ -113,10 +115,16 @@ def init_database():
             session.add(post1)
             admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
             session.add(admin1)
-            # req1 = Requests(user_id = "yparikh",
-            #             request_timestamp = datetime.now(),
-            #             club_id = CLUB_SOCC)
-            # session.add(req1)
+            req1 = Requests(user_id = "tzypman",
+                         request_timestamp = datetime.now(),
+                         name = "Toby Zypman",
+                         year = 2022,
+                         club_id = CLUB_SOCC)
+            req2 = Requests(user_id = "player2",
+                         request_timestamp = datetime.now(),
+                         club_id = CLUB_SOCC, name = "Stew Dent", year = 1776)
+            session.add(req1)
+            session.add(req2)
             session.commit()
     finally:
         engine.dispose()
