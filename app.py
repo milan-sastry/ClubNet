@@ -30,8 +30,10 @@ ADMIN = 3
 # app info
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(16)
-
-
+os.environ['DB_URL']="postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc"
+os.environ['CLOUDINARY_URL']="cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@clubnet"
+os.environ['API_KEY']="375874577914178"
+os.environ['API_SECRET']="bAM3VvtO-xWQCB_TIdgZ--bhG5Y"
 @app.route('/')
 def hello():
     return render_template('landing.html')
