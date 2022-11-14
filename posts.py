@@ -2,7 +2,7 @@ import os
 import sqlalchemy.ext.declarative
 import sqlalchemy
 import database
-
+import profile
 
 class Post:
 
@@ -66,7 +66,8 @@ def get_posts():
             for row in table:
                 # print(row)
                 post = Post(row)
-                list.append(post)
+                user = profile.get_profile_from_id(post._creator_id)
+                list.append({"post": post, "user": user})
             session.commit()
             return list
     finally:

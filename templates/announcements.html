@@ -12,7 +12,7 @@
 <body>
   <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
-      <div class="inner">
+      <div class="">
         <h3 class="masthead-brand">ClubNet</h3>
         <nav class="nav nav-masthead justify-content-center">
           <a class="nav-link" href="/home">Home</a>
@@ -23,28 +23,39 @@
       </div>
     </header>
   </div>
-  <div class="row" id="Posts">
-    <div class="col-md-2">
-        <button type="button" style="margin:auto;width=60%" class="btn btn-light" id="form">Submit an Announcement!</button>
-    </div>
-
-    <div class="col-md-10 mx-auto">
+  <div class="d-flex flex-row" id="Posts">
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
       {% for post in posts%}
-      <center>
-        <img src={{post.get_image_url()}} class="img-fluid" alt="Responsive image" style="width:25%;">
-        <div class="card" style="width: 90%;">
-          <div class="card-body">
-            <h5 class="card-title">{{post.get_title()}}</h5>
-          </div>
-        </div>
-        <div class="card" style="width: 90%;">
-          <div class="card-body">
-            <p class="card-text"> {{post.get_description()}}</p>
-          </div>
-        </div>
-      </center>
-      {% endfor %}
+        <div class="d-flex">
+          <div style="margin-top: 20px;" class="post-card">
+            <!-- Post Header -->
+            <div class="d-flex flex-row">
+              <!-- creator profile picture -->
+              <img src={{post.user.get_profile_image_url()}} alt="profile pic" style="width: 60px; height: 60px; border-radius: 30px; object-fit: cover;"/>
+              <!-- creator info -->
+              <div class="d-flex justify-content-center ml-3 flex-column">
+                <b>{{post.user.name}}</b>
+                <p>{{post.user.class_year}}</p>
+              </div>
+              <!-- timestamp -->
+              <div class="d-flex justify-content-end" style="width: 400px;">
+                <p>{{post.post.get_timestamp()}}</p>
+              </div>
+            </div>
+            <!-- Post Content -->
+            <img src={{post.post.get_image_url()}} alt="Responsive image" style="width: 100%; margin-top: 20px; border-radius: 20px">
 
+            <!-- Post Information/Footer -->
+            <div style="margin-top: 10px;" >
+              <h5 class="card-title">{{post.post.get_title()}}</h5>
+              <p class="card-text"> {{post.post.get_description()}}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}   
+    </div>
+    <div style="margin-left: 50px; margin-right: 50px;">
+      <button type="button" style="" class="btn btn-light" id="form">Submit an Announcement!</button>
     </div>
   </div>
 
@@ -54,7 +65,7 @@
   });
   </script>
 
-{% include 'footer.html' %}
-></body>
+<!-- {% include 'footer.html' %} -->
+</body>
 
 </html>

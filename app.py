@@ -76,8 +76,11 @@ def members():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('members.html', members=members)
+    return render_template('members.html', members=members, user_profile_pic=img)
 
 
 @app.route('/announcements', methods=['GET', 'POST'])
