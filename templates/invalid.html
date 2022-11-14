@@ -14,10 +14,17 @@
   <center>
     <h1>You're invalidated</h1>
   <br>
-  </br>
-   <a href="/home" class="btn btn-lg btn-secondary fw-bold border-orange bg-orange">Validate</a>
+   <a style="margin-bottom: 40px" href="/home" class="btn btn-lg btn-secondary fw-bold border-orange bg-orange">Try Again</a>
+    <br>
+    <h2>OR ... </h2>
+    <br>
+
    <form method="POST" action="/invalid?user_id={{CASValue}}">
-    <input class="btn btn-lg btn-secondary fw-bold border-orange bg-orange" type="submit" name="user_id" value="Request to be Approved">
+    Enter your Name and Last Name: <input style="margin-bottom: 10px;" class="text" name="name"></input>
+    <br>
+    Enter your Class Year: <input style="margin-bottom: 10px;" class="text" name="year"></input>
+    <br>
+    <input class="btn btn-lg btn-secondary fw-bold border-orange bg-orange" type="submit" value="Request to be Approved">
    </form>
   <center>
     {% include 'footer.html' %}

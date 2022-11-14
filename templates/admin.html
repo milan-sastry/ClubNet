@@ -21,23 +21,38 @@
           </nav>
         </div>
       </header>
+      <br>
+      <h3>Handle Join Requests</h3>
 
-      {% for req in requests%}
-
-        <div class="card">
-          <h5 class="card-header">{{req.get_user_id()}}</h5>
-          <h5 class="card-header">{{req.get_club_id()}}</h5>
-          <div class="card-body">
-          <form action="/admin" method="post" id="accept">
-            <a href="#" style="background-color: green; color:white;" class="btn btn-primary" >Accept</a>
-          </form>
-          <form action="/admin" method="post" id="deny">
-            <a href="#" style="background-color: red; color:white;" class="btn btn-primary">Deny</a>
-          </form>
-          </div>
+      <div class="container-fluid" id="results_table">
+        <table class="table table-striped">
+          <tr>
+            <th>User NetID</th>
+            <th>Name</th>
+            <th>Class Year</th>
+            <th>Accept?</th>
+            <th>Reject?</th>
+          </tr>
+          {% for req in requests%}
+          <tr>
+            <th>{{req.get_user_id()}}</th>
+            <th>{{req.get_name()}}</th>
+            <th>{{req.get_year()}}</th>
+            <th>
+                <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
+            </th>
+            <th>
+                <a href="/admin/deny?user_id={{req.get_user_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
+            </th>
+          </tr>
+      {% endfor %}
+          </table>
         </div>
 
-      {% endfor %}
+      <br> 
+      <h3>Handle Post Requests</h3>
+      <br> 
+      <h3>Manage Users</h3>
 
     {% include 'footer.html' %}
 </body>

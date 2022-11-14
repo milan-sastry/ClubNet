@@ -19,6 +19,7 @@ CLUB_SOCC = 1
 INVALID = 0
 REQUEST = 1
 VALIDATED = 2
+ADMIN = 3
 
 
 # app info
@@ -58,13 +59,17 @@ def pending_request():
 @app.route("/invalid", methods=['GET', 'POST'])
 def invalid():
     response = validate_user(CLUB_SOCC)
-    if response[1] == VALIDATED:
+    if response[1] == VALIDATED or ADMIN:
         return redirect(url_for('application'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     # print(request)
     if request.method == 'POST':
-        admin.create_request(request.args.get('user_id'), CLUB_SOCC)
+        netid = request.args.get('user_id', None)
+        name = request.args.get('name', None)
+        year = request.args.get('year', None)
+        profile.create_user(netid, name, year)
+        admin.create_request(netid, CLUB_SOCC)
         return redirect(url_for('pending_request'))
     return render_template('invalid.html', CASValue=response[0])
 
@@ -116,7 +121,6 @@ def myProfile():
     net_id = net_id[0:len(net_id)-1]
     user = profile.get_profile_from_id(net_id)
     if request.method == 'POST':
-        print(request.form, "fuck me")
         profile.edit_profile(net_id, request.form)
     return render_template('myprofile.html', user=user)
 
@@ -148,11 +152,13 @@ def admin_page():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
     pendingRequests = admin.get_requests()
     return render_template('admin.html', requests=pendingRequests)
 
 
-@app.route('/admin/accept', methods=['GET', 'POST'])
+@app.route('/admin/accept', methods=['GET'])
 # response.set_cookie('previous_search', ("/?dept=" + str(dept) +
 # "&coursenum=" + str(coursenum) + "&area=" + str(area) +
 # "&title=" + str(title)))
@@ -163,7 +169,25 @@ def admin_accept_page():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    admin.acceptRequest(user_id, club_id)
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+
+    user_id = request.args.get("user_id", None)
+    admin.approve_request(user_id, CLUB_SOCC)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/deny', methods=['GET', 'POST'])
+def admin_deny_page():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+
+    user_id = request.args.get("user_id", None)
+    admin.delete_request(user_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
 
 @app.route('/form', methods=['GET', 'POST'])
@@ -185,22 +209,15 @@ def add_image():
     # netid = CASClient().Authenticate()
     return render_template("image.html")
 
-@app.route('/admin/deny', methods=['GET', 'POST'])
-def admin_deny_page():
-    response = validate_user(CLUB_SOCC)
-    if response[1] == INVALID:
-        return redirect(url_for('invalid'))
-    if response[1] == REQUEST:
-        return redirect(url_for('pending_request'))
-    admin.deleteRequest(user_id, club_id)
-    return redirect(url_for('admin_page'))
-
 def validate_user(club_id):
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
     is_in_club = profile.validate(netid, club_id)
     if is_in_club:
-        return (netid, VALIDATED)
+        if admin.is_admin(netid, club_id):
+            return (netid, ADMIN)
+        else:
+            return (netid, VALIDATED)
     else:
         is_in_requests = admin.check_request(netid, CLUB_SOCC)
         if is_in_requests:
