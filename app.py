@@ -7,6 +7,7 @@ from flask import Flask, render_template, redirect, request, url_for
 from sys import path
 import os
 import admin
+import upload
 
 # separation
 path.append('src')  # go to src directory to import
@@ -172,10 +173,14 @@ def render_form():
         return redirect(url_for('announcements'))
     return render_template("form.html")
 
-# @app.route('/image', methods=['GET', 'POST'])
-# def add_image():
-#     netid = CASClient().Authenticate()
-#     return render_template("add_image.html", user_id=netid)
+@app.route('/image', methods=['GET', 'POST'])
+def add_image():
+    netid = CASClient().Authenticate()
+    if request.method == 'POST':
+        upload.add_image(netid, request.form.get('File'))
+        return redirect(url_for('application'))
+    # netid = CASClient().Authenticate()
+    return render_template("image.html")
 
 @app.route('/admin/deny', methods=['GET', 'POST'])
 def admin_deny_page():
