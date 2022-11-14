@@ -52,14 +52,13 @@ def pending_request():
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
         return redirect(url_for('application'))
-
     return render_template('pending_request.html', CASValue=response[0])
 
 
-@app.route("/invalid", methods=['GET', 'POST'])
+@app.route("/invalid", methods=['GET'])
 def invalid():
     response = validate_user(CLUB_SOCC)
-    if response[1] == VALIDATED or ADMIN:
+    if response[1] == (VALIDATED or ADMIN):
         return redirect(url_for('application'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
