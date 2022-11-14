@@ -63,15 +63,16 @@ def invalid():
         return redirect(url_for('application'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    # print(request)
-    if request.method == 'POST':
-        netid = request.args.get('user_id', None)
-        name = request.args.get('name', None)
-        year = request.args.get('year', None)
-        profile.create_user(netid, name, year)
-        admin.create_request(netid, CLUB_SOCC)
-        return redirect(url_for('pending_request'))
     return render_template('invalid.html', CASValue=response[0])
+
+@app.route("/process_request", methods=['GET'])
+def process_request():
+    netid = request.args.get('user_id', None)
+    name = request.args.get('name', None)
+    year = request.args.get('year', None)
+    profile.create_user(netid, name, year)
+    admin.create_request(netid, CLUB_SOCC)
+    return redirect(url_for('pending_request'))
 
 
 @app.route('/members')
