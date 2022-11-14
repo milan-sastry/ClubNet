@@ -3,6 +3,7 @@ import sqlalchemy.ext.declarative
 import sqlalchemy
 import database
 import profile
+from datetime import datetime
 
 class Post:
 
@@ -44,7 +45,8 @@ def make_posts(post_title,post_description ):
             post1 = database.Posts(creator_id="yparikh",
                                 title=post_title,
                                 description=post_description,
-                                club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg")
+                                club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
+                                timestamp=datetime.now())
             session.add(post1)
             # return post1.get_post_id()
             session.commit()
