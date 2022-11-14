@@ -82,7 +82,7 @@ def init_database():
             session.add(user3)
             user4 = User(user_id = "oguntola",
                         name = "Ayo Oguntola",
-                        email = "ayo@princeton.edu",
+                        email = "oguntola@princeton.edu",
                         profile_image_url = "https://picsum.photos/500/500")
             session.add(user4)
 
@@ -95,12 +95,14 @@ def init_database():
             user_clubs3 = Users_Clubs(username = 'oguntola',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs3)
-            # user_clubs4 = Users_Clubs(username = 'renteria',
-            #                             club_id = CLUB_SOCC)
-            # session.add(user_clubs4)
+            user_clubs4 = Users_Clubs(username = 'renteria',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs4)
             post1 = Posts(creator_id = "yparikh",
                         title = "hello",
-                        description = "world")
+                        description = "world",
+                        club_image_url = "https://picsum.photos/500/500"
+                        )
             session.add(post1)
             # req1 = Requests(user_id = "yparikh",
             #             request_timestamp = datetime.now(),

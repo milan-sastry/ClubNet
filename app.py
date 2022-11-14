@@ -165,9 +165,17 @@ def admin_accept_page():
 @app.route('/form', methods=['GET', 'POST'])
 def render_form():
     if request.method == 'POST':
+        # make the post
+        # then send them to add image
         print(request)
-        posts.make_posts(request.form.get('Post Description'))
+        posts.make_posts(request.form.get('Post Title'),request.form.get('Post Description'))
+        return redirect(url_for('announcements'))
     return render_template("form.html")
+
+# @app.route('/image', methods=['GET', 'POST'])
+# def add_image():
+#     netid = CASClient().Authenticate()
+#     return render_template("add_image.html", user_id=netid)
 
 @app.route('/admin/deny', methods=['GET', 'POST'])
 def admin_deny_page():
