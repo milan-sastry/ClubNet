@@ -69,7 +69,7 @@ def process_request():
     netid = request.args.get('user_id', None)
     name = request.args.get('name', None)
     year = request.args.get('year', None)
-    profile.create_user(netid, name, year)
+    profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC)
     return redirect(url_for('pending_request'))
 
