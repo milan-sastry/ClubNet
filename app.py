@@ -237,7 +237,7 @@ def validate_user(club_id):
             return (netid, INVALID)
 
 # WIP here about the uploading of images
-@app.route("/upload", methods=['POST'])
+@app.route("/upload", methods=['POST', 'GET'])
 def upload_file():
     # netid = CASClient().Authenticate()
     file_cloudinary_link = ""
@@ -261,7 +261,9 @@ def upload_file():
             # print("POST ID IS COMING HERE:" + post_id)
             # print(file_cloudinary_link)
             posts.add_image(post_id, file_cloudinary_link)
-            return redirect(url_for('announcements'))
+            post_values = posts.get_posts()
+            print("I AM HERE, I have a cloudinary link")
+            return redirect(url_for('application'))
     return jsonify(upload_result)
 
 @app.route("/upload_page")

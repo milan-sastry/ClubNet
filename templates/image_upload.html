@@ -50,6 +50,7 @@
 
         fetch("/upload?post_id={{post_id}}", options)
           .then((response) => {
+            window.location.assign('/announcements')
             return response.json();
           })
           .then((data) => {
@@ -58,6 +59,8 @@
           .catch((error) => {
             console.log(error);
           });
+
+
       });
     </script>
   </body>
