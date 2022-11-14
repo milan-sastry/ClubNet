@@ -204,7 +204,7 @@ def edit_profile(user_id, data):
         engine.dispose()
 
 def create_profile(user_id, name, year):
-    if get_profile_from_id(user_id) is None:
+    if get_profile_from_id(user_id) is not None:
         return
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:

@@ -143,6 +143,5 @@ def init_database():
     finally:
         engine.dispose()
 
-
 if __name__ == '__main__':
     init_database()

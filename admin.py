@@ -84,7 +84,7 @@ def get_requests():
     finally:
         engine.dispose()
     
-def create_request(user_id, club_id):
+def create_request(user_id, club_id, name, year):
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
@@ -92,7 +92,7 @@ def create_request(user_id, club_id):
                 print("request already exists")
                 return 
             else:
-                new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id)
+                new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id, name = name, year = year)
                 session.add(new_request)
                 session.commit()
                 print("Request added")
