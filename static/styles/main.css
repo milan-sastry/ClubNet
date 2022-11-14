@@ -54,18 +54,12 @@ background-color: gainsboro;
   font-weight: 700;
 }
 
-<<<<<<< HEAD
 /* announcements */
   .post-card {
     padding: 20px;
     flex-direction: column;
     background-color: white;
     border-radius: 20px;
-=======
-/* members */
-  .profile-pic {
-
->>>>>>> 5fb0e1c (adding a bunch of image related behavior)
   }
 
 /* members */
