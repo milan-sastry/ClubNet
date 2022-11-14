@@ -81,25 +81,46 @@ class Profile:
         return self.profile_image_url
 
     def get_class_year(self):
-        return self.class_year
+        if self.class_year:
+            return self.class_year
+        else: 
+            return ""
 
     def get_major(self):
-        return self.major
+        if self.major:
+            return self.major
+        else: 
+            return ""
 
     def get_team_position(self):
-        return self.team_position
+        if self.team_position:
+            return self.team_position
+        else: 
+            return ""
 
     def get_favorite_team(self):
-        return self.team_position
+        if self.favorite_team:
+            return self.favorite_team
+        else: 
+            return ""
 
     def get_hometown(self):
-        return self.hometown
+        if self.hometown:
+            return self.hometown
+        else: 
+            return ""
 
     def get_job_title(self):
-        return self.job_title
+        if self.job_title:
+            return self.job_title
+        else: 
+            return ""
 
     def get_user_company(self):
-        return self.user_company
+        if self.user_company:
+            return self.user_company
+        else: 
+            return ""
 
 # ---------------------------DELETE-------------------------------------
 
@@ -115,10 +136,10 @@ def validate(user_id, club_id):
         with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Users_Clubs).filter(
             database.Users_Clubs.username.ilike(user_id))
-            print(query)
+            # print(query)
             table = query.all()
             for row in table:
-                print("USER " + row.username + "OKAY " + str(row.club_id))
+                # print("USER " + row.username + "OKAY " + str(row.club_id))
                 if (row.club_id == club_id):
                     session.commit()
                     return True
@@ -138,6 +159,8 @@ def get_profile_from_id(user_id):
             if len(query) > 0:
                 profile = query[0]
                 return Profile(profile)
+            # else:
+            #     # print("Wtfff", query)
             session.commit()
     finally:
         engine.dispose()
@@ -159,5 +182,24 @@ def get_profiles_from_club(club_id):
                     profiles.append(profile)
             session.commit()
             return profiles
+    finally:
+        engine.dispose()
+
+def edit_profile(user_id, data):
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                "class_year": data["class_year"],
+                "major": data["major"],
+                "team_position": data["team_position"], 
+                "favorite_team": data["favorite_team"], 
+                "hometown": data["hometown"],
+                "job_title": data["job_title"],
+                "user_company": data["user_company"]
+            })
+            session.commit()
+            print("RESPONSEE", response)
+            return True
     finally:
         engine.dispose()

@@ -20,17 +20,30 @@
       <div class="d-flex justify-content-center">
         <!-- Profile Card -->
         <div class="d-flex align-items-center flex-column">
-          <!-- Name -->
-          <h2>{{user.get_name()}}</h2>
-          <!-- Email -->
-          <a href="mailto:{{user.email}}">{{user.get_email()}}</a>
-          <!-- Profile Picture -->
-          "{{user.get_profile_image_url()}}"
-          <img
-            style="width: 300px; height: 300px; margin-top: 50px"
-            src="{{user.profile_image_url}}"
-            alt="profile_picture"
-          />
+          <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
+            <!-- top user information -->
+            <div class="d-flex flex-row align-items-center">
+                <!-- profile picture -->
+                <div class="profile-pic">
+                    <img style="width: 300px; height: 300px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
+                </div>
+                <!-- basic user information -->
+                <div class="flex-column ml-2">
+                    <b style="font-size: 30px;">{{user.get_name()}}</b>
+                    <p style="font-size: 20px; margin-bottom: 0px;"><b>Class Year:</b> {{user.get_class_year()}}</p>
+                    <p><b>Email:</b> {{user.get_email()}}</p>
+                </div>
+            </div>
+            <!-- extra user information -->
+            <div class="mt-2">
+                <p><b>Major:</b> {{user.get_major()}}</p>
+                <p><b>Team Position:</b> {{user.get_team_position()}}</p>
+                <p><b>Favorite Team:</b> {{user.get_favorite_team()}}</p>
+                <p><b>Hometown:</b> {{user.get_hometown()}}</p>
+                <p><b>Job Title:</b> {{user.get_job_title()}}</p>
+                <p><b>Company:</b> {{user.get_user_company()}}</p>
+            </div>
+        </div>
         </div>
       </div>
     </div>

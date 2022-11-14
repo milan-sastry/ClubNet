@@ -112,7 +112,8 @@ def myProfile():
     net_id = net_id[0:len(net_id)-1]
     user = profile.get_profile_from_id(net_id)
     if request.method == 'POST':
-        print(request.form, "requqest?")
+        print(request.form, "fuck me")
+        profile.edit_profile(net_id, request.form)
     return render_template('myprofile.html', user=user)
 
 
@@ -165,7 +166,7 @@ def admin_accept_page():
 def render_form():
     if request.method == 'POST':
         print(request)
-        # posts.make_posts(request.form.get('Post Description'))
+        posts.make_posts(request.form.get('Post Description'))
     return render_template("form.html")
 
 @app.route('/admin/deny', methods=['GET', 'POST'])

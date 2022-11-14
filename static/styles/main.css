@@ -1,5 +1,5 @@
 body {
-background-color: #F6C197;
+background-color: lightgray;
 }
 
 
@@ -56,21 +56,20 @@ background-color: #F6C197;
 
 /* members */
   .profile-pic {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    
   }
 
   .member-card {
-    margin: 10px;
+    padding: 20px;
+    margin: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     background-color: white;
+    border-radius: 20px;
   }
 
   .member-container {
     display: flex;
-    align-items: center;
     flex-direction: column;
   }
 
@@ -112,3 +111,12 @@ background-color: #F6C197;
       background-color: black;
 
     }
+
+.page-title {
+  margin-left: 30px;
+}
+
+.page-subtitle {
+  margin-left: 30px;
+  color: gray;
+}

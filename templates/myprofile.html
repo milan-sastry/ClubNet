@@ -1,0 +1,110 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>ClubNet</title>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="static/styles/main.css" />
+      </head>
+      <body>
+        {% include 'navbar.html' %}
+        <h1>My Profile</h1>
+        <div class="d-flex justify-content-around">
+            <div class="d-flex justify-content-center">
+                <!-- Profile Card -->
+                <div class="d-flex align-items-center flex-column">
+                <!-- Name -->
+                <h2>{{user.get_name()}}</h2>
+                <!-- Email -->
+                <a href="mailto:{{user.email}}">{{user.get_email()}}</a>
+                <!-- Profile Picture -->
+                <img
+                    style="width: 300px; height: 300px; margin-top: 50px"
+                    src="{{user.profile_image_url}}"
+                    alt="profile_picture"
+                />
+                </div>
+            </div>
+            <!-- Edit Profile -->
+            <div>
+                <h1>Edit Profile</h1>
+                <!-- Inputs -->
+                <form method="POST" action="">
+                    <!-- Class Year -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Class Year</span>
+                        </div>
+                        <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year">
+                    </div>
+                    <!-- Major -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Major</span>
+                        </div>
+                        <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major">
+                    </div>
+                    <!-- Team Position -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Position</span>
+                        </div>
+                        <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position">
+                    </div>
+                    <!-- Favorite Team -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Favorite Team</span>
+                        </div>
+                        <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team">
+                    </div>
+                    <!-- Hometown -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Hometown</span>
+                        </div>
+                        <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown">
+                    </div>
+                    <!-- Job Title -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Job Title</span>
+                        </div>
+                        <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title">
+                    </div>
+                    <!-- Company -->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Company</span>
+                        </div>
+                        <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company">
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                    <!-- <script>
+                        function myFunction() {
+                        const classYear = document.getElementById('class-year').innerHTML
+                        const major = document.getElementById('major').innerHTML
+                        const position = document.getElementById('team-position').innerHTML
+                        const favoriteTeam = document.getElementById('favorite-team').innerHTML
+                        const hometown = document.getElementById('hometown').innerHTML
+                        const jobTitle = document.getElementById('job-title').innerHTML
+                        const company = document.getElementById('company').innerHTML
+                        const updates = {class_year: classYear, major: major,
+                                    team_position: position, favorite_team: favoriteTeam,
+                                    hometown: hometown, job_title: jobTitle,
+                                    user_company: company}
+                        // alert("Success")
+                        }
+                    </script> -->
+                </form>
+            </div>
+        </div>
+      </body>
+    </html>

@@ -60,11 +60,11 @@ def get_posts():
     try:
         with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Posts)
-            print(query)
+            # print(query)
             table = query.all()
             list = []
             for row in table:
-                print(row)
+                # print(row)
                 post = Post(row)
                 list.append(post)
             session.commit()
@@ -77,7 +77,7 @@ def get_posts():
 # For testing:
 def _test():
     make_posts("yoooooo")
-    print("made a post")
+    # print("made a post")
     get_posts()
 
 
