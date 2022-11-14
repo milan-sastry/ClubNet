@@ -100,7 +100,9 @@ def init_database():
             # session.add(user_clubs4)
             post1 = Posts(creator_id = "yparikh",
                         title = "hello",
-                        description = "world")
+                        description = "world",
+                        club_image_url = "https://picsum.photos/500/500"
+                        )
             session.add(post1)
             # req1 = Requests(user_id = "yparikh",
             #             request_timestamp = datetime.now(),

@@ -13,10 +13,10 @@ class Post:
         self._title = db_row.title
         self._description = db_row.description
         self._timestamp = db_row.timestamp
-    
+
     def get_post_id(self):
         return self._post_id
-    
+
     def get_image_url(self):
         return self._club_image_url
 
@@ -25,16 +25,16 @@ class Post:
 
     def get_title(self):
         return self._title
-    
+
     def get_description(self):
         return self._description
-    
+
     def get_timestamp(self):
         return self._timestamp
 
 # -----------------------------------------------------------------------
 
-def make_posts(text):
+def make_posts(post_title,post_description ):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -42,8 +42,8 @@ def make_posts(text):
     try:
         with sqlalchemy.orm.Session(engine) as session:
             post1 = database.Posts(creator_id="yparikh",
-                                title="hello",
-                                description=text,
+                                title=post_title,
+                                description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg")
             session.add(post1)
             session.commit()
