@@ -57,7 +57,7 @@ def pending_request():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
-    if response[1] == VALIDATED:
+    if response[1] == (VALIDATED or ADMIN):
         return redirect(url_for('application'))
     return render_template('pending_request.html', CASValue=response[0])
 
