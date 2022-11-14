@@ -61,7 +61,7 @@ def invalid():
         return redirect(url_for('application'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    print(request)
+    # print(request)
     if request.method == 'POST':
         admin.create_request(request.args.get('user_id'), CLUB_SOCC)
         return redirect(url_for('pending_request'))
@@ -75,7 +75,6 @@ def members():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    # members = [{"name": "Yash", "year": 2024, "position": "mid"}, {"name": "Emilio", "year": 2023, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "Allen", "year": 2024, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
     members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('members.html', members=members)
 
@@ -103,6 +102,20 @@ def profiles():
     net_id = request.args.get("net_id", None)
     user = profile.get_profile_from_id(net_id)
     return render_template('profile.html', user=user)
+
+@app.route('/myprofile', methods=["GET", "POST"])
+def myProfile():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    net_id = CASClient().Authenticate()
+    net_id = net_id[0:len(net_id)-1]
+    user = profile.get_profile_from_id(net_id)
+    if request.method == 'POST':
+        print(request.form, "requqest?")
+    return render_template('myprofile.html', user=user)
 
 
 @app.route('/donations')
