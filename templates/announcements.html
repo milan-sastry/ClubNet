@@ -1,24 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>ClubNet</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/styles/main.css">
+  <meta charset="UTF-8">
+  <title>ClubNet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/styles/main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
+
 <body>
-  <body>
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand">ClubNet</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="/home">Home</a>
-            <a class="nav-link active" href="/announcements">Announcements</a>
-            <a class="nav-link" href="/members">Members</a>
-            <a class="nav-link" href="#">More</a>
-          </nav>
+  <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+      <div class="inner">
+        <h3 class="masthead-brand">ClubNet</h3>
+        <nav class="nav nav-masthead justify-content-center">
+          <a class="nav-link" href="/home">Home</a>
+          <a class="nav-link active" href="/announcements">Announcements</a>
+          <a class="nav-link" href="/members">Members</a>
+          <a class="nav-link" href="#">More</a>
+        </nav>
+      </div>
+    </header>
+  </div>
+  <div class="row" id="Posts">
+    <div class="col-md-2">
+    <button type="button" class="btn btn-light" id="form">Form</button>
+    </div>
+    <div class="col-md-10">
+      {% for post in posts%}
+      <center>
+        <img src="{{club_image_url}}" class="img-fluid" alt="Responsive image" style="width:25%;">
+        <div class="card" style="width: 90%;">
+          <div class="card-body">
+            <h5 class="card-title">{{post["title"]}}</h5>
+          </div>
         </div>
       </header>
 </div>
@@ -37,13 +53,14 @@
 </div>
 </center>
 {% endfor %}
+<script>
+$(function(){
+    $('#form').click(function() {
+      $("#Posts").replaceWith(createnewpost.html);
+    });
+});
+</script>
 
-<center>
-  <form method="post" action="/announcements">
-      <label for="postAnnouncement">Post an Announcement Here</label>
-      <input type="text" class="form-control" id="postAnnouncement" placeholder="Post to Thread" name= "Post Description">
-      <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</center>
 </body>
+
 </html>
