@@ -102,7 +102,7 @@ def init_database():
                         title = "hello",
                         description = "world",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestmp = datetime.now()
+                        timestamp = datetime.now()
                         )
             session.add(post1)
             # req1 = Requests(user_id = "yparikh",
