@@ -80,6 +80,11 @@ def init_database():
                         email = "yparikh@princeton.edu",
                         profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
+            user4 = User(user_id = "oguntola",
+                        name = "Ayo Oguntola",
+                        email = "ayo@princeton.edu",
+                        profile_image_url = "https://picsum.photos/500/500")
+            session.add(user4)
 
             user_clubs1 = Users_Clubs(username = 'allenwu',
                                         club_id = CLUB_SOCC)
