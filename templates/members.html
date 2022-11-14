@@ -43,16 +43,16 @@
                     <div class="row">
                         {% for user in members %}
                             <div class="col-4">
-                                <div onclick="window.location='/profile?net_id={{user.user_id}}';" class="member-card">
+                                <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
                                     <!-- profile picture -->
                                     <div class="profile-pic">
-                                        <img style="width: 150px; height: 150px; border-radius: 75px;" src="{{user.profile_image_url}}" alt="profile_picture" />
+                                        <img style="width: 150px; height: 150px; border-radius: 75px;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
                                     </div>
                                     <!-- user information -->
                                     <div class="d-flex flex-column align-items-center">
-                                        <b>{{user.name}}</b>
-                                        <p>{{user.user_id}}</p>
-                                        <p>{{user.email}}</p>
+                                        <b>{{user.get_name()}}</b>
+                                        <p>{{user.get_user_id()}}</p>
+                                        <p>{{user.get_email()}}</p>
                                     </div>
                                 </div>
                             </div>

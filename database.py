@@ -63,44 +63,47 @@ def init_database():
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
-    with sqlalchemy.orm.Session(engine) as session:
-        user1 = User(user_id = "allenwu",
-                    name = "Allen Wu",
-                    email = "allenwu@princeton.edu",
-                    profile_image_url = "https://picsum.photos/500/500")
-        session.add(user1)
-        user2 = User(user_id = "renteria",
-                    name = "Emilio Cano",
-                    email = "emiliocanor@princeton.edu",
-                    profile_image_url = "https://picsum.photos/500/500")
-        session.add(user2)
-        user3 = User(user_id = "yparikh",
-                    name = "Yash Parikh",
-                    email = "yparikh@princeton.edu",
-                    profile_image_url = "https://picsum.photos/500/500")
-        session.add(user3)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            user1 = User(user_id = "allenwu",
+                        name = "Allen Wu",
+                        email = "allenwu@princeton.edu",
+                        profile_image_url = "https://picsum.photos/500/500")
+            session.add(user1)
+            user2 = User(user_id = "renteria",
+                        name = "Emilio Cano",
+                        email = "emiliocanor@princeton.edu",
+                        profile_image_url = "https://picsum.photos/500/500")
+            session.add(user2)
+            user3 = User(user_id = "yparikh",
+                        name = "Yash Parikh",
+                        email = "yparikh@princeton.edu",
+                        profile_image_url = "https://picsum.photos/500/500")
+            session.add(user3)
 
-        user_clubs1 = Users_Clubs(username = 'allenwu',
-                                    club_id = CLUB_SOCC)
-        session.add(user_clubs1)
-        user_clubs2 = Users_Clubs(username = 'yparikh',
-                                    club_id = CLUB_SOCC)
-        session.add(user_clubs2)
-        user_clubs3 = Users_Clubs(username = 'oguntola',
-                                    club_id = CLUB_SOCC)
-        session.add(user_clubs3)
-        # user_clubs4 = Users_Clubs(username = 'renteria',
-        #                             club_id = CLUB_SOCC)
-        # session.add(user_clubs4)
-        post1 = Posts(creator_id = "yparikh",
-                    title = "hello",
-                    description = "world")
-        session.add(post1)
-        # req1 = Requests(user_id = "yparikh",
-        #             request_timestamp = datetime.now(),
-        #             club_id = CLUB_SOCC)
-        # session.add(req1)
-        session.commit()
+            user_clubs1 = Users_Clubs(username = 'allenwu',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs1)
+            user_clubs2 = Users_Clubs(username = 'yparikh',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs2)
+            user_clubs3 = Users_Clubs(username = 'oguntola',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs3)
+            # user_clubs4 = Users_Clubs(username = 'renteria',
+            #                             club_id = CLUB_SOCC)
+            # session.add(user_clubs4)
+            post1 = Posts(creator_id = "yparikh",
+                        title = "hello",
+                        description = "world")
+            session.add(post1)
+            # req1 = Requests(user_id = "yparikh",
+            #             request_timestamp = datetime.now(),
+            #             club_id = CLUB_SOCC)
+            # session.add(req1)
+            session.commit()
+    finally:
+        engine.dispose()
 
 
 if __name__ == '__main__':

@@ -21,18 +21,18 @@ class Profile:
     job_title = None
     user_company = None
 
-    def __init__(self, user_id, name=None, email=None, profile_image_url=None, class_year=None, major=None, team_position=None, favorite_team=None, hometown=None, job_title=None, user_company=None):
-        self.user_id = user_id
-        self.name = name
-        self.email = email
-        self.profile_image_url = profile_image_url
-        self.class_year = class_year
-        self.major = major
-        self.team_position = team_position
-        self.favorite_team = favorite_team
-        self.hometown = hometown
-        self.job_title = job_title
-        self.user_company = user_company
+    def __init__(self, row):
+        self.user_id = row.user_id
+        self.name = row.name
+        self.email = row.email
+        self.profile_image_url = row.profile_image_url
+        self.class_year = row.class_year
+        self.major = row.major
+        self.team_position = row.team_position
+        self.favorite_team = row.favorite_team
+        self.hometown = row.hometown
+        self.job_title = row.job_title
+        self.user_company = row.user_company
 
 # ---------------------------EDIT----------------------------------------
 
@@ -68,6 +68,9 @@ class Profile:
 
 # ---------------------------GET-----------------------------------------
 
+    def get_user_id(self):
+        return self.user_id
+        
     def get_name(self):
         return self.name
 
@@ -104,13 +107,14 @@ class Profile:
         pass
 # ---------------------------VALIDATE-----------------------------------
 
-    def validate(self, club_id):
-        engine = sqlalchemy.create_engine(DATABASE_URL)
-        bool = False
+def validate(user_id, club_id):
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    bool = False
 
+    try:
         with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Users_Clubs).filter(
-                database.Users_Clubs.username.ilike(self.user_id))
+            database.Users_Clubs.username.ilike(user_id))
             print(query)
             table = query.all()
             for row in table:
@@ -119,33 +123,41 @@ class Profile:
                     session.commit()
                     return True
             session.commit()
-
+            
         return bool
+    finally:
+        engine.dispose()
 
 
 def get_profile_from_id(user_id):
     engine = sqlalchemy.create_engine(DATABASE_URL)
-    with sqlalchemy.orm.Session(engine) as session:
-        query = session.query(database.User).filter(
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            query = session.query(database.User).filter(
             database.User.user_id == user_id).all()
-        if len(query) > 0:
-            profile = query[0]
+            if len(query) > 0:
+                profile = query[0]
+                return Profile(profile)
             session.commit()
-            return profile
-        session.commit()
+    finally:
+        engine.dispose()
 
 
 def get_profiles_from_club(club_id):
     profiles = []
     engine = sqlalchemy.create_engine(DATABASE_URL)
-    with sqlalchemy.orm.Session(engine) as session:
-        user_ids = session.query(database.Users_Clubs).filter(
-            database.Users_Clubs.club_id == club_id).all()
-        for user in user_ids:
-            profile = session.query(database.User).filter(
-                database.User.user_id == user.username).all()
-            if len(profile) > 0:
-                profiles.append(session.query(database.User).filter(
-                    database.User.user_id == user.username).all()[0])
-        session.commit()
-        return profiles
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            user_ids = session.query(database.Users_Clubs).filter(
+                database.Users_Clubs.club_id == club_id).all()
+            for user in user_ids:
+                profile = session.query(database.User).filter(
+                    database.User.user_id == user.username).all()
+                if len(profile) > 0:
+                    profile = Profile(session.query(database.User).filter(
+                        database.User.user_id == user.username).all()[0])
+                    profiles.append(profile)
+            session.commit()
+            return profiles
+    finally:
+        engine.dispose()

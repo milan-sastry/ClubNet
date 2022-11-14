@@ -49,7 +49,7 @@ def pending_request():
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
-        return redirect(url_for('home'))
+        return redirect(url_for('application'))
     
     return render_template('pending_request.html', CASValue=response[0])
 
@@ -58,7 +58,7 @@ def pending_request():
 def invalid():
     response = validate_user(CLUB_SOCC)
     if response[1] == VALIDATED:
-        return redirect(url_for('home'))
+        return redirect(url_for('application'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     print(request)
@@ -76,7 +76,7 @@ def members():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     # members = [{"name": "Yash", "year": 2024, "position": "mid"}, {"name": "Emilio", "year": 2023, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}, {"name": "Allen", "year": 2024, "position": "mid"}, {"name": "frank", "year": 2020, "position": "striker"}, {"name": "mollie", "year": 2020, "position": "striker"}]
-    members = profile.get_profiles_from_club(1)
+    members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('members.html', members=members)
 
 
@@ -90,7 +90,6 @@ def announcements():
     if request.method == 'POST':
         posts.make_posts(request.form.get('Post Description'))
     post_values = posts.get_posts()
-    print(post_values)
     return render_template('announcements.html', posts=post_values)
 
 
@@ -165,16 +164,15 @@ def admin_deny_page():
 def validate_user(club_id):
     netid = CASClient().Authenticate()
     netid = netid[0:len(netid)-1]
-    user = profile.Profile(user_id=netid)
-    is_in_club = user.validate(club_id)
+    is_in_club = profile.validate(netid, club_id)
     if is_in_club:
-        return (user.user_id, VALIDATED)
+        return (netid, VALIDATED)
     else:
-        is_in_requests = admin.check_request(user.user_id, CLUB_SOCC)
+        is_in_requests = admin.check_request(netid, CLUB_SOCC)
         if is_in_requests:
-            return (user.user_id, REQUEST)
+            return (netid, REQUEST)
         else:
-            return (user.user_id, INVALID)
+            return (netid, INVALID)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)

@@ -21,11 +21,11 @@
         <!-- Profile Card -->
         <div class="d-flex align-items-center flex-column">
           <!-- Name -->
-          <h2>{{user.name}}</h2>
+          <h2>{{user.get_name()}}</h2>
           <!-- Email -->
-          <a href="mailto:{{user.email}}">{{user.email}}</a>
+          <a href="mailto:{{user.email}}">{{user.get_email()}}</a>
           <!-- Profile Picture -->
-          "{{user.profile_image_url}}"
+          "{{user.get_profile_image_url()}}"
           <img
             style="width: 300px; height: 300px; margin-top: 50px"
             src="{{user.profile_image_url}}"

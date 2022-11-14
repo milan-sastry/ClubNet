@@ -27,12 +27,12 @@
   <img src="{{club_image_url}}" class="img-fluid" alt="Responsive image" style="width:25%;">
   <div class="card" style="width: 90%;">
     <div class="card-body">
-      <h5 class="card-title">{{post["title"]}}</h5>
+      <h5 class="card-title">{{post.get_title()}}</h5>
     </div>
   </div>
 <div class="card" style="width: 90%;">
   <div class="card-body">
-    <p class="card-text"> {{ post["description"] }}</p>
+    <p class="card-text"> {{post.get_description()}}</p>
   </div>
 </div>
 </center>

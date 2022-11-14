@@ -27,9 +27,12 @@ cloudinary.uploader.upload("../../../Documents/headshot.jpg", public_id = public
 # save the url
 img_url = cloudinary.CloudinaryImage(public_id).build_url()
 engine = sqlalchemy.create_engine(DATABASE_URL)
-with sqlalchemy.orm.Session(engine) as session:
-    query = session.query(database.User).filter(
+try:
+    with sqlalchemy.orm.Session(engine) as session:
+        query = session.query(database.User).filter(
                 database.User.user_id.ilike(netid))
-    row = query.one()
-    row.profile_image_url = img_url
-    session.commit()
+        row = query.one()
+        row.profile_image_url = img_url
+        session.commit()
+finally:
+    engine.dispose()
