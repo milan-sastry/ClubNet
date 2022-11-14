@@ -52,6 +52,12 @@ class Requests(Base):
     user_id = sqlalchemy.Column(sqlalchemy.String)
 
 #-----------------------------------------------------------------------
+class Admins(Base):
+    __tablename__ = 'admins'
+    club_id = sqlalchemy.Column(sqlalchemy.Integer)
+    user_id = sqlalchemy.Column(sqlalchemy.String, primary_key = True)
+    officer_position = sqlalchemy.Column(sqlalchemy.String)
+
 
 def init_database():
     CLUB_SOCC = 1
@@ -105,6 +111,8 @@ def init_database():
                         timestamp = datetime.now()
                         )
             session.add(post1)
+            admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
+            session.add(admin1)
             # req1 = Requests(user_id = "yparikh",
             #             request_timestamp = datetime.now(),
             #             club_id = CLUB_SOCC)

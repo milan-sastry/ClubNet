@@ -7,7 +7,6 @@ from sqlalchemy import delete
 
 
 class Request:
-
     def __init__(self, row):
         self._request_timestamp = row.request_timestamp
         self._club_id = row.club_id
@@ -107,6 +106,17 @@ def check_request(user_id, club_id):
     finally:
         engine.dispose()
 
+def is_admin(user_id, club_id):
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            query = session.query(database.Admins).where((database.Admins.user_id == user_id)&(database.Admins.club_id == club_id))
+            if query.first() is not None:
+                return True
+            else:
+                return False
+    finally:
+        engine.dispose()
 
 #-----------------------------------------------------------------------
 
