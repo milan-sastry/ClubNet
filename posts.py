@@ -46,6 +46,7 @@ def make_posts(post_title,post_description ):
                                 description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg")
             session.add(post1)
+            # return post1.get_post_id()
             session.commit()
             print("added to database")
     finally:
@@ -70,6 +71,22 @@ def get_posts():
                 list.append({"post": post, "user": user})
             session.commit()
             return list
+    finally:
+        engine.dispose()
+
+def add_image(post_netid, post_img_url):
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            print(post_netid)
+            query = session.query(database.User).filter(
+                    database.User.user_id.ilike(post_netid))
+            row = query.one()
+            row._club_image_url = post_img_url
+            session.commit()
     finally:
         engine.dispose()
 

@@ -3,11 +3,16 @@
 import profile
 import posts
 import secrets
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, jsonify
 from sys import path
 import os
 import admin
 import upload
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import logging
+from cloudinary.utils import cloudinary_url
 
 # separation
 path.append('src')  # go to src directory to import
@@ -197,17 +202,17 @@ def render_form():
         # then send them to add image
         print(request)
         posts.make_posts(request.form.get('Post Title'),request.form.get('Post Description'))
-        return redirect(url_for('announcements'))
+        return redirect(url_for('base_upload'))
     return render_template("form.html")
 
-@app.route('/image', methods=['GET', 'POST'])
-def add_image():
-    netid = CASClient().Authenticate()
-    if request.method == 'POST':
-        upload.add_image(netid, request.form.get('File'))
-        return redirect(url_for('application'))
-    # netid = CASClient().Authenticate()
-    return render_template("image.html")
+# @app.route('/image', methods=['GET', 'POST'])
+# def add_image():
+#     netid = CASClient().Authenticate()
+#     if request.method == 'POST':
+#         # upload.add_image(netid, request.form.get('File'))
+#         return redirect(url_for('base_upload'))
+#     # netid = CASClient().Authenticate()
+#     return render_template("image.html")
 
 def validate_user(club_id):
     netid = CASClient().Authenticate()
@@ -224,6 +229,35 @@ def validate_user(club_id):
             return (netid, REQUEST)
         else:
             return (netid, INVALID)
+
+# WIP here about the uploading of images
+@app.route("/upload", methods=['POST'])
+def upload_file():
+    # netid = CASClient().Authenticate()
+    file_cloudinary_link = ""
+    app.logger.info('in upload route')
+
+    cloudinary.config(cloud_name = 'clubnet', api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET'))
+    upload_result = None
+    if request.method == 'POST':
+        file_to_upload = request.files['file']
+        app.logger.info('%s file_to_upload', file_to_upload)
+    if file_to_upload:
+        upload_result = cloudinary.uploader.upload(file_to_upload)
+        app.logger.info(upload_result)
+        file_cloudinary_link = upload_result['url']
+        if file_cloudinary_link != None:
+            # print(netid)
+            print(file_cloudinary_link)
+            print(jsonify(upload_result))
+            posts.add_image("yparikh", file_cloudinary_link)
+            # return redirect(url_for('announcements'))
+    return jsonify(upload_result)
+
+@app.route("/upload_page")
+def base_upload():
+    return render_template("image_upload.html")
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)

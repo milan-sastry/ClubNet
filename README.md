@@ -11,7 +11,13 @@ python --version
 
 RUN THIS FIRST
 export DB_URL=postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc
+<<<<<<< HEAD
 export CLOUDINARY_URL=cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@clubnet
+=======
+export CLOUDINARY_URL=cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@dyjgefpmu
+export API_KEY=375874577914178
+export API_SECRET=bAM3VvtO-xWQCB_TIdgZ--bhG5Y
+>>>>>>> 5fb0e1c (adding a bunch of image related behavior)
 
 requirements:
 Flask
