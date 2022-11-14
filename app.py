@@ -48,8 +48,7 @@ def application():
         return redirect(url_for('pending_request'))
     img = get_profile_pic(response[0])
     return render_template('home.html', CASValue=response[0], validation=response[1],
-    img1="https://upload.wikimedia.org/wikipedia/commons/d/d0/Princeton_seal.svg",
-    img2="https://www.princeton.edu/~clubsocc/img/team_main.jpeg", img=img)
+    img=img)
 
 
 @app.route("/pending_request")
