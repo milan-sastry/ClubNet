@@ -46,9 +46,8 @@ def application():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    img = get_profile_pic(response[0])
-    return render_template('home.html', CASValue=response[0], validation=response[1],
-    img=img)
+
+    return render_template('home.html', CASValue=response[0], validation=response[1])
 
 
 @app.route("/pending_request")
@@ -56,7 +55,7 @@ def pending_request():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
-    if response[1] == (VALIDATED or ADMIN):
+    if response[1] == VALIDATED:
         return redirect(url_for('application'))
     return render_template('pending_request.html', CASValue=response[0])
 
@@ -73,11 +72,10 @@ def invalid():
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
     netid = request.args.get('user_id', None)
-    name = request.form.get('name', None)
-    year = request.form.get('year', None)
-    print(netid, name, year)
+    name = request.args.get('name', None)
+    year = request.args.get('year', None)
     profile.create_profile(netid, name, year)
-    admin.create_request(netid, CLUB_SOCC, name, year)
+    admin.create_request(netid, CLUB_SOCC)
     return redirect(url_for('pending_request'))
 
 
@@ -88,21 +86,25 @@ def members():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    img = get_profile_pic(response[0])
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('members.html', members=members, img=img)
 
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
+    print('arrived')
     response = validate_user(CLUB_SOCC)
+
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
+    print("arrived here too")
     post_values = posts.get_posts()
-    img = get_profile_pic(response[0])
-    return render_template('announcements.html', posts=post_values, img=img)
+    return render_template('announcements.html', posts=post_values)
 
 
 @app.route('/profile')
@@ -114,8 +116,7 @@ def profiles():
         return redirect(url_for('pending_request'))
     net_id = request.args.get("net_id", None)
     user = profile.get_profile_from_id(net_id)
-    img = get_profile_pic(response[0])
-    return render_template('profile.html', user=user, img=img)
+    return render_template('profile.html', user=user)
 
 @app.route('/myprofile', methods=["GET", "POST"])
 def myProfile():
@@ -129,8 +130,7 @@ def myProfile():
     user = profile.get_profile_from_id(net_id)
     if request.method == 'POST':
         profile.edit_profile(net_id, request.form)
-    img = get_profile_pic(response[0])
-    return render_template('myprofile.html', user=user, img=img)
+    return render_template('myprofile.html', user=user)
 
 
 @app.route('/donations')
@@ -140,8 +140,7 @@ def donations():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    img = get_profile_pic(response[0])
-    return render_template('donations.html', img=img)
+    return render_template('donations.html')
 
 
 @app.route('/donations/completed')
@@ -151,8 +150,7 @@ def completed():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    img = get_profile_pic(response[0])
-    return render_template('donations', img=img)
+    return render_template('donations')
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -165,8 +163,7 @@ def admin_page():
     if response[1] == VALIDATED:
         return redirect(url_for("application"))
     pendingRequests = admin.get_requests()
-    img = get_profile_pic(response[0])
-    return render_template('admin.html', requests=pendingRequests, img=img)
+    return render_template('admin.html', requests=pendingRequests)
 
 
 @app.route('/admin/accept', methods=['GET'])
@@ -207,8 +204,8 @@ def render_form():
         # make the post
         # then send them to add image
         print(request)
-        posts.make_posts(request.form.get('Post Title'),request.form.get('Post Description'))
-        return redirect(url_for('base_upload'))
+        id = posts.make_posts(request.form.get('Post Title'),request.form.get('Post Description'))
+        return redirect(url_for('base_upload',post_id=id))
     return render_template("form.html")
 
 # @app.route('/image', methods=['GET', 'POST'])
@@ -222,6 +219,7 @@ def render_form():
 
 def validate_user(club_id):
     netid = CASClient().Authenticate()
+    print(netid)
     netid = netid[0:len(netid)-1]
     is_in_club = profile.validate(netid, club_id)
     if is_in_club:
@@ -241,6 +239,7 @@ def validate_user(club_id):
 def upload_file():
     # netid = CASClient().Authenticate()
     file_cloudinary_link = ""
+    post_id = request.args.get('post_id')
     app.logger.info('in upload route')
 
     cloudinary.config(cloud_name = 'clubnet', api_key=os.getenv('API_KEY'),
@@ -252,23 +251,21 @@ def upload_file():
     if file_to_upload:
         upload_result = cloudinary.uploader.upload(file_to_upload)
         app.logger.info(upload_result)
+        print(jsonify(upload_result))
         file_cloudinary_link = upload_result['url']
+        # print(file_cloudinary_link)
         if file_cloudinary_link != None:
             # print(netid)
-            print(file_cloudinary_link)
-            print(jsonify(upload_result))
-            posts.add_image("yparikh", file_cloudinary_link)
-            # return redirect(url_for('announcements'))
+            # print("POST ID IS COMING HERE:" + post_id)
+            # print(file_cloudinary_link)
+            posts.add_image(post_id, file_cloudinary_link)
+            return redirect(url_for('announcements'))
     return jsonify(upload_result)
 
 @app.route("/upload_page")
 def base_upload():
-    return render_template("image_upload.html")
-
-def get_profile_pic(net_id):
-    user = profile.get_profile_from_id(net_id)
-    img = user.profile_image_url
-    return img
+    post_id = request.args.get('post_id')
+    return render_template("image_upload.html", post_id=post_id)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)

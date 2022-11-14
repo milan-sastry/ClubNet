@@ -48,7 +48,7 @@
           body: formData,
         };
 
-        fetch("http://localhost:5555/upload", options)
+        fetch("/upload?post_id={{post_id}}", options)
           .then((response) => {
             return response.json();
           })
