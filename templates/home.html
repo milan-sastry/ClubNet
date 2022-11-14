@@ -22,8 +22,45 @@
         </div>
       </header>
 </div>
-    <h1>Men's Club Soccer</h1>
-    <h1>Your validation status is?, {{ validation }}</h1>
-    {% include 'footer.html' %}
+<style>
+  .flex-parent-1 {
+    display: flex;
+    justify-content:space-around;
+    align-items: left;
+  }
+  .flex-parent-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .box {
+    margin: 60px;
+    padding: 60px;
+  }
+</style>
+
+    <div class="flex-parent-1">
+      <h1>Princeton Men's Club Soccer</h1>
+      <img src={{img1}} class="img-fluid" alt="Responsive image" style="width:4%;">
+    </div>
+
+    <center>
+      <div class="flex-parent-2">
+        <div class="box">
+            <p style="font-size:30px"><strong>Süjx</strong></p>
+            <br>
+            <p style="font-size:20px">Undefeated since 1746.</p>
+        </div>
+      
+        <img src={{img2}} class="img-fluid" alt="Responsive image" style="width:30%;">
+      </div>
+
+    <div style="margin-left: 20px; margin-top: 10px;">
+      <h5> <a target = "_blank" href = https://www.princeton.edu/~clubsocc//> Learn More About Us!</a></h5>    
+  </div>
+  {% include 'footer.html' %}
+    </center>
+
 </body>
 </html>
