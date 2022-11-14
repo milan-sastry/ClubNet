@@ -85,7 +85,7 @@ def members():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('members.html', members=members, user_profile_pic=img)
+    return render_template('members.html', members=members, img=img)
 
 
 @app.route('/announcements', methods=['GET', 'POST'])

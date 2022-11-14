@@ -208,7 +208,7 @@ def create_profile(user_id, name, year):
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, year = year)
+            user = database.User(user_id = user_id, name = name, class_year = year)
             session.add(user)
             session.commit()
     finally:

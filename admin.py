@@ -92,9 +92,7 @@ def create_request(user_id, club_id):
                 print("request already exists")
                 return 
             else:
-                new_user = database.User(user_id = user_id)
                 new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id)
-                session.add(new_user)
                 session.add(new_request)
                 session.commit()
                 print("Request added")
