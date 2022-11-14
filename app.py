@@ -50,7 +50,7 @@ def pending_request():
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
         return redirect(url_for('application'))
-    
+
     return render_template('pending_request.html', CASValue=response[0])
 
 
@@ -86,8 +86,6 @@ def announcements():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    if request.method == 'POST':
-        posts.make_posts(request.form.get('Post Description'))
     post_values = posts.get_posts()
     return render_template('announcements.html', posts=post_values)
 
@@ -163,6 +161,12 @@ def admin_accept_page():
     admin.acceptRequest(user_id, club_id)
     return redirect(url_for('admin_page'))
 
+@app.route('/form', methods=['GET', 'POST'])
+def render_form():
+    if request.method == 'POST':
+        print(request)
+        # posts.make_posts(request.form.get('Post Description'))
+    return render_template("form.html")
 
 @app.route('/admin/deny', methods=['GET', 'POST'])
 def admin_deny_page():
@@ -189,5 +193,3 @@ def validate_user(club_id):
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
-
-

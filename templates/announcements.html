@@ -24,42 +24,40 @@
     </header>
   </div>
   <div class="row" id="Posts">
-    <div class="col-md-2">
-    <button type="button" class="btn btn-light" id="form">Form</button>
+    <div class="col-md-1">
+      <br>
+      <br>
+      <center>
+        <button type="button" class="btn btn-light" id="form">Submit an Announcement!</button>
+      </center>
+
     </div>
-    <div class="col-md-10">
+
+    <div class="col-md-11">
       {% for post in posts%}
       <center>
         <img src="{{club_image_url}}" class="img-fluid" alt="Responsive image" style="width:25%;">
         <div class="card" style="width: 90%;">
           <div class="card-body">
-            <h5 class="card-title">{{post["title"]}}</h5>
+            <h5 class="card-title">{{post.get_title()}}</h5>
           </div>
         </div>
-      </header>
-</div>
-{% for post in posts%}
-<center>
-  <img src="{{club_image_url}}" class="img-fluid" alt="Responsive image" style="width:25%;">
-  <div class="card" style="width: 90%;">
-    <div class="card-body">
-      <h5 class="card-title">{{post.get_title()}}</h5>
+        <div class="card" style="width: 90%;">
+          <div class="card-body">
+            <p class="card-text"> {{post.get_description()}}</p>
+          </div>
+        </div>
+      </center>
+      {% endfor %}
+
     </div>
   </div>
-<div class="card" style="width: 90%;">
-  <div class="card-body">
-    <p class="card-text"> {{post.get_description()}}</p>
-  </div>
-</div>
-</center>
-{% endfor %}
-<script>
-$(function(){
-    $('#form').click(function() {
-      $("#Posts").replaceWith(createnewpost.html);
-    });
-});
-</script>
+
+  <script>
+  $('#form').click(function() {
+      $("#Posts").load('form');
+  });
+  </script>
 
 </body>
 
