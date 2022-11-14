@@ -59,8 +59,7 @@ def pending_request():
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
         return redirect(url_for('application'))
-    img = get_profile_pic(response[0])
-    return render_template('pending_request.html', CASValue=response[0], img=img)
+    return render_template('pending_request.html', CASValue=response[0])
 
 
 @app.route("/invalid", methods=['GET'])
@@ -70,8 +69,7 @@ def invalid():
         return redirect(url_for('application'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    img = get_profile_pic(response[0])
-    return render_template('invalid.html', CASValue=response[0], img=img)
+    return render_template('invalid.html', CASValue=response[0])
 
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
