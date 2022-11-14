@@ -64,7 +64,7 @@ def invalid():
         return redirect(url_for('pending_request'))
     return render_template('invalid.html', CASValue=response[0])
 
-@app.route("/process_request", methods=['GET'])
+@app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
     netid = request.args.get('user_id', None)
     name = request.args.get('name', None)
