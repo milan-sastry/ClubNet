@@ -159,9 +159,8 @@ def get_profile_from_id(user_id):
             if len(query) > 0:
                 profile = query[0]
                 return Profile(profile)
-            # else:
-            #     # print("Wtfff", query)
-            session.commit()
+            else:
+                return None
     finally:
         engine.dispose()
 
@@ -205,6 +204,8 @@ def edit_profile(user_id, data):
         engine.dispose()
 
 def create_profile(user_id, name, year):
+    if get_profile_from_id(user_id) is None:
+        return
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
