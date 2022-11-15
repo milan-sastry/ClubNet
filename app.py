@@ -206,7 +206,7 @@ def render_form():
         # make the post
         # then send them to add image
         print(request)
-        id = posts.make_posts(request.form.get('Post Title'),request.form.get('Post Description'))
+        id = posts.make_request(request.form.get('Post Title'),request.form.get('Post Description'))
         return redirect(url_for('base_upload',post_id=id))
     return render_template("form.html")
 

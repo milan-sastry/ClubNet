@@ -43,6 +43,7 @@ class Posts(Base):
     creator_id = sqlalchemy.Column(sqlalchemy.String)
     title = sqlalchemy.Column(sqlalchemy.String)
     description = sqlalchemy.Column(sqlalchemy.String)
+    status = sqlalchemy.Column(sqlalchemy.Integer)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True))
 
 #-----------------------------------------------------------------------

@@ -2,6 +2,7 @@ import os
 import sqlalchemy.ext.declarative
 import sqlalchemy
 import database
+import profile
 from datetime import datetime
 from sqlalchemy import delete
 
@@ -126,6 +127,49 @@ def is_admin(user_id, club_id):
                 return False
     finally:
         engine.dispose()
+
+def make_admin(user_id, club_id, officer_position):
+    if not profile.validate(user_id, club_id):
+        print(f"user {user_id} is not in club {club_id}")
+        return
+    if is_admin(user_id, club_id):
+        print(f"user {user_id} is already admin for {club_id}")
+        return
+    new_admin = database.Admins(user_id = user_id, club_id = club_id, officer_position = officer_position)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            session.add(new_admin)
+            session.commit()
+    finally:
+        engine.dispose()
+
+def remove_admin(user_id, club_id):
+    if not is_admin(user_id, club_id):
+        print(f"user {user_id} is not admin for {club_id}")
+        return
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            stmt = delete(database.Admins).where((database.Admins.user_id == user_id)&(database.Admins.club_id == club_id))
+            session.execute(stmt)
+            session.commit()
+    finally:
+        engine.dispose()
+
+def remove_user(user_id, club_id):
+    if not profile.validate(user_id, club_id):
+        print(f"user {user_id} is not in club {club_id}")
+        return
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            stmt = delete(database.Users_Clubs).where((database.Users_Clubs.user_id == user_id)&(database.Users_Clubs.club_id == club_id))
+            session.execute(stmt)
+            session.commit()
+    finally:
+        engine.dispose()
+
 
 #-----------------------------------------------------------------------
 
