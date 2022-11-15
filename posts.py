@@ -48,8 +48,9 @@ def make_posts(post_title,post_description ):
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
                                 timestamp=datetime.now())
             session.add(post1)
-            # return post1.get_post_id()
             session.commit()
+            session.refresh(post1)
+            return post1.post_id
             print("added to database")
     finally:
         engine.dispose()
@@ -76,18 +77,20 @@ def get_posts():
     finally:
         engine.dispose()
 
-def add_image(post_netid, post_img_url):
+def add_image(post_id, post_img_url):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            print(post_netid)
-            query = session.query(database.User).filter(
-                    database.User.user_id.ilike(post_netid))
+            # print(post_netid)
+            print(post_id)
+            query = session.query(database.Posts).filter(
+                    database.Posts.post_id == post_id)
             row = query.one()
-            row._club_image_url = post_img_url
+            row.club_image_url = post_img_url
+            print(post_img_url)
             session.commit()
     finally:
         engine.dispose()
@@ -96,9 +99,8 @@ def add_image(post_netid, post_img_url):
 
 # For testing:
 def _test():
-    make_posts("yoooooo")
-    # print("made a post")
-    get_posts()
+    add_image(1, "https://res.cloudinary.com/clubnet/image/upload/v1668410349/gfcmsvzylqxuumuqpmhy.png")
+    print(get_posts())
 
 
 if __name__ == '__main__':

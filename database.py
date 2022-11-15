@@ -9,6 +9,7 @@ import sqlalchemy.ext.declarative
 import sqlalchemy
 import os
 from datetime import datetime
+os.environ['DB_URL']="postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanut.db.elephantsql.com/oxifvfuc"
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 #-----------------------------------------------------------------------
@@ -81,18 +82,19 @@ def init_database():
             user2 = User(user_id = "renteria",
                         name = "Emilio Cano",
                         email = "emiliocanor@princeton.edu",
-                        profile_image_url = "https://picsum.photos/500/500")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1667797176/renteria_profile_picture.jpg")
             session.add(user2)
             user3 = User(user_id = "yparikh",
                         name = "Yash Parikh",
                         email = "yparikh@princeton.edu",
-                        profile_image_url = "https://picsum.photos/500/500")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668444358/IMG_4394_hcpx3y.jpg")
+                        # profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
-            # user4 = User(user_id = "oguntola",
-            #             name = "Ayo Oguntola",
-            #             email = "oguntola@princeton.edu",
-            #             profile_image_url = "https://picsum.photos/500/500")
-            # session.add(user4)
+            user4 = User(user_id = "oguntola",
+                        name = "Ayo Oguntola",
+                        email = "oguntola@princeton.edu",
+                        profile_image_url = "https://picsum.photos/500/500")
+            session.add(user4)
 
             user_clubs1 = Users_Clubs(username = 'allenwu',
                                         club_id = CLUB_SOCC)
@@ -100,9 +102,9 @@ def init_database():
             user_clubs2 = Users_Clubs(username = 'yparikh',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs2)
-            # user_clubs3 = Users_Clubs(username = 'oguntola',
-            #                             club_id = CLUB_SOCC)
-            # session.add(user_clubs3)
+            user_clubs3 = Users_Clubs(username = 'oguntola',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs3)
             user_clubs4 = Users_Clubs(username = 'renteria',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs4)

@@ -70,7 +70,7 @@ class Profile:
 
     def get_user_id(self):
         return self.user_id
-        
+
     def get_name(self):
         return self.name
 
@@ -83,43 +83,43 @@ class Profile:
     def get_class_year(self):
         if self.class_year:
             return self.class_year
-        else: 
+        else:
             return ""
 
     def get_major(self):
         if self.major:
             return self.major
-        else: 
+        else:
             return ""
 
     def get_team_position(self):
         if self.team_position:
             return self.team_position
-        else: 
+        else:
             return ""
 
     def get_favorite_team(self):
         if self.favorite_team:
             return self.favorite_team
-        else: 
+        else:
             return ""
 
     def get_hometown(self):
         if self.hometown:
             return self.hometown
-        else: 
+        else:
             return ""
 
     def get_job_title(self):
         if self.job_title:
             return self.job_title
-        else: 
+        else:
             return ""
 
     def get_user_company(self):
         if self.user_company:
             return self.user_company
-        else: 
+        else:
             return ""
 
 # ---------------------------DELETE-------------------------------------
@@ -144,7 +144,7 @@ def validate(user_id, club_id):
                     session.commit()
                     return True
             session.commit()
-            
+
         return bool
     finally:
         engine.dispose()
@@ -191,8 +191,8 @@ def edit_profile(user_id, data):
             response = session.query(database.User).filter(database.User.user_id == user_id).update({
                 "class_year": data["class_year"],
                 "major": data["major"],
-                "team_position": data["team_position"], 
-                "favorite_team": data["favorite_team"], 
+                "team_position": data["team_position"],
+                "favorite_team": data["favorite_team"],
                 "hometown": data["hometown"],
                 "job_title": data["job_title"],
                 "user_company": data["user_company"]
