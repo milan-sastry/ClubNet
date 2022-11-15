@@ -7,26 +7,27 @@
     <link rel="stylesheet" href="static/styles/main.css">
 </head>
 <body>
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <div style="background-color: #f58025; margin-bottom: 20px;" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <header class="masthead mb-auto">
-            <div class="d-flex flex-row">
-                <div class="d-flex flex-row">
-                    <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;"/>
-                    <h3 style="margin-left: 10px;" class="masthead-brand">ClubNet</h3>
-                </div>
-                <div style="width: 100%;"  class="d-flex justify-content-end">
-                    <nav class="nav nav-masthead justify-content-center">
-                        <a class="nav-link" href="/home">Home</a>
-                        <a class="nav-link" href="/announcements">Announcements</a>
-                        <a class="nav-link active" href="/members">Members</a>
-                        <a class="nav-link" href="/donations">More</a>
-                        <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
-                            <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;"/>
-                        </div>
-                    </nav>
-                <div>
-            </div>
-          </header>
+          <div class="d-flex flex-row">
+              <div class="d-flex flex-row">
+                  <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
+                  <h3 style="margin-left: 10px;" class="masthead-brand">ClubNet</h3>
+              </div>
+              <div style="width: 100%;"  class="d-flex justify-content-end">
+                  <nav class="nav nav-masthead justify-content-center">
+                      <a class="nav-link" href="/home">Home</a>
+                      <a class="nav-link" href="/announcements">Announcements</a>
+                      <a class="nav-link active" href="/members">Members</a>
+                      <a class="nav-link" href="/donations">More</a>
+                      <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
+                          <img src={{img}}  style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;" >
+                      </div>
+                  </nav>
+              <div>
+          </div>
+        </header>
+      </div>
         <div class="page-container">
             <h2 class="page-title">Men's Club Soccer</h2>
             <p class="page-subtitle">List of members in Men's Club Soccer</p>
@@ -37,7 +38,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         {% for user in members %}
-                            <div class="">
+                            <div style="cursor: pointer;" class="">
                                 <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
                                     <!-- top user information -->
                                     <div class="d-flex flex-row align-items-center">
