@@ -77,8 +77,8 @@ def invalid():
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
     netid = request.args.get('user_id', None)
-    name = request.args.get('name', None)
-    year = request.args.get('year', None)
+    name = request.form.get('name', None)
+    year = request.form.get('year', None)
     profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC)
     return redirect(url_for('pending_request'))
