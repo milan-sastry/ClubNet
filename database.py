@@ -103,9 +103,9 @@ def init_database():
             user_clubs2 = Users_Clubs(username = 'yparikh',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs2)
-            # user_clubs3 = Users_Clubs(username = 'oguntola',
-            #                             club_id = CLUB_SOCC)
-            # session.add(user_clubs3)
+            user_clubs3 = Users_Clubs(username = 'oguntola',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs3)
             user_clubs4 = Users_Clubs(username = 'renteria',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs4)
