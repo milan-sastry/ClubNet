@@ -48,8 +48,11 @@ def application():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-
-    return render_template('home.html', CASValue=response[0], validation=response[1])
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
+    members = profile.get_profiles_from_club(CLUB_SOCC)
+    return render_template('home.html', CASValue=response[0], validation=response[1], img=img)
 
 
 @app.route("/pending_request")
@@ -106,7 +109,11 @@ def announcements():
         return redirect(url_for('pending_request'))
     print("arrived here too")
     post_values = posts.get_posts()
-    return render_template('announcements.html', posts=post_values)
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
+    members = profile.get_profiles_from_club(CLUB_SOCC)
+    return render_template('announcements.html', posts=post_values, img=img)
 
 
 @app.route('/profile')
@@ -118,7 +125,11 @@ def profiles():
         return redirect(url_for('pending_request'))
     net_id = request.args.get("net_id", None)
     user = profile.get_profile_from_id(net_id)
-    return render_template('profile.html', user=user)
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
+    members = profile.get_profiles_from_club(CLUB_SOCC)
+    return render_template('profile.html', user=user, img=img)
 
 @app.route('/myprofile', methods=["GET", "POST"])
 def myProfile():
@@ -130,9 +141,11 @@ def myProfile():
     net_id = CASClient().Authenticate()
     net_id = net_id[0:len(net_id)-1]
     user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
+    members = profile.get_profiles_from_club(CLUB_SOCC)
     if request.method == 'POST':
         profile.edit_profile(net_id, request.form)
-    return render_template('myprofile.html', user=user)
+    return render_template('myprofile.html', user=user, img=img)
 
 
 @app.route('/donations')
@@ -142,7 +155,11 @@ def donations():
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    return render_template('donations.html')
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
+    members = profile.get_profiles_from_club(CLUB_SOCC)
+    return render_template('donations.html', img=img)
 
 
 @app.route('/donations/completed')
