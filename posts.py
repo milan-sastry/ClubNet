@@ -34,7 +34,7 @@ class Post:
 
     def get_timestamp(self):
         return self._timestamp
-    
+
     def get_status(self):
         return self._status
 
@@ -52,7 +52,7 @@ def make_request(post_title, post_description):
                                 description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
                                 timestamp=datetime.now(),
-                                status = 0)
+                                status = 1)
             session.add(post1)
             session.commit()
             session.refresh(post1)
@@ -137,7 +137,7 @@ def approve_request(post_id):
             session.commit()
     finally:
         engine.dispose()
-    
+
 def reject_request(post_id):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
