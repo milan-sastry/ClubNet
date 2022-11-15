@@ -121,11 +121,7 @@ class Profile:
             return self.user_company
         else:
             return ""
-
-# ---------------------------DELETE-------------------------------------
-
-    def delete_user(self):
-        pass
+            
 # ---------------------------VALIDATE-----------------------------------
 
 def validate(user_id, club_id):
