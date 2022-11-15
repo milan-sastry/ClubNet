@@ -115,7 +115,7 @@ def get_requests():
                 # print(row)
                 post = Post(row)
                 user = profile.get_profile_from_id(post._creator_id)
-                list.append({"post": post, "user": user})
+                list.append(post)
             session.commit()
             return list
     finally:

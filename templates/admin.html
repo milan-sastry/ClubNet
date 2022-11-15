@@ -85,7 +85,11 @@
 
       <br> 
       <h3>Handle Post Requests</h3>
+      {% for post in posts%}
+        <p>{{post.get_title()}}</p>
+        <p>{{post.get_description()}}</p>
       <br> 
+      {% endfor %}
 
     {% include 'footer.html' %}
 </body>
