@@ -80,7 +80,7 @@ def process_request():
     name = request.form.get('name', None)
     year = request.form.get('year', None)
     profile.create_profile(netid, name, year)
-    admin.create_request(netid, CLUB_SOCC)
+    admin.create_request(netid, CLUB_SOCC, name, year)
     return redirect(url_for('pending_request'))
 
 
