@@ -30,8 +30,32 @@
       </header>
     </div>
       <br>
-      <h3>Manage Users</h3>
-      <br>
+      <h3 style="margin-bottom: 25px;">Manage Users</h3>
+      <div class="d-flex flex-row justify-content-around" style="margin-bottom: 25px;">
+        <div class="d-flex flex-column">
+          <h6>Add Admin: </h6>
+          <form class="d-flex flex-column">
+            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
+            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="officer position"></input>
+            <input class="btn btn-secondary" type="submit" value="add">
+          </form>
+        </div>
+        <div class="d-flex flex-column">
+          <h6>Remove Admin: </h6>
+          <form class="d-flex flex-column">
+            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
+            <input class="btn btn-secondary" type="submit" value="remove">
+          </form>
+        </div>
+        <div class="d-flex flex-column">
+          <h6>Remove User: </h6>
+          <form class="d-flex flex-column">
+            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
+            <input class="btn btn-secondary" type="submit" value="remove">
+          </form>
+        </div>
+      </div>
+
       <h3>Handle Join Requests</h3>
 
       <div class="container-fluid" id="results_table">

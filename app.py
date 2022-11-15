@@ -165,7 +165,8 @@ def admin_page():
     if response[1] == VALIDATED:
         return redirect(url_for("application"))
     pendingRequests = admin.get_requests()
-    return render_template('admin.html', requests=pendingRequests)
+    postRequests = posts.get_requests()
+    return render_template('admin.html', requests=pendingRequests, posts = postRequests)
 
 
 @app.route('/admin/accept', methods=['GET'])
@@ -186,7 +187,7 @@ def admin_accept_page():
     admin.approve_request(user_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
 
-@app.route('/admin/deny', methods=['GET', 'POST'])
+@app.route('/admin/deny', methods=['GET'])
 def admin_deny_page():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:

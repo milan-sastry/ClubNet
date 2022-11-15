@@ -113,21 +113,24 @@ def init_database():
                         title = "hello",
                         description = "world",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now()
+                        timestamp = datetime.now(),
+                        status = 0
                         )
             session.add(post1)
             post1 = Posts(creator_id = "oguntola",
                         title = "goat",
                         description = "is ayo",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now()
+                        timestamp = datetime.now(),
+                        status = 1
                         )
             session.add(post1)
             post1 = Posts(creator_id = "renteria",
                         title = "prolly",
                         description = "struggling",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now()
+                        timestamp = datetime.now(),
+                        status = 1
                         )
             session.add(post1)
             admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
