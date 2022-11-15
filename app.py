@@ -125,9 +125,9 @@ def profiles():
         return redirect(url_for('pending_request'))
     net_id = request.args.get("net_id", None)
     user = profile.get_profile_from_id(net_id)
-    net_id = response[0]
-    user = profile.get_profile_from_id(net_id)
-    img = user.profile_image_url
+    cover_net_id = response[0]
+    cover_user = profile.get_profile_from_id(cover_net_id)
+    img = cover_user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('profile.html', user=user, img=img)
 
