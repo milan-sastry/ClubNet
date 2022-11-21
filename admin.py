@@ -6,6 +6,28 @@ import profile
 from datetime import datetime
 from sqlalchemy import delete
 
+class Administrator:
+    def __init__(self, row):
+        self.user_id = row.user_id
+        self.club_id = row.club_id
+        self.officer_position = row.officer_position
+        self.name = row.name
+        self.email = row.email
+    
+    def get_user_id(self):
+        return self.user_id
+
+    def get_club_id(self):
+        return self.club_id
+
+    def get_officer_position(self):
+        return self.officer_position
+
+    def get_name(self):
+        return self.name
+
+    def get_email(self):
+        return self.email
 
 class Request:
     def __init__(self, row):
@@ -170,14 +192,31 @@ def remove_user(user_id, club_id):
     finally:
         engine.dispose()
 
+def get_admins(club_id):
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            query = session.query(database.Admins.user_id, database.User.name, database.User.email, database.Admins.officer_position, database.Admins.club_id).filter(database.Admins.user_id == database.User.user_id)
+            print(query)
+            table = query.all()
+            list = []
+            for row in table:
+                print(row)
+                admin = Administrator(row)
+                list.append(admin)
+            session.commit()
+            return list
+    finally:
+        engine.dispose()
+
 
 #-----------------------------------------------------------------------
 
 # For testing:
 def _test():
     print(get_requests())
-    approve_request('yparikh',1)
     print(get_requests())
+    print(get_admins(1))
 
 
 if __name__ == '__main__':

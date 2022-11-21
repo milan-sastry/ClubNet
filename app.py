@@ -62,7 +62,10 @@ def pending_request():
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
         return redirect(url_for('application'))
-    return render_template('pending_request.html', CASValue=response[0])
+    
+    admins = admin.get_admins(CLUB_SOCC)
+    print(admins)
+    return render_template('pending_request.html', CASValue=response[0], admins = admins)
 
 
 @app.route("/invalid", methods=['GET'])
