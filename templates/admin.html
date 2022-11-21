@@ -34,22 +34,22 @@
       <div class="d-flex flex-row justify-content-around" style="margin-bottom: 25px;">
         <div class="d-flex flex-column">
           <h6>Add Admin: </h6>
-          <form class="d-flex flex-column">
+          <form action="admin/make_admin" method = "POST" class="d-flex flex-column">
             <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
-            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="officer position"></input>
+            <input style="margin-bottom: 10px;" class="text" name="off_pos" placeholder="officer position"></input>
             <input class="btn btn-secondary" type="submit" value="add">
           </form>
         </div>
         <div class="d-flex flex-column">
           <h6>Remove Admin: </h6>
-          <form class="d-flex flex-column">
+          <form action="admin/remove_admin" method = "POST" class="d-flex flex-column">
             <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
             <input class="btn btn-secondary" type="submit" value="remove">
           </form>
         </div>
         <div class="d-flex flex-column">
           <h6>Remove User: </h6>
-          <form class="d-flex flex-column">
+          <form action="admin/remove_user" method = "POST" class="d-flex flex-column">
             <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
             <input class="btn btn-secondary" type="submit" value="remove">
           </form>

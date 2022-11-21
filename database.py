@@ -134,8 +134,9 @@ def init_database():
                         )
             session.add(post1)
             admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
-            admin2 = Admins(user_id = "yparikh", club_id = CLUB_SOCC, officer_position = "vice president")
             session.add(admin1)
+            admin2 = Admins(user_id = "yparikh", club_id = CLUB_SOCC, officer_position = "vice president")
+            session.add(admin2)
             req1 = Requests(user_id = "tzypman",
                          request_timestamp = datetime.now(),
                          name = "Toby Zypman",

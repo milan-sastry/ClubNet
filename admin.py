@@ -183,10 +183,11 @@ def remove_user(user_id, club_id):
     if not profile.validate(user_id, club_id):
         print(f"user {user_id} is not in club {club_id}")
         return
+    remove_admin(user_id, club_id)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            stmt = delete(database.Users_Clubs).where((database.Users_Clubs.user_id == user_id)&(database.Users_Clubs.club_id == club_id))
+            stmt = delete(database.Users_Clubs).where((database.Users_Clubs.username == user_id)&(database.Users_Clubs.club_id == club_id))
             session.execute(stmt)
             session.commit()
     finally:
@@ -215,6 +216,7 @@ def get_admins(club_id):
 # For testing:
 def _test():
     print(get_requests())
+    approve_request('yparikh',1)
     print(get_requests())
     print(get_admins(1))
 

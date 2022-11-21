@@ -62,6 +62,8 @@ def pending_request():
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
         return redirect(url_for('application'))
+    if response[1] == ADMIN:
+        return redirect(url_for('application'))
     
     admins = admin.get_admins(CLUB_SOCC)
     print(admins)
@@ -230,6 +232,47 @@ def render_form():
         id = posts.make_request(request.form.get('Post Title'),request.form.get('Post Description'))
         return redirect(url_for('base_upload',post_id=id))
     return render_template("form.html")
+
+@app.route('/admin/remove_user', methods=["POST"])
+def remove_user():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    net_id = request.form.get("user_id", None)
+    admin.remove_user(net_id, CLUB_SOCC)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/remove_admin', methods=["POST"])
+def remove_admin():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    net_id = request.form.get("user_id", None)
+    admin.remove_admin(net_id, CLUB_SOCC)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/make_admin', methods=["POST"])
+def make_admin():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    net_id = request.form.get("user_id", None)
+    officer_position = request.form.get("off_pos", None)
+    admin.make_admin(net_id, CLUB_SOCC, officer_position)
+    return redirect(url_for('admin_page'))
+
 
 # @app.route('/image', methods=['GET', 'POST'])
 # def add_image():
