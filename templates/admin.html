@@ -85,11 +85,32 @@
 
       <br>
       <h3>Handle Post Requests</h3>
-      {% for post in posts%}
-        <p>{{post.get_title()}}</p>
-        <p>{{post.get_description()}}</p>
-      <br>
+      <div class="container-fluid">
+        <table class="table table-striped">
+          <tr>
+            <th>Post Creator</th>
+            <th>Post Title</th>
+            <th>Post Description</th>
+            <th>Post Image</th>
+            <th>Accept?</th>
+            <th>Reject?</th>
+          </tr>
+          {% for req in posts%}
+          <tr>
+            <th>{{req.get_creator_id()}}</th>
+            <th>{{req.get_title()}}</th>
+            <th>{{req.get_description()}}</th>
+            <th>{{req.get_image_url()}}</th>
+            <th>
+                <a href="/admin/accept_post?post_id={{req.get_post_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
+            </th>
+            <th>
+                <a href="/admin/deny_post?post_id={{req.get_post_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
+            </th>
+          </tr>
       {% endfor %}
+          </table>
+        </div>
 
     {% include 'footer.html' %}
 </body>

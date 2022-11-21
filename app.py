@@ -273,6 +273,32 @@ def make_admin():
     admin.make_admin(net_id, CLUB_SOCC, officer_position)
     return redirect(url_for('admin_page'))
 
+@app.route('/admin/accept_post', methods=["GET"])
+def accept_post():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    post_id = request.args.get("post_id", None)
+    posts.approve_request(post_id)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/deny_post', methods=["GET"])
+def deny_post():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    post_id = request.args.get("post_id", None)
+    posts.reject_request(post_id)
+    return redirect(url_for('admin_page'))
+
 
 # @app.route('/image', methods=['GET', 'POST'])
 # def add_image():

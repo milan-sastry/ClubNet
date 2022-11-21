@@ -52,7 +52,7 @@ def make_request(post_title, post_description):
                                 description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
                                 timestamp=datetime.now(),
-                                status = 1)
+                                status = 0)
             session.add(post1)
             session.commit()
             session.refresh(post1)
@@ -146,6 +146,8 @@ def reject_request(post_id):
 
 def delete_post(post_id):
     DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
