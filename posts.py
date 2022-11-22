@@ -34,7 +34,7 @@ class Post:
 
     def get_timestamp(self):
         return self._timestamp
-    
+
     def get_status(self):
         return self._status
 
@@ -137,7 +137,7 @@ def approve_request(post_id):
             session.commit()
     finally:
         engine.dispose()
-    
+
 def reject_request(post_id):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
@@ -146,6 +146,8 @@ def reject_request(post_id):
 
 def delete_post(post_id):
     DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:

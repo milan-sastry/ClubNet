@@ -62,7 +62,12 @@ def pending_request():
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
         return redirect(url_for('application'))
-    return render_template('pending_request.html', CASValue=response[0])
+    if response[1] == ADMIN:
+        return redirect(url_for('application'))
+    
+    admins = admin.get_admins(CLUB_SOCC)
+    print(admins)
+    return render_template('pending_request.html', CASValue=response[0], admins = admins)
 
 
 @app.route("/invalid", methods=['GET'])
@@ -125,9 +130,9 @@ def profiles():
         return redirect(url_for('pending_request'))
     net_id = request.args.get("net_id", None)
     user = profile.get_profile_from_id(net_id)
-    my_net_id = response[0]
-    my_user = profile.get_profile_from_id(my_net_id)
-    img = my_user.profile_image_url
+    cover_net_id = response[0]
+    cover_user = profile.get_profile_from_id(cover_net_id)
+    img = cover_user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('profile.html', user=user, img=img)
 
@@ -227,6 +232,73 @@ def render_form():
         id = posts.make_request(request.form.get('Post Title'),request.form.get('Post Description'))
         return redirect(url_for('base_upload',post_id=id))
     return render_template("form.html")
+
+@app.route('/admin/remove_user', methods=["POST"])
+def remove_user():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    net_id = request.form.get("user_id", None)
+    admin.remove_user(net_id, CLUB_SOCC)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/remove_admin', methods=["POST"])
+def remove_admin():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    net_id = request.form.get("user_id", None)
+    admin.remove_admin(net_id, CLUB_SOCC)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/make_admin', methods=["POST"])
+def make_admin():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    net_id = request.form.get("user_id", None)
+    officer_position = request.form.get("off_pos", None)
+    admin.make_admin(net_id, CLUB_SOCC, officer_position)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/accept_post', methods=["GET"])
+def accept_post():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    post_id = request.args.get("post_id", None)
+    posts.approve_request(post_id)
+    return redirect(url_for('admin_page'))
+
+@app.route('/admin/deny_post', methods=["GET"])
+def deny_post():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+    if response[1] == VALIDATED:
+        return redirect(url_for("application"))
+    post_id = request.args.get("post_id", None)
+    posts.reject_request(post_id)
+    return redirect(url_for('admin_page'))
+
 
 # @app.route('/image', methods=['GET', 'POST'])
 # def add_image():

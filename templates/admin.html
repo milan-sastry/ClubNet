@@ -12,7 +12,7 @@
       <header class="masthead mb-auto">
         <div class="d-flex flex-row">
             <div class="d-flex flex-row">
-                <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
+                <img src=https://res.cloudinary.com/clubnet/image/upload/v1668493806/ClubNet_logo_white_a7byvg.png style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
                 <h3 style="margin-left: 10px;" class="masthead-brand">ClubNet</h3>
             </div>
             <div style="width: 100%;"  class="d-flex justify-content-end">
@@ -34,22 +34,22 @@
       <div class="d-flex flex-row justify-content-around" style="margin-bottom: 25px;">
         <div class="d-flex flex-column">
           <h6>Add Admin: </h6>
-          <form class="d-flex flex-column">
+          <form action="admin/make_admin" method = "POST" class="d-flex flex-column">
             <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
-            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="officer position"></input>
+            <input style="margin-bottom: 10px;" class="text" name="off_pos" placeholder="officer position"></input>
             <input class="btn btn-secondary" type="submit" value="add">
           </form>
         </div>
         <div class="d-flex flex-column">
           <h6>Remove Admin: </h6>
-          <form class="d-flex flex-column">
+          <form action="admin/remove_admin" method = "POST" class="d-flex flex-column">
             <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
             <input class="btn btn-secondary" type="submit" value="remove">
           </form>
         </div>
         <div class="d-flex flex-column">
           <h6>Remove User: </h6>
-          <form class="d-flex flex-column">
+          <form action="admin/remove_user" method = "POST" class="d-flex flex-column">
             <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
             <input class="btn btn-secondary" type="submit" value="remove">
           </form>
@@ -83,13 +83,34 @@
           </table>
         </div>
 
-      <br> 
+      <br>
       <h3>Handle Post Requests</h3>
-      {% for post in posts%}
-        <p>{{post.get_title()}}</p>
-        <p>{{post.get_description()}}</p>
-      <br> 
+      <div class="container-fluid">
+        <table class="table table-striped">
+          <tr>
+            <th>Post Creator</th>
+            <th>Post Title</th>
+            <th>Post Description</th>
+            <th>Post Image</th>
+            <th>Accept?</th>
+            <th>Reject?</th>
+          </tr>
+          {% for req in posts%}
+          <tr>
+            <th>{{req.get_creator_id()}}</th>
+            <th>{{req.get_title()}}</th>
+            <th>{{req.get_description()}}</th>
+            <th>{{req.get_image_url()}}</th>
+            <th>
+                <a href="/admin/accept_post?post_id={{req.get_post_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
+            </th>
+            <th>
+                <a href="/admin/deny_post?post_id={{req.get_post_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
+            </th>
+          </tr>
       {% endfor %}
+          </table>
+        </div>
 
     {% include 'footer.html' %}
 </body>
