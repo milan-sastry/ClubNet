@@ -20,7 +20,6 @@ from CASClient import CASClient
 
 
 CLUB_SOCC = 1
-
 INVALID = 0
 REQUEST = 1
 VALIDATED = 2
@@ -34,6 +33,7 @@ os.environ['DB_URL']="postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanu
 os.environ['CLOUDINARY_URL']="cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@clubnet"
 os.environ['API_KEY']="375874577914178"
 os.environ['API_SECRET']="bAM3VvtO-xWQCB_TIdgZ--bhG5Y"
+
 @app.route('/')
 def hello():
     return render_template('landing.html')
@@ -41,8 +41,6 @@ def hello():
 
 @app.route('/home')
 def application():
-    print(os.getenv('DB_URL'))
-
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
@@ -64,7 +62,7 @@ def pending_request():
         return redirect(url_for('application'))
     if response[1] == ADMIN:
         return redirect(url_for('application'))
-    
+
     admins = admin.get_admins(CLUB_SOCC)
     print(admins)
     return render_template('pending_request.html', CASValue=response[0], admins = admins)
@@ -84,6 +82,8 @@ def process_request():
     netid = request.args.get('user_id', None)
     name = request.form.get('name', None)
     year = request.form.get('year', None)
+    if name == '' or year == '':
+        flash('please enter a valid name and year')
     profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC, name, year)
     return redirect(url_for('pending_request'))
