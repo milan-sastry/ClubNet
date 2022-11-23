@@ -61,6 +61,14 @@
               <h5 class="card-title">{{post.post.get_title()}}</h5>
               <p class="card-text"> {{post.post.get_description()}}</p>
             </div>
+            <div>
+              <span>Likes:</span>
+              <span>{{post.post.get_likes()}}</span>
+              <form action="/announcements/like">
+                <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+                <button type="submit">Like this post</button>
+              </form>
+            </div>
           </div>
         </div>
       {% endfor %}

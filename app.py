@@ -120,6 +120,18 @@ def announcements():
     members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('announcements.html', posts=post_values, img=img, validation=response[1])
 
+@app.route('/announcements/like', methods=['GET'])
+def like():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    post_id = request.args.get("post_id", None)
+    posts.like(post_id, response[0])
+    return redirect(url_for('announcements'))
+
 
 @app.route('/profile')
 def profiles():

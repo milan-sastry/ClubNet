@@ -16,6 +16,7 @@ class Post:
         self._description = db_row.description
         self._timestamp = db_row.timestamp
         self._status = db_row.status
+        self._likes = db_row.likes
 
     def get_post_id(self):
         return self._post_id
@@ -37,6 +38,9 @@ class Post:
 
     def get_status(self):
         return self._status
+    
+    def get_likes(self):
+        return self._likes
 
 #-----------------------------------------------------------------------
 
@@ -52,7 +56,8 @@ def make_request(post_title, post_description):
                                 description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
                                 timestamp=datetime.now(),
-                                status = 0)
+                                status = 0,
+                                likes = 0)
             session.add(post1)
             session.commit()
             session.refresh(post1)
@@ -160,6 +165,22 @@ def delete_post(post_id):
     finally:
         engine.dispose()
 
+def like(post_id, user_id):
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post_id and database.Post_Likes.user_id == user_id).all()
+            if len(response) == 0:
+                session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
+                    "likes": database.Posts.likes + 1,
+                })
+            session.commit()
+            return True
+    finally:
+        engine.dispose()
 
 # -----------------------------------------------------------------------
 

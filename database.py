@@ -45,8 +45,16 @@ class Posts(Base):
     description = sqlalchemy.Column(sqlalchemy.String)
     status = sqlalchemy.Column(sqlalchemy.Integer)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True))
+    likes = sqlalchemy.Column(sqlalchemy.Integer)
 
 #-----------------------------------------------------------------------
+class Post_Likes(Base):
+    __tablename__ = 'likes'
+    post_id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement = True, primary_key = True)
+    user_id = sqlalchemy.Column(sqlalchemy.String)
+
+#-----------------------------------------------------------------------
+
 class Requests(Base):
     __tablename__ = 'requests'
     request_timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=False), primary_key = True)
@@ -114,7 +122,8 @@ def init_database():
                         description = "world",
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.now(),
-                        status = 0
+                        status = 0,
+                        likes = 0
                         )
             session.add(post1)
             post1 = Posts(creator_id = "oguntola",
@@ -122,7 +131,8 @@ def init_database():
                         description = "is ayo",
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.now(),
-                        status = 1
+                        status = 1,
+                        likes = 0
                         )
             session.add(post1)
             post1 = Posts(creator_id = "renteria",
@@ -130,7 +140,8 @@ def init_database():
                         description = "struggling",
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.now(),
-                        status = 1
+                        status = 1,
+                        likes = 0
                         )
             session.add(post1)
             admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
