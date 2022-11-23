@@ -1,6 +1,6 @@
 <!-- TO DO LIST, SET CUSTOM COLORS -->
 <!DOCTYPE html>
-<html lang="en">
+<html style="height: 100%" lang="en">
 <head>
     <!-- Bootstrap core CSS -->
     <title>ClubNet</title>
@@ -10,23 +10,25 @@
 
 
 </head>
-<body>
-  <center>
-    <h1>You're invalidated</h1>
-  <br>
-   <a style="margin-bottom: 40px" href="/home" class="btn btn-lg btn-secondary fw-bold border-orange bg-orange">Try Again</a>
-    <br>
-    <h2>OR ... </h2>
-    <br>
+<body style="height: 100%">
+  <div style="height: 100%;" class="d-flex align-items-center justify-content-center">
+    <div style="background-color: lightgray; padding: 35px; border-radius: 15px; margin-top: 0px;" class="d-flex flex-column align-items-center justify-content-center">
+      <h1>You're invalidated</h1>
+      <br>
+      <a style="margin-bottom: 40px" href="/home" class="btn btn-lg btn-secondary fw-bold border-orange bg-orange">Try Again</a>
+      <br>
+      <h2>OR ... </h2>
+      <br>
 
-   <form method="POST" action="/process_request?user_id={{CASValue}}">
-    Enter your Name and Last Name: <input style="margin-bottom: 10px;" class="text" name="name"></input>
-    <br>
-    Enter your Class Year: <input style="margin-bottom: 10px;" class="text" name="year"></input>
-    <br>
-    <input class="btn btn-lg btn-secondary fw-bold border-orange bg-orange" type="submit" value="Request to be Approved">
-   </form>
-  <center>
-    {% include 'footer.html' %}
+      <form class="d-flex flex-column align-items-center justify-content-center" method="POST" action="/process_request?user_id={{CASValue}}">
+        Enter your Name and Last Name: <input style="margin-bottom: 10px;" class="text" name="name">
+        <br>
+        Enter your Class Year: <input style="margin-bottom: 10px;" class="text" name="year">
+        <br>
+        <input class="btn btn-lg btn-primary fw-bold border-orange bg-orange" type="submit" value="Request to be Approved">
+      </form>
+    </div>
+  </div>
+    <!-- {% include 'footer.html' %} -->
 </body>
 </html>
