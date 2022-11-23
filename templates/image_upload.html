@@ -20,6 +20,9 @@
           </div>
           <div style="width: 100%;"  class="d-flex justify-content-end">
               <nav class="nav nav-masthead justify-content-center">
+                  {% if validation == 3 %}
+                    <a class="nav-link" href="/admin">Admin</a>
+                  {% endif %}
                   <a class="nav-link" href="/home">Home</a>
                   <a class="nav-link" href="/announcements">Announcements</a>
                   <a class="nav-link" href="/members">Members</a>

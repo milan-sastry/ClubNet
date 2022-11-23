@@ -184,8 +184,20 @@ def edit_profile(user_id, data):
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            response = session.query(database.User).filter(database.User.user_id == user_id).update({
-                "class_year": data["class_year"],
+            if data["class_year"] != "":
+                response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                    "email": data["email"],
+                    "class_year": data["class_year"],
+                    "major": data["major"],
+                    "team_position": data["team_position"],
+                    "favorite_team": data["favorite_team"],
+                    "hometown": data["hometown"],
+                    "job_title": data["job_title"],
+                    "user_company": data["user_company"]
+                })
+            else:
+                response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                "email": data["email"],
                 "major": data["major"],
                 "team_position": data["team_position"],
                 "favorite_team": data["favorite_team"],
