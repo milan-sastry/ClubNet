@@ -65,7 +65,7 @@ def pending_request():
 
     admins = admin.get_admins(CLUB_SOCC)
     print(admins)
-    return render_template('pending_request.html', CASValue=response[0], admins = admins)
+    return render_template('pending_request.html', CASValue=response[0],validation=response[1], admins = admins)
 
 
 @app.route("/invalid", methods=['GET'])
@@ -75,7 +75,7 @@ def invalid():
         return redirect(url_for('home'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    return render_template('invalid.html', CASValue=response[0])
+    return render_template('invalid.html', CASValue=response[0],validation=response[1])
 
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
@@ -165,16 +165,6 @@ def donations():
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
     return render_template('donations.html', img=img)
-
-
-@app.route('/donations/completed')
-def completed():
-    response = validate_user(CLUB_SOCC)
-    if response[1] == INVALID:
-        return redirect(url_for('invalid'))
-    if response[1] == REQUEST:
-        return redirect(url_for('pending_request'))
-    return render_template('donations')
 
 
 @app.route('/admin', methods=['GET', 'POST'])
