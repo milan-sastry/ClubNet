@@ -33,6 +33,7 @@
       </header>
     </div>
     <!--  -->
+
     <div class="d-flex flex-column">
       <!-- Header -->
       <div style="margin-top: 25px;">
@@ -47,16 +48,16 @@
           <tr>
             <th style="width: 250px;">Name</th>
             <th>Role(s)</th>
-            <th style="width: 400px;">Actions</th>
+            <th style="width: 250px;">Actions</th>
           </tr>
           {% for user in members %}
           <tr>
             <td>
-              <div class="d-flex flex-row">
+              <div style="cursor: pointer" onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="d-flex flex-row align-items-center">
                 <img style="width: 50px; height: 50px; border-radius: 15px; object-fit: cover;" src={{user.get_profile_image_url()}}>
-                <div style="margin-left: 5px" class="d-flex flex-column justify-content-center">
-                  <b>{{user.get_name()}}</b>
-                  <p style="display: inline-block;">{{user.get_user_id()}}</p>
+                <div style="margin-left: 5px;" class="d-flex flex-column justify-content-center">
+                  <b class="d-flex align-items-center">{{user.get_name()}}</b>
+                  <span style="display: inline;">{{user.get_user_id()}}</span>
                 </div>
               </div>
             </td>
@@ -73,10 +74,39 @@
               </div>
             </td>
             <td>
-              <div>
-                <!-- <button class="btn btn-primary">Make Admin</button>
-                <button class="btn btn-danger">Remove Admin</button>
-                <button class="btn btn-danger">Remove User</button> -->
+              <div class="d-flex flex-column">
+                {% if user.isAdmin %}
+                  <!-- remove user button -->
+                  <form action="admin/remove_user" method = "POST" class="d-flex flex-column">
+                    <input type="hidden" value="{{user.get_user_id()}}" style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
+                    <button style="cursor: hover; width: 200px; height: 30px; background-color: rgb(255, 73, 73); border-radius: 5px; margin-top: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                      <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png">
+                      <span style="margin-left: 5px;">Remove User</span>
+                    </button>
+                  </form>
+                  <!-- remove admin button -->
+                  <form action="admin/remove_admin" method = "POST" class="d-flex flex-column">
+                    <input type="hidden" value="{{user.get_user_id()}}" class="text" name="user_id" placeholder="netid">
+                    <button style="cursor: hover; width: 200px; height: 30px; background-color: orange; border-radius: 5px; margin-top: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                      <img style="width: 20px; height: 20px; object-fit: contain;" src="https://cdn-icons-png.flaticon.com/512/61/61182.png">
+                      <span style="margin-left: 5px;">Remove Admin Role</span>
+                    </button>
+                  </form>
+                {% else %}
+                  <!-- make user an admin button -->
+                  <button onclick="make_admin(name)" name="{{user.get_user_id()}}" style="cursor: hover; width: 200px; height: 30px; background-color: rgb(36, 200, 36); border-radius: 5px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                    <img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.veryicon.com/png/o/miscellaneous/yuanql/icon-admin.png">
+                    <span style="margin-left: 5px;">Make Admin</span>
+                  </button>
+                  <!-- remove user button -->
+                  <form action="admin/remove_user" method = "POST" class="d-flex flex-column">
+                    <input type="hidden" value="{{user.get_user_id()}}" style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
+                    <button style="cursor: hover; width: 200px; height: 30px; background-color: rgb(255, 73, 73); border-radius: 5px; margin-top: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                      <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png">
+                      <span style="margin-left: 5px;">Remove User</span>
+                    </button>
+                  </form>
+                {% endif %}
               </div>
             </td>
             
@@ -84,60 +114,72 @@
       {% endfor %}
           </table>
       </div>
-    </div>
-    
-
-    <!--  -->
-      <br>
-      
-      <h3 class="page-title" style="margin-bottom: 25px;">Manage Users</h3>
-      <div class="d-flex flex-row justify-content-around" style="margin-bottom: 25px;">
-        <div class="d-flex flex-column">
-          <h6>Add Admin: </h6>
-          <form action="admin/make_admin" method = "POST" class="d-flex flex-column">
-            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
-            <input style="margin-bottom: 10px;" class="text" name="off_pos" placeholder="officer position"></input>
-            <input class="btn btn-secondary" type="submit" value="add">
-          </form>
-        </div>
-        <div class="d-flex flex-column">
-          <h6>Remove Admin: </h6>
-          <form action="admin/remove_admin" method = "POST" class="d-flex flex-column">
-            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
-            <input class="btn btn-secondary" type="submit" value="remove">
-          </form>
-        </div>
-        <div class="d-flex flex-column">
-          <h6>Remove User: </h6>
-          <form action="admin/remove_user" method = "POST" class="d-flex flex-column">
-            <input style="margin-bottom: 10px;" class="text" name="user_id" placeholder="netid"></input>
-            <input class="btn btn-secondary" type="submit" value="remove">
-          </form>
+      <!-- Modal -->
+      <script>
+        const make_admin = user => {
+          let modal = document.getElementById("popup")
+          let container = document.getElementById("popup-container")
+          let ok = document.getElementById("ok")
+          let cancel = document.getElementById("cancel")
+          let netid = document.getElementById("netid")
+          let input = document.getElementById("input")
+          window.onclick = e => {
+            if (e.target == container) {
+              modal.style.display = "none";
+            }
+          }
+          cancel.onclick = () => {
+            modal.style.display = "none";
+          }
+          modal.style.display = "block";
+          netid.value = user;
+        }
+      </script>
+      <div id="popup" style="z-index: 1;" class="modal">
+        <div id="popup-container" style="width: 100%; height: 100%" class="d-flex align-items-center justify-content-center">
+          <div style="background-color: white; padding: 20px; border-radius: 10px" class="d-flex flex-column">
+            <b>Enter the admin's officer position</b>
+            <form action="admin/make_admin" method = "POST">
+              <input type="hidden" class="text" id="netid" name="user_id" placeholder="netid"></input>
+              <input style="width: 100%;" id="input" name="off_pos" placeholder="Officer Position">
+              <div style="margin-top: 10px;" class="d-flex justify-content-around">
+                <button type="submit" id="ok" style="width: 100px;" class="btn btn-primary">OK</button>
+                <button id="cancel" style="width: 100px;" class="btn btn-danger">Cancel</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
+    </div>
 
+    <!--  -->
       <h3 class="page-title">Handle Join Requests</h3>
 
       <div class="container-fluid" id="results_table">
         <table class="table table-striped">
           <tr>
-            <th>User NetID</th>
-            <th>Name</th>
+            <th>User</th>
             <th>Class Year</th>
-            <th>Accept?</th>
-            <th>Reject?</th>
+            <th>Timestamp</th>
+            <th>Action</th>
           </tr>
           {% for req in requests%}
           <tr>
-            <th>{{req.get_user_id()}}</th>
-            <th>{{req.get_name()}}</th>
-            <th>{{req.get_year()}}</th>
-            <th>
-                <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
-            </th>
-            <th>
-                <a href="/admin/deny?user_id={{req.get_user_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
-            </th>
+            <td>
+              <div class="d-flex flex-row align-items-center">
+                <img style="width: 50px; height: 50px; border-radius: 15px; object-fit: cover;" src="https://freesvg.org/img/abstract-user-flat-4.png">
+                <div style="margin-left: 5px;" class="d-flex flex-column justify-content-center">
+                  <b class="d-flex align-items-center">{{req.get_name()}}</b>
+                  <span style="display: inline;">{{req.get_user_id()}}</span>
+                </div>
+              </div>
+            </td>
+            <td>{{req.get_year()}}</td>
+            <td>{{req.get_request_timestamp()}}</td>
+            <td>
+              <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
+              <a href="/admin/deny?user_id={{req.get_user_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
+            </td>
           </tr>
       {% endfor %}
           </table>
