@@ -174,6 +174,11 @@ def get_profiles_from_club(club_id):
                 if len(profile) > 0:
                     profile = Profile(session.query(database.User).filter(
                         database.User.user_id == user.username).all()[0])
+                    admin_query = session.query(database.Admins).filter(
+                        database.Admins.user_id == profile.user_id
+                    ).all()
+                    if len(admin_query) > 0:
+                        profile.isAdmin = True
                     profiles.append(profile)
             session.commit()
             return profiles

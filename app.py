@@ -102,7 +102,7 @@ def members():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('members.html', members=members, img=img)
+    return render_template('members.html', members=members, img=img, validation=response[1])
 
 
 @app.route('/announcements', methods=['GET', 'POST'])
@@ -134,7 +134,7 @@ def profiles():
     cover_user = profile.get_profile_from_id(cover_net_id)
     img = cover_user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('profile.html', user=user, img=img)
+    return render_template('profile.html', user=user, img=img, validation=response[1])
 
 @app.route('/myprofile', methods=["GET", "POST"])
 def myProfile():
@@ -150,7 +150,7 @@ def myProfile():
     members = profile.get_profiles_from_club(CLUB_SOCC)
     if request.method == 'POST':
         profile.edit_profile(net_id, request.form)
-    return render_template('myprofile.html', user=user, img=img)
+    return render_template('myprofile.html', user=user, img=img, validation=response[1])
 
 
 @app.route('/donations')
@@ -164,7 +164,7 @@ def donations():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('donations.html', img=img)
+    return render_template('donations.html', img=img, validation=response[1])
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -178,7 +178,11 @@ def admin_page():
         return redirect(url_for("home"))
     pendingRequests = admin.get_requests()
     postRequests = posts.get_requests()
-    return render_template('admin.html', requests=pendingRequests, posts = postRequests)
+    net_id = response[0]
+    user = profile.get_profile_from_id(net_id)
+    img = user.profile_image_url
+    members = profile.get_profiles_from_club(CLUB_SOCC)
+    return render_template('admin.html', members=members, requests=pendingRequests, posts = postRequests, validation=response[1], img=img)
 
 
 @app.route('/admin/accept', methods=['GET'])

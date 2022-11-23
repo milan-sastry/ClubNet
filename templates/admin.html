@@ -49,23 +49,31 @@
             <th >Status</th>
             <th style="width: 400px;">Actions</th>
           </tr>
-          {% for req in requests%}
+          {% for user in members %}
           <tr>
             <td>
               <div class="d-flex flex-row">
-                <img style="width: 50px; height: 50px; border-radius: 15px;" src="https://picsum.photos/500/500">
+                <img style="width: 50px; height: 50px; border-radius: 15px; object-fit: cover;" src={{user.get_profile_image_url()}}>
                 <div style="margin-left: 5px" class="d-flex flex-column justify-content-center">
-                  <b>Name</b>
-                  <p style="display: inline-block;">net id / class year</p>
+                  <b>{{user.get_name()}}</b>
+                  <p style="display: inline-block;">{{user.get_user_id()}}</p>
                 </div>
               </div>
             </td>
-            <td>Admin/Member</td>
             <td>
               <div>
-                <button class="btn btn-primary">Make Admin</button>
+                {% if user.isAdmin %}
+                  <div style="text-align: center; background-color: black; color: white; width: 100px; border-radius: 15px; padding-left: 5px; padding-right: 5px; padding-top: 2px; padding-bottom: 2px;">
+                    Admin
+                  </div>
+                {% endif %}
+              </div>
+            </td>
+            <td>
+              <div>
+                <!-- <button class="btn btn-primary">Make Admin</button>
                 <button class="btn btn-danger">Remove Admin</button>
-                <button class="btn btn-danger">Remove User</button>
+                <button class="btn btn-danger">Remove User</button> -->
               </div>
             </td>
             
