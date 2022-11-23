@@ -118,7 +118,7 @@ def announcements():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('announcements.html', posts=post_values, img=img)
+    return render_template('announcements.html', posts=post_values, img=img, validation=response[1])
 
 
 @app.route('/profile')
