@@ -20,7 +20,6 @@ from CASClient import CASClient
 
 
 CLUB_SOCC = 1
-
 INVALID = 0
 REQUEST = 1
 VALIDATED = 2
@@ -34,15 +33,14 @@ os.environ['DB_URL']="postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanu
 os.environ['CLOUDINARY_URL']="cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@clubnet"
 os.environ['API_KEY']="375874577914178"
 os.environ['API_SECRET']="bAM3VvtO-xWQCB_TIdgZ--bhG5Y"
+
 @app.route('/')
 def hello():
     return render_template('landing.html')
 
 
 @app.route('/home')
-def application():
-    print(os.getenv('DB_URL'))
-
+def home():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
@@ -61,29 +59,33 @@ def pending_request():
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
     if response[1] == VALIDATED:
-        return redirect(url_for('application'))
+        return redirect(url_for('home'))
     if response[1] == ADMIN:
-        return redirect(url_for('application'))
-    
+        return redirect(url_for('home'))
+
     admins = admin.get_admins(CLUB_SOCC)
     print(admins)
-    return render_template('pending_request.html', CASValue=response[0], admins = admins)
+    return render_template('pending_request.html', CASValue=response[0],validation=response[1], admins = admins)
 
 
 @app.route("/invalid", methods=['GET'])
 def invalid():
     response = validate_user(CLUB_SOCC)
     if response[1] == (VALIDATED or ADMIN):
-        return redirect(url_for('application'))
+        return redirect(url_for('home'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    return render_template('invalid.html', CASValue=response[0])
+    return render_template('invalid.html', CASValue=response[0],validation=response[1])
 
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
     netid = request.args.get('user_id', None)
     name = request.form.get('name', None)
     year = request.form.get('year', None)
+    # this probably needs to be worked on further, not sure how this
+    # affects alumni accounts
+    # if name == '' or year == '':
+    #     flash('please enter a valid name and year')
     profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC, name, year)
     return redirect(url_for('pending_request'))
@@ -105,14 +107,12 @@ def members():
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
-    print('arrived')
     response = validate_user(CLUB_SOCC)
-
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    print("arrived here too")
+
     post_values = posts.get_posts()
     net_id = response[0]
     user = profile.get_profile_from_id(net_id)
@@ -167,16 +167,6 @@ def donations():
     return render_template('donations.html', img=img)
 
 
-@app.route('/donations/completed')
-def completed():
-    response = validate_user(CLUB_SOCC)
-    if response[1] == INVALID:
-        return redirect(url_for('invalid'))
-    if response[1] == REQUEST:
-        return redirect(url_for('pending_request'))
-    return render_template('donations')
-
-
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_page():
     response = validate_user(CLUB_SOCC)
@@ -185,7 +175,7 @@ def admin_page():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
     pendingRequests = admin.get_requests()
     postRequests = posts.get_requests()
     return render_template('admin.html', requests=pendingRequests, posts = postRequests)
@@ -203,7 +193,7 @@ def admin_accept_page():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
 
     user_id = request.args.get("user_id", None)
     admin.approve_request(user_id, CLUB_SOCC)
@@ -217,7 +207,7 @@ def admin_deny_page():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
 
     user_id = request.args.get("user_id", None)
     admin.delete_request(user_id, CLUB_SOCC)
@@ -241,7 +231,7 @@ def remove_user():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
     net_id = request.form.get("user_id", None)
     admin.remove_user(net_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
@@ -254,7 +244,7 @@ def remove_admin():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
     net_id = request.form.get("user_id", None)
     admin.remove_admin(net_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
@@ -267,7 +257,7 @@ def make_admin():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
     net_id = request.form.get("user_id", None)
     officer_position = request.form.get("off_pos", None)
     admin.make_admin(net_id, CLUB_SOCC, officer_position)
@@ -281,7 +271,7 @@ def accept_post():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
     post_id = request.args.get("post_id", None)
     posts.approve_request(post_id)
     return redirect(url_for('admin_page'))
@@ -294,20 +284,11 @@ def deny_post():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
-        return redirect(url_for("application"))
+        return redirect(url_for("home"))
     post_id = request.args.get("post_id", None)
     posts.reject_request(post_id)
     return redirect(url_for('admin_page'))
 
-
-# @app.route('/image', methods=['GET', 'POST'])
-# def add_image():
-#     netid = CASClient().Authenticate()
-#     if request.method == 'POST':
-#         # upload.add_image(netid, request.form.get('File'))
-#         return redirect(url_for('base_upload'))
-#     # netid = CASClient().Authenticate()
-#     return render_template("image.html")
 
 def validate_user(club_id):
     netid = CASClient().Authenticate()
@@ -353,7 +334,7 @@ def upload_file():
             posts.add_image(post_id, file_cloudinary_link)
             post_values = posts.get_posts()
             print("I AM HERE, I have a cloudinary link")
-            return redirect(url_for('application'))
+            return redirect(url_for('home'))
     return jsonify(upload_result)
 
 @app.route("/upload_page")
@@ -361,5 +342,6 @@ def base_upload():
     post_id = request.args.get('post_id')
     return render_template("image_upload.html", post_id=post_id)
 
+# -----------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(host='localhost', port=5555, debug=True)
