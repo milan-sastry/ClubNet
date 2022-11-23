@@ -148,6 +148,8 @@ def init_database():
             session.add(admin1)
             admin2 = Admins(user_id = "yparikh", club_id = CLUB_SOCC, officer_position = "vice president")
             session.add(admin2)
+            admin3 = Admins(user_id = "og", untolaclub_id = CLUB_SOCC, officer_position = "tres")
+            session.add(admin3)
             req1 = Requests(user_id = "tzypman",
                          request_timestamp = datetime.now(),
                          name = "Toby Zypman",
