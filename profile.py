@@ -121,7 +121,7 @@ class Profile:
             return self.user_company
         else:
             return ""
-            
+
 # ---------------------------VALIDATE-----------------------------------
 
 def validate(user_id, club_id):

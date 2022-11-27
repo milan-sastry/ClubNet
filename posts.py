@@ -38,7 +38,7 @@ class Post:
 
     def get_status(self):
         return self._status
-    
+
     def get_likes(self):
         return self._likes
 

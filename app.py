@@ -1,23 +1,19 @@
-
-
-import profile
-import posts
 import secrets
 from flask import Flask, render_template, redirect, request, url_for, jsonify
 from sys import path
 import os
-import admin
-import upload
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import logging
 from cloudinary.utils import cloudinary_url
+import admin
+import posts
+import profile
 
-# separation
+
 path.append('src')  # go to src directory to import
 from CASClient import CASClient
-
 
 CLUB_SOCC = 1
 INVALID = 0
