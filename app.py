@@ -49,8 +49,8 @@ def home():
     net_id = response[0]
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('home.html', CASValue=response[0], validation=response[1], img=img)
+    member_count, alumni_count = profile.get_club_member_count(CLUB_SOCC)
+    return render_template('home.html', CASValue=response[0], validation=response[1], img=img, member_count=member_count, alumni_count=alumni_count)
 
 
 @app.route("/pending_request")

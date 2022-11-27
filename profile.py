@@ -227,3 +227,31 @@ def create_profile(user_id, name, year):
             session.commit()
     finally:
         engine.dispose()
+
+def get_club_member_count(club_id):
+    alumni = []
+    members = []
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            club_response = session.query(database.Users_Clubs).filter(
+                database.Users_Clubs.club_id == club_id).all()
+            for user in club_response:
+                profile = session.query(database.User).filter(
+                    database.User.user_id == user.username).all()
+                if len(profile) > 0:
+                    profile = Profile(session.query(database.User).filter(
+                        database.User.user_id == user.username).all()[0])
+                    admin_query = session.query(database.Admins).filter(
+                        database.Admins.user_id == profile.user_id
+                    ).all()
+                    if len(admin_query) > 0:
+                        profile.isAdmin = True
+                    if (profile.class_year is None) or (profile.class_year > 2022):
+                        members.append(profile)
+                    else:
+                        alumni.append(profile)
+            session.commit()
+            return (len(members), len(alumni))
+    finally:
+        engine.dispose()
