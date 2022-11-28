@@ -94,10 +94,10 @@ def process_request():
     if name is '' or year is '':
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('invalid'))
-
-    profile.create_profile(netid, name, year)
-    admin.create_request(netid, CLUB_SOCC, name, year)
-    return redirect(url_for('pending_request'))
+    else:
+        profile.create_profile(netid, name, year)
+        admin.create_request(netid, CLUB_SOCC, name, year)
+        return redirect(url_for('pending_request'))
 
 
 @app.route('/members', methods=['GET', 'POST'])
