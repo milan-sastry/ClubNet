@@ -10,6 +10,7 @@ from cloudinary.utils import cloudinary_url
 import admin
 import posts
 import profile
+from flask_mail import Mail, Message
 
 
 path.append('src')  # go to src directory to import
@@ -22,6 +23,7 @@ VALIDATED = 2
 ADMIN = 3
 
 
+
 # app info
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(16)
@@ -29,6 +31,14 @@ os.environ['DB_URL']="postgres://oxifvfuc:3Z_OtccJkuJzjE4je2oRnEe3LE47Ksgk@peanu
 os.environ['CLOUDINARY_URL']="cloudinary://375874577914178:bAM3VvtO-xWQCB_TIdgZ--bhG5Y@clubnet"
 os.environ['API_KEY']="375874577914178"
 os.environ['API_SECRET']="bAM3VvtO-xWQCB_TIdgZ--bhG5Y"
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'ClubNetPrinceton@gmail.com'
+app.config['MAIL_PASSWORD'] = 'rzylxkhufcffwzxo'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
 
 @app.route('/')
 def hello():
@@ -297,7 +307,28 @@ def accept_post():
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
     post_id = request.args.get("post_id", None)
-    posts.approve_request(post_id)
+
+
+    # posts.approve_request(post_id)
+
+    new_post = posts.get_post_by_id(post_id)
+
+    # inserting logic here to send out the info for a post
+    recipientlist = []
+    print("I know there's this user here")
+    for person in profile.get_profiles_from_club(CLUB_SOCC):
+        email = person.get_email()
+        recipientlist.append(email)
+
+    print(recipientlist)
+
+
+    print("SENT AN EMAIL")
+    message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
+    message.body = new_post.get_title() + new_post.get_description()
+    # message.body += "Body: " + new_post.get_description()
+    mail.send(message)
+
     return redirect(url_for('admin_page'))
 
 @app.route('/admin/deny_post', methods=["GET"])

@@ -110,11 +110,11 @@ def init_database():
             session.add(user4)
             user5 = User(user_id = "edmo",
                         name = "Ed Mo",
-                        email = "ed@princeton.edu",
+                        email = "chitrap@princeton.edu",
                         class_year = 2022,
                         profile_image_url = "https://picsum.photos/500/500")
             session.add(user5)
-            
+
             user_clubs1 = Users_Clubs(username = 'allenwu',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs1)

@@ -182,6 +182,24 @@ def like(post_id, user_id):
     finally:
         engine.dispose()
 
+def get_post_by_id(post_id):
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            query = session.query(database.Posts).filter(database.Posts.post_id == post_id)
+            # print(query)
+            table = query.all()
+            for row in table:
+                # print(row)
+                post = Post(row)
+            session.commit()
+            return post
+    finally:
+        engine.dispose()
+
 # -----------------------------------------------------------------------
 
 # For testing:
