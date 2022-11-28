@@ -1,5 +1,5 @@
 import secrets
-from flask import Flask, render_template, redirect, request, url_for, jsonify
+from flask import Flask, render_template, redirect, request, url_for, jsonify, flash
 from sys import path
 import os
 import cloudinary
@@ -91,7 +91,7 @@ def process_request():
     year = request.form.get('year', None)
     # this probably needs to be worked on further, not sure how this
     # affects alumni accounts
-    if name is '' or year is '':
+    if name == '' or year == '':
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('invalid'))
     else:
