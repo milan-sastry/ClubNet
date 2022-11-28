@@ -73,7 +73,7 @@ def get_posts():
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            query = session.query(database.Posts).filter(database.Posts.status == 1)
+            query = session.query(database.Posts).filter(database.Posts.status == 1).order_by(database.Posts.timestamp.desc())
             # print(query)
             table = query.all()
             list = []
@@ -204,7 +204,9 @@ def get_post_by_id(post_id):
 
 # For testing:
 def _test():
-    add_image(1, "https://res.cloudinary.com/clubnet/image/upload/v1668410349/gfcmsvzylqxuumuqpmhy.png")
+    # add_image(1, "https://res.cloudinary.com/clubnet/image/upload/v1668410349/gfcmsvzylqxuumuqpmhy.png")
+    for item in get_posts():
+        print(item['post'].get_timestamp())
     print(get_posts())
 
 if __name__ == '__main__':
