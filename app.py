@@ -93,7 +93,7 @@ def process_request():
     # affects alumni accounts
     if name is None or year is None:
         flash('please enter valid, nonempty personal information')
-        return redirect(url_for('pending_request'))
+        return redirect(url_for('invalid'))
 
     profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC, name, year)
