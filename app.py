@@ -102,9 +102,15 @@ def members():
     if request.method == 'POST':
         print(request)
         print(request.form)
-        return render_template('members.html', members=members, img=img, validation=response[1], year=int(request.form.get('year')))
+        if request.form.get('Alumni'):
+            print("requested Alumni")
+            return render_template('members.html', members=members, img=img, validation=response[1], filter="Alumni")
+        if request.form.get('Students'):
+            print("request students")
+            return render_template('members.html', members=members, img=img, validation=response[1], filter="Students")
+        return render_template('members.html', members=members, img=img, validation=response[1], filter=int(request.form.get('year')))
     else:
-        return render_template('members.html', members=members, img=img, validation=response[1], year='')
+        return render_template('members.html', members=members, img=img, validation=response[1], filter='')
 
 
 @app.route('/announcements', methods=['GET', 'POST'])
