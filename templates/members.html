@@ -1,78 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>ClubNet</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/styles/main.css">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_package/favicon.ico') }}">
+  <meta charset="UTF-8">
+  <title>ClubNet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="static/styles/main.css">
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_package/favicon.ico') }}">
 </head>
+
 <body>
-    <div style="background-color: #f58025; margin-bottom: 20px;" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        <header class="masthead mb-auto">
-            <div class="d-flex flex-row">
-                <div class="d-flex flex-row">
-                    <img src=https://res.cloudinary.com/clubnet/image/upload/v1668493806/ClubNet_logo_white_a7byvg.png style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
-                    <h3 style="margin-left: 10px;" class="masthead-brand">ClubNet</h3>
-                </div>
-                <div style="width: 100%;"  class="d-flex justify-content-end">
-                    <nav class="nav nav-masthead justify-content-center">
-                        {% if validation == 3 %}
-                          <a class="nav-link" href="/admin">Admin</a>
-                        {% endif %}
-                        <a class="nav-link" href="/home">Home</a>
-                        <a class="nav-link" href="/announcements">Announcements</a>
-                        <a class="nav-link active" href="/members">Members</a>
-                        <a class="nav-link" href="/donations">More</a>
-                        <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
-                            <img src={{img}}  style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;" >
-                        </div>
-                    </nav>
-                <div>
-            </div>
-          </header>
-      </div>
-        <div class="page-container">
-            <h2 class="page-title">Men's Club Soccer</h2>
-            <p class="page-subtitle">List of members in Men's Club Soccer</p>
-        <div>
-            <!-- members -->
-            <div class="member-container">
-                <!-- user list -->
-                <div class="container-fluid">
-                    <div class="row">
-                        {% for user in members %}
-                            <div style="cursor: pointer;" class="">
-                                <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
-                                    <!-- top user information -->
-                                    <div class="d-flex flex-row align-items-center">
-                                        <!-- profile picture -->
-                                        <div class="profile-pic">
-                                            <img style="width: 100px; height: 100px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
-                                        </div>
-                                        <!-- basic user information -->
-                                        <div class="d-flex flex-column ml-2">
-                                            <b>{{user.get_name()}}</b>
-                                            <p  style="margin-bottom: 0px;">Class Year: {{user.get_class_year()}}</p>
-                                            <p>Email: {{user.get_email()}}</p>
-                                        </div>
-                                    </div>
-                                    <!-- extra user information -->
-                                    <!-- <div class="mt-2">
-                                        <p><b>Major:</b> {{user.get_major()}}</p>
-                                        <p><b>Team Position:</b> {{user.get_team_position()}}</p>
-                                        <p><b>Favorite Team:</b> {{user.get_favorite_team()}}</p>
-                                        <p><b>Hometown:</b> {{user.get_hometown()}}</p>
-                                        <p><b>Job Title:</b> {{user.get_job_title()}}</p>
-                                        <p><b>Company:</b> {{user.get_user_company()}}</p>
-                                    </div> -->
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
+  <div style="background-color: #f58025; margin-bottom: 20px;" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+      <div class="d-flex flex-row">
+        <div class="d-flex flex-row">
+          <img src=https://res.cloudinary.com/clubnet/image/upload/v1668493806/ClubNet_logo_white_a7byvg.png style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
+          <h3 style="margin-left: 10px;" class="masthead-brand">ClubNet</h3>
         </div>
+        <div style="width: 100%;" class="d-flex justify-content-end">
+          <nav class="nav nav-masthead justify-content-center">
+            {% if validation == 3 %}
+            <a class="nav-link" href="/admin">Admin</a>
+            {% endif %}
+            <a class="nav-link" href="/home">Home</a>
+            <a class="nav-link" href="/announcements">Announcements</a>
+            <a class="nav-link active" href="/members">Members</a>
+            <a class="nav-link" href="/donations">More</a>
+            <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
+              <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
+            </div>
+          </nav>
+          <div>
+          </div>
+    </header>
+  </div>
+  <div class="page-container">
+    <h2 class="page-title">Men's Club Soccer</h2>
+    <p class="page-subtitle">List of members in Men's Club Soccer</p>
+    <form method="post" action="/members">
+      <!-- probably need a for loop here -->
+      <input type="submit" value="2024" name="year" />
+      <input type="submit" value="2023" name="year" />
+    </form>
+    <div>
+      <!-- members -->
+      <div class="member-container">
+        <!-- user list -->
+        <div class="container-fluid">
+          <div class="row">
+            {% for user in members %}
+              {% if year == ''%}
+                <div style="cursor: pointer;" class="">
+                  <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
+                    <!-- top user information -->
+                    <div class="d-flex flex-row align-items-center">
+                      <!-- profile picture -->
+                      <div class="profile-pic">
+                        <img style="width: 100px; height: 100px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
+                      </div>
+                      <!-- basic user information -->
+                      <div class="d-flex flex-column ml-2">
+                        <b>{{user.get_name()}}</b>
+                        <p style="margin-bottom: 0px;">Class Year: {{user.get_class_year()}}</p>
+                        <p>Email: {{user.get_email()}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {%else%}
+                {% if user.get_class_year() == year%}
+                  <div style="cursor: pointer;" class="">
+                    <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
+                      <!-- top user information -->
+                      <div class="d-flex flex-row align-items-center">
+                        <!-- profile picture -->
+                        <div class="profile-pic">
+                          <img style="width: 100px; height: 100px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
+                        </div>
+                        <!-- basic user information -->
+                        <div class="d-flex flex-column ml-2">
+                          <b>{{user.get_name()}}</b>
+                          <p style="margin-bottom: 0px;">Class Year: {{user.get_class_year()}}</p>
+                          <p>Email: {{user.get_email()}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
+
 </html>

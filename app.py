@@ -87,7 +87,7 @@ def process_request():
     return redirect(url_for('pending_request'))
 
 
-@app.route('/members')
+@app.route('/members', methods=['GET', 'POST'])
 def members():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
@@ -98,7 +98,13 @@ def members():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('members.html', members=members, img=img, validation=response[1])
+
+    if request.method == 'POST':
+        print(request)
+        print(request.form)
+        return render_template('members.html', members=members, img=img, validation=response[1], year=int(request.form.get('year')))
+    else:
+        return render_template('members.html', members=members, img=img, validation=response[1], year='')
 
 
 @app.route('/announcements', methods=['GET', 'POST'])
