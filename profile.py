@@ -2,6 +2,7 @@ import database
 import os
 import sqlalchemy.orm
 import sqlalchemy
+from datetime import datetime
 
 DATABASE_URL = os.getenv('DB_URL')
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
@@ -122,7 +123,21 @@ class Profile:
         else:
             return ""
 
+    def is_alumni(self):
+        if self.class_year <= get_alumni_year():
+            return True
+        else:
+            return False
+
+
 # ---------------------------VALIDATE-----------------------------------
+def get_alumni_year():
+    alumniyear = -1
+    if (datetime.now().month > 5):
+        alumniyear = datetime.now().year
+    else:
+        alumniyear = datetime.now().year - 1
+    return alumniyear
 
 def validate(user_id, club_id):
     engine = sqlalchemy.create_engine(DATABASE_URL)
