@@ -91,7 +91,7 @@ def process_request():
     year = request.form.get('year', None)
     # this probably needs to be worked on further, not sure how this
     # affects alumni accounts
-    if name is None or year is None:
+    if name is '' or year is '':
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('invalid'))
 
