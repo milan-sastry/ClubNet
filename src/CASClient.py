@@ -27,7 +27,8 @@ class CASClient:
         val_url = self.cas_url + 'validate' + \
             '?service=' + urllib.parse.quote(self.ServiceURL()) + \
             '&ticket=' + urllib.parse.quote(ticket)
-        r = urllib.request.urlopen(val_url).readlines()   # returns 2 lines
+        with urllib.request.urlopen(val_url) as flo:
+            r = flo.readlines()  # returns 2 lines
         if len(r) != 2:
             return None
         if r[0].decode('utf-8').startswith('yes'):
@@ -41,26 +42,32 @@ class CASClient:
 
         # see if session already has a user (save some complexity)
         if 'username' in session:
+            print(f'getting session username {session.get("username")}')
             return session.get('username')
 
         # If the request contains a login ticket, then try to
         # validate it.
         ticket = request.args.get('ticket')
-        if ticket is not None:
-            username = self.Validate(ticket)
-            if username is not None:
-                # add user to flask session (cookies?)
-                session['username'] = username
-                return username
-
-        # need a login ticket
-        login_url = self.cas_url + 'login' \
+        if ticket is None:
+            # need a login ticket
+            login_url = self.cas_url + 'login' \
+            + '?service=' + urllib.parse.quote(request.url)
+            # send user to the login page if they didn't have a ticket
+            abort(redirect(login_url))
+            
+        username = self.Validate(ticket)
+        if username is None:
+            # need a login ticket
+            login_url = self.cas_url + 'login' \
             + '?service=' + urllib.parse.quote(self.ServiceURL())
+            # send user to the login page if they didn't have a ticket
+            abort(redirect(login_url))
+        
+        username = username.strip()
+        session['username'] = username
+        return username
 
-        # send user to the login page if they didn't have a ticket
-        abort(redirect(login_url))
-
-
+        
 
 
 # -----------------------------------------------------------------------

@@ -1,29 +1,23 @@
 import secrets
-from flask import Flask, render_template, redirect, request, url_for, jsonify, flash
+from flask import Flask, render_template, redirect, request, url_for, jsonify, flash, session
 from sys import path
 import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-import logging
-from cloudinary.utils import cloudinary_url
 import admin
 import posts
 import profile
 from flask_mail import Mail, Message
-import datetime
-
 
 path.append('src')  # go to src directory to import
-from CASClient import CASClient
+from src.CASClient import CASClient
 
 CLUB_SOCC = 1
 INVALID = 0
 REQUEST = 1
 VALIDATED = 2
 ADMIN = 3
-
-
 
 # app info
 app = Flask(__name__)
@@ -54,6 +48,7 @@ def home():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     net_id = response[0]
+    print(session.get('username'))
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     member_count, alumni_count = profile.get_club_member_count(CLUB_SOCC)
@@ -350,8 +345,6 @@ def deny_post():
 
 def validate_user(club_id):
     netid = CASClient().Authenticate()
-    print(netid)
-    netid = netid[0:len(netid)-1]
     is_in_club = profile.validate(netid, club_id)
     if is_in_club:
         if admin.is_admin(netid, club_id):
@@ -379,6 +372,7 @@ def upload_file():
     if request.method == 'POST':
         file_to_upload = request.files['file']
         app.logger.info('%s file_to_upload', file_to_upload)
+
     if file_to_upload:
         upload_result = cloudinary.uploader.upload(file_to_upload)
         app.logger.info(upload_result)
