@@ -91,9 +91,10 @@ def process_request():
     year = request.form.get('year', None)
     # this probably needs to be worked on further, not sure how this
     # affects alumni accounts
-    if name == '' or year == '':
+    if name is None or year is None:
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('pending_request'))
+
     profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC, name, year)
     return redirect(url_for('pending_request'))
