@@ -60,9 +60,7 @@ def pending_request():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
-    if response[1] == VALIDATED:
-        return redirect(url_for('home'))
-    if response[1] == ADMIN:
+    if response[1] == (VALIDATED or ADMIN):
         return redirect(url_for('home'))
 
     admins = admin.get_admins(CLUB_SOCC)
@@ -210,7 +208,16 @@ def admin_page():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('admin.html', members=members, requests=pendingRequests, posts = postRequests, validation=response[1], img=img)
+    all_members = 'mailto:'
+    students = 'mailto:'
+    alumni = 'mailto:'
+    for member in members:
+        all_members += member.get_email() + ','
+        if member.is_alumni():
+            alumni += member.get_email() + ','
+        else:
+            students += member.get_email() + ','
+    return render_template('admin.html', members=members, requests=pendingRequests, posts = postRequests, validation=response[1], img=img, all_members = all_members, students = students, alumni = alumni)
 
 
 @app.route('/admin/accept', methods=['GET'])
