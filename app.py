@@ -309,7 +309,7 @@ def accept_post():
     post_id = request.args.get("post_id", None)
 
 
-    # posts.approve_request(post_id)
+    posts.approve_request(post_id)
 
     new_post = posts.get_post_by_id(post_id)
 
