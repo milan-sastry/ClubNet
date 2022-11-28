@@ -91,8 +91,9 @@ def process_request():
     year = request.form.get('year', None)
     # this probably needs to be worked on further, not sure how this
     # affects alumni accounts
-    # if name == '' or year == '':
-    #     flash('please enter a valid name and year')
+    if name == '' or year == '':
+        flash('please enter valid, nonempty personal information')
+        return redirect(url_for('pending_request'))
     profile.create_profile(netid, name, year)
     admin.create_request(netid, CLUB_SOCC, name, year)
     return redirect(url_for('pending_request'))
@@ -384,9 +385,6 @@ def upload_file():
         file_cloudinary_link = upload_result['url']
         # print(file_cloudinary_link)
         if file_cloudinary_link != None:
-            # print(netid)
-            # print("POST ID IS COMING HERE:" + post_id)
-            # print(file_cloudinary_link)
             posts.add_image(post_id, file_cloudinary_link)
             post_values = posts.get_posts()
             print("I AM HERE, I have a cloudinary link")
