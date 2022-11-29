@@ -1,6 +1,7 @@
 import os
 import sqlalchemy.ext.declarative
 import sqlalchemy
+from sqlalchemy import delete
 import database
 import profile
 from datetime import datetime
@@ -66,7 +67,7 @@ def make_request(post_title, post_description, net_id):
         engine.dispose()
 
 
-def get_posts():
+def get_posts(user_id):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -81,7 +82,8 @@ def get_posts():
                 # print(row)
                 post = Post(row)
                 user = profile.get_profile_from_id(post._creator_id)
-                list.append({"post": post, "user": user})
+                isLiked = len(session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post._post_id and database.Post_Likes.user_id == user_id).all()) > 0
+                list.append({"post": post, "user": user, "isLiked": isLiked})
             session.commit()
             return list
     finally:
@@ -177,7 +179,33 @@ def like(post_id, user_id):
                 session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
                     "likes": database.Posts.likes + 1,
                 })
-            session.commit()
+                post_like = database.Post_Likes(post_id=post_id, user_id=user_id)
+                session.add(post_like)
+                session.commit()
+                session.refresh(post_like)
+            return True
+    finally:
+        engine.dispose()
+
+def unlike(post_id, user_id):
+    DATABASE_URL = os.getenv('DB_URL')
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+            response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post_id and database.Post_Likes.user_id == user_id).all()
+            if len(response) > 0:
+                stmt = delete(database.Post_Likes).where((database.Post_Likes.post_id == post_id)&(database.Post_Likes.user_id == user_id))
+                session.execute(stmt)
+                session.commit() 
+                session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
+                    "likes": database.Posts.likes - 1,
+                })
+                post_like = database.Post_Likes(post_id=post_id, user_id=user_id)
+                session.add(post_like)
+                session.commit()
+                session.refresh(post_like)
             return True
     finally:
         engine.dispose()

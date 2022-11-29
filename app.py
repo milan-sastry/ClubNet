@@ -132,7 +132,7 @@ def announcements():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
 
-    post_values = posts.get_posts()
+    post_values = posts.get_posts(response[0])
     net_id = response[0]
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
@@ -162,6 +162,18 @@ def like():
 
     post_id = request.args.get("post_id", None)
     posts.like(post_id, response[0])
+    return redirect(url_for('announcements'))
+
+@app.route('/announcements/unlike', methods=['GET'])
+def unlike():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    post_id = request.args.get("post_id", None)
+    posts.unlike(post_id, response[0])
     return redirect(url_for('announcements'))
 
 
@@ -336,7 +348,7 @@ def accept_post():
 
     # does get_post_by_id work?
     # alternatively, could retrieve all posts and just use last post in list as new_post
-    post_values = posts.get_posts()
+    post_values = posts.get_posts(response[0])
     new_post = post_values[-1]
     print(new_post)
     # new_post = posts.get_post_by_id(post_id)
@@ -410,7 +422,8 @@ def upload_file():
         # print(file_cloudinary_link)
         if file_cloudinary_link != None:
             posts.add_image(post_id, file_cloudinary_link)
-            post_values = posts.get_posts()
+            response = validate_user(CLUB_SOCC)
+            post_values = posts.get_posts(response[0])
             print("I AM HERE, I have a cloudinary link")
             return redirect(url_for('home'))
     return jsonify(upload_result)
