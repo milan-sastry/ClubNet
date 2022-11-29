@@ -205,6 +205,7 @@ def myProfile():
     members = profile.get_profiles_from_club(CLUB_SOCC)
     if request.method == 'POST':
         profile.edit_profile(net_id, request.form)
+        return redirect(url_for('members'))
     return render_template('myprofile.html', user=user, img=img, validation=response[1])
 
 
