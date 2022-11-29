@@ -116,10 +116,11 @@ def members():
         if request.form.get('Alumni'):
             print("requested Alumni")
             return render_template('members.html', members=members, img=img, validation=response[1], filter="Alumni")
-        else if request.form.get('Students'):
+        elif request.form.get('Students'):
             print("request students")
             return render_template('members.html', members=members, img=img, validation=response[1], filter="Students")
-        else return render_template('members.html', members=members, img=img, validation=response[1], filter=request.form.get('filter'))
+        else:
+            return render_template('members.html', members=members, img=img, validation=response[1], filter=request.form.get('filter'))
     else:
         return render_template('members.html', members=members, img=img, validation=response[1], filter='')
 
