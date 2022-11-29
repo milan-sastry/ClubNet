@@ -119,7 +119,7 @@
                     {% endif %}
                   <!-- case 2: no filter (ie. init load) -->
                 {%else%}
-                {% if (user.get_class_year()|string == filter or (filter|string)|lower in user.get_name()|lower)%}
+                {% if ((user.get_class_year()|string == filter) or ((filter|string)|lower in user.get_name()|lower))%}
                   <div style="cursor: pointer;" class="">
                     <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
                       <!-- top user information -->
