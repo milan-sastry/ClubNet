@@ -38,19 +38,20 @@
     <h2 class="page-title">Men's Club Soccer</h2>
     <p class="page-subtitle">List of members in Men's Club Soccer</p>
 
-    <center>
-    Filter by Clicking Below
-    <form method="post" action="/members">
+    <form method="post" action="/members" id="filter_form">
       <!-- probably need a for loop here -->
-
-      <input type="submit" value="Alumni" name="Alumni" />
-      <input type="submit" value="Students" name="Students" />
+      <center>
+      <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni" onclick=alumniClicked() />
+      <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students" onclick= studentsClicked() />
+      <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset" onclick=resetClicked() />
+    <br>
     <br>
       or search by name or year
-      <input type="text" name="filter" />
-      <input type="submit" value="Submit Here" />
-    </form>
+      <input type="text" name="filter" id="filter" />
+      <input type="submit" value="Submit Here" class="btn btn-primary" />
     </center>
+    </form>
+
     <div>
       <!-- members -->
       <div class="member-container">
@@ -145,6 +146,25 @@
       </div>
     </div>
   </div>
+  <script>
+    function alumniClicked(){
+        document.getElementById("filter").value = "Alumni";
+        document.getElementById("filter_form").submit();
+      }
+  </script>
+
+  <script>
+    function studentsClicked(){
+        document.getElementById("filter").value = "Students";
+        document.getElementById("filter_form").submit();
+      }
+  </script>
+  <script>
+    function resetClicked(){
+        document.getElementById("filter").value = '';
+        document.getElementById("filter_form").submit();
+      }
+  </script>
 </body>
 
 </html>

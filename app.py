@@ -120,16 +120,7 @@ def members():
     if request.method == 'POST':
         print(request)
         print(request.form)
-        if request.form.get('filter'):
-            return render_template('members.html', members=members, img=img, validation=response[1], filter=request.form.get('filter'))
-        elif request.form.get('Alumni'):
-            print("requested Alumni")
-            return render_template('members.html', members=members, img=img, validation=response[1], filter="Alumni")
-        elif request.form.get('Students'):
-            print("request students")
-            return render_template('members.html', members=members, img=img, validation=response[1], filter="Students")
-        else:
-            return render_template('members.html', members=members, img=img, validation=response[1], filter=request.form.get('filter'))
+        return render_template('members.html', members=members, img=img, validation=response[1], filter=request.form.get('filter'))
     else:
         return render_template('members.html', members=members, img=img, validation=response[1], filter='')
 

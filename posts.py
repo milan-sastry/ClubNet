@@ -41,10 +41,10 @@ class Post:
 
     def get_likes(self):
         return self._likes
-    
+
     def get_comments(self):
         return self._comments
-    
+
 class Comment:
 
     def __init__(self, db_row):
@@ -56,7 +56,7 @@ class Comment:
 
     def get_id(self):
         return self._id
-    
+
     def get_post_id(self):
         return self._post_id
 
