@@ -319,7 +319,7 @@ def accept_post():
     # does get_post_by_id work?
     # alternatively, could retrieve all posts and just use last post in list as new_post
     post_values = posts.get_posts()
-    new_post = post_values[-1]
+    new_post = post_values[-1]['post']
     # new_post = posts.get_post_by_id(post_id)
 
     # inserting logic here to send out the info for a post
