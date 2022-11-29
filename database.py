@@ -131,6 +131,13 @@ def init_database():
                         profile_image_url = "https://picsum.photos/500/500",
                         notifications = True)
             session.add(user5)
+            user6 = User(user_id = "tzypman",
+                        name = "Toby Zypman",
+                        email = "abcdefg@gmail.com",
+                        class_year = 2022,
+                        profile_image_url = "https://picsum.photos/500/500",
+                        notifications = True)
+            session.add(user6)
 
             user_clubs1 = Users_Clubs(username = 'allenwu',
                                         club_id = CLUB_SOCC)

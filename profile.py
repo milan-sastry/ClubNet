@@ -235,7 +235,7 @@ def create_profile(engine, user_id, name, year):
     if get_profile_from_id(engine, user_id) is not None:
         return
     with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png")
+            user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png", notifications = True)
             session.add(user)
             session.commit()
 
