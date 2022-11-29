@@ -170,7 +170,6 @@ def myProfile():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     net_id = CASClient().Authenticate()
-    net_id = net_id[0:len(net_id)-1]
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
