@@ -38,13 +38,19 @@
     <h2 class="page-title">Men's Club Soccer</h2>
     <p class="page-subtitle">List of members in Men's Club Soccer</p>
 
+    <center>
+    Filter by Clicking Below
     <form method="post" action="/members">
       <!-- probably need a for loop here -->
+
       <input type="submit" value="Alumni" name="Alumni" />
       <input type="submit" value="Students" name="Students" />
-      <input type="text" name="year" />
+    <br>
+      or search by name or year
+      <input type="text" name="filter" />
       <input type="submit" value="Submit Here" />
     </form>
+    </center>
     <div>
       <!-- members -->
       <div class="member-container">
@@ -113,7 +119,7 @@
                     {% endif %}
                   <!-- case 2: no filter (ie. init load) -->
                 {%else%}
-                {% if user.get_class_year() == filter%}
+                {% if (user.get_class_year()|string == filter or filter|string in user.get_name())%}
                   <div style="cursor: pointer;" class="">
                     <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
                       <!-- top user information -->
