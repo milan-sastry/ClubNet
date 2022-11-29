@@ -37,6 +37,21 @@
   </div>
   <div class="d-flex flex-row" id="Posts">
     <div class="d-flex flex-column align-items-center" style="width: 100%;">
+       <!-- Filters -->
+       <div style="margin-bottom: 10px;">
+        <!-- Members -->
+        {% if filter == "members" %}
+          <button onclick="window.location='/announcements';" type="button" class="btn btn-primary">Members</button>
+        {% else %}
+          <button onclick="window.location='/announcements?filter=members';" type="button" class="btn btn-outline-primary">Members</button>
+        {% endif %}
+        <!-- Alumni -->
+        {% if filter == "alumni" %}
+          <button onclick="window.location='/announcements';" type="button" class="btn btn-primary">Alumni</button>
+        {% else %}
+          <button onclick="window.location='/announcements?filter=alumni';" type="button" class="btn btn-outline-primary">Alumni</button>
+        {% endif %}
+      </div>
       {% for post in posts%}
         <div class="d-flex">
           <div style="margin-top: 20px;" class="post-card">
@@ -60,48 +75,76 @@
             <!-- Post Content -->
             <img src={{post.post.get_image_url()}} alt="Responsive image" style="width: 100%; margin-top: 20px; border-radius: 20px">
             <!-- Responses -->
-            <div style="margin-top: 5px;" class="d-flex flex-row">
-               <!-- Likes -->
-               {% if post.isLiked %}
+            <div class="d-flex flex-column">
+              <div style="margin-top: 5px;" class="d-flex flex-row">
+                <!-- Likes -->
+                {% if post.isLiked %}
+                  <div class="d-flex flex-row align-items-center">
+                    <span>{{post.post.get_likes()}}</span>
+                    <form action="/announcements/unlike">
+                      <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+                      <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                        <img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">
+                      </button>
+                    </form>
+                  </div>
+                {% else %}
+                  <div class="d-flex flex-row align-items-center">
+                    <span>{{post.post.get_likes()}}</span>
+                    <form action="/announcements/like">
+                      <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+                      <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                        <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">
+                      </button>
+                    </form>
+                  </div>
+                {% endif %}
+                <!-- Comments -->
                 <div class="d-flex flex-row align-items-center">
-                  <span>{{post.post.get_likes()}}</span>
-                  <form action="/announcements/unlike">
-                    <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
-                    <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
-                      <img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">
-                    </button>
-                  </form>
-                </div>
-              {% else %}
-                <div class="d-flex flex-row align-items-center">
-                  <span>{{post.post.get_likes()}}</span>
-                  <form action="/announcements/like">
-                    <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
-                    <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
-                      <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">
-                    </button>
-                  </form>
-                </div>
-              {% endif %}
-               <!-- Comments -->
-               <div class="d-flex flex-row align-items-center">
-                <span>{{post.post.get_likes()}}</span>
-                <form action="/announcements/like">
-                  <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
-                  <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                  <span>{{post.post.get_comments()}}</span>
+                  <button style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
                     <img style="width: 20px; height: 20px; object-fit: contain;" src="https://cdn-icons-png.flaticon.com/512/1380/1380338.png">
                   </button>
-                </form>
+                </div>
+                
+                </div>
+                <div style="width: 100%;" class="d-flex flex-column">
+                {% for comment in post.comments %}
+                  <div class="d-flex flex-row align-items-center" style="margin-bottom: 5px; width: 100%;">
+                    <img style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;" src={{comment.user.get_profile_image_url()}}>
+                    <div style="width: 100%;" class="d-flex flex-row">
+                      <div class="d-flex flex-column">
+                        <b>{{comment.user.get_name()}}</b>
+                        <span>{{comment.comment.get_comment()}}</span>
+                      </div>
+                      <div style="width: 100%;" class="d-flex flex-grow-1 justify-content-end">
+                        <span id="{{comment.comment.get_id()}}">{{comment.comment.get_timestamp()}}</span>
+                      </div>
+                      <script>
+                        document.getElementById("{{comment.comment.get_id()}}").innerHTML = new Date("{{comment.comment.get_timestamp()}}").toLocaleString();
+                      </script>
+                    </div>  
+                    <hr>
+                  </div>
+                {% endfor %}
               </div>
-            </div>
+          </div>
             <!-- Post Information/Footer -->
             <div style="margin-top: 10px;" >
               <h5 class="card-title">{{post.post.get_title()}}</h5>
               <p class="card-text"> {{post.post.get_description()}}</p>
             </div>
+            <!-- Comments -->
+            <div style="margin-top: 5px;">
+              <form action="/announcements/comment">
+                <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+                <textarea placeholder="Type your comment here..." class="form-control" id="comment-input" name="comment-input"></textarea>
+                <button style="margin-top: 5px;" class="btn btn-primary">Submit Comment</button>
+              </form>
+            </div>
             <!-- Delete Post -->
             {% if isAdmin == True %}
-              <div >
+              <div style="margin-top: 5px;">
                 <!-- delete post button -->
                 <form action="announcements/delete" method = "DELETE" class="d-flex flex-column">
                   <input type="hidden" value="{{post.post.get_post_id()}}" style="margin-bottom: 10px;" class="text" name="post_id" placeholder="postid"></input>
@@ -116,7 +159,9 @@
         </div>
       {% endfor %}
     </div>
+    <!-- Side Panel -->
     <div style="margin-left: 50px; margin-right: 50px;">
+      <!-- Create Announcement -->
       <button type="button" class="btn btn-light" id="form">Submit an Announcement!</button>
     </div>
   </div>

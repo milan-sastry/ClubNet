@@ -132,13 +132,14 @@ def announcements():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
 
-    post_values = posts.get_posts(response[0])
+    filter = request.args.get("filter", None)
+    post_values = posts.get_posts(response[0], filter)
     net_id = response[0]
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
     isAdmin = admin.is_admin(net_id, CLUB_SOCC)
-    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user)
+    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter)
 
 @app.route('/announcements/delete', methods=['GET', 'POST', 'DELETE'])
 def delete_post():
@@ -174,6 +175,19 @@ def unlike():
 
     post_id = request.args.get("post_id", None)
     posts.unlike(post_id, response[0])
+    return redirect(url_for('announcements'))
+
+@app.route('/announcements/comment', methods=['GET'])
+def comment():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    comment = request.args.get("comment-input", None)
+    post_id = request.args.get("post_id", None)
+    posts.comment(post_id, response[0], comment)
     return redirect(url_for('announcements'))
 
 

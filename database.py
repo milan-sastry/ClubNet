@@ -47,6 +47,7 @@ class Posts(Base):
     status = sqlalchemy.Column(sqlalchemy.Integer)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True))
     likes = sqlalchemy.Column(sqlalchemy.Integer)
+    comments = sqlalchemy.Column(sqlalchemy.Integer)
 
 #-----------------------------------------------------------------------
 class Post_Likes(Base):
@@ -54,6 +55,15 @@ class Post_Likes(Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement = True, primary_key = True)
     post_id = sqlalchemy.Column(sqlalchemy.Integer)
     user_id = sqlalchemy.Column(sqlalchemy.String)
+
+#-----------------------------------------------------------------------
+class Comments(Base):
+    __tablename__ = 'comments'
+    id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement = True, primary_key = True)
+    post_id = sqlalchemy.Column(sqlalchemy.Integer)
+    user_id = sqlalchemy.Column(sqlalchemy.String)
+    comment = sqlalchemy.Column(sqlalchemy.String)
+    timestamp = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True))
 
 #-----------------------------------------------------------------------
 
@@ -143,7 +153,8 @@ def init_database():
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.now(),
                         status = 0,
-                        likes = 0
+                        likes = 0,
+                        comments = 0
                         )
             session.add(post1)
             post1 = Posts(creator_id = "oguntola",
@@ -152,7 +163,8 @@ def init_database():
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.fromtimestamp(10000),
                         status = 1,
-                        likes = 0
+                        likes = 0,
+                        comments = 0
                         )
             session.add(post1)
             post1 = Posts(creator_id = "renteria",
@@ -161,7 +173,8 @@ def init_database():
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.now(),
                         status = 1,
-                        likes = 0
+                        likes = 0,
+                        comments = 0
                         )
             session.add(post1)
             admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
