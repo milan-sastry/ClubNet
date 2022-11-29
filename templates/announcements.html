@@ -111,13 +111,13 @@
                 <div  style="width: 100%;" class="collapse d-flex flex-column" id="collapseExample">
                 {% for comment in post.comments %}
                   <div class="d-flex flex-row align-items-center" style="margin-bottom: 5px; width: 100%;">
-                    <img style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;" src={{comment.user.get_profile_image_url()}}>
+                    <img style="width: 50px; height: 50px; border-radius: 25px; object-fit: cover;" src={{comment.user.get_profile_image_url()}}>
                     <div style="width: 100%;" class="d-flex flex-row">
-                      <div class="d-flex flex-column">
+                      <div style="width: 100%; margin-left: 5px;" class="d-flex flex-column">
                         <b>{{comment.user.get_name()}}</b>
                         <span>{{comment.comment.get_comment()}}</span>
                       </div>
-                      <div style="width: 100%;" class="d-flex flex-grow-1 justify-content-end">
+                      <div class="d-flex justify-content-end">
                         <span id="{{comment.comment.get_id()}}">{{comment.comment.get_timestamp()}}</span>
                       </div>
                       <script>
