@@ -337,23 +337,27 @@ def accept_post():
     # does get_post_by_id work?
     # alternatively, could retrieve all posts and just use last post in list as new_post
     post_values = posts.get_posts()
-    new_post = post_values[-1]
-    print(new_post)
+    new_post = post_values[0]['post']
     # new_post = posts.get_post_by_id(post_id)
 
     # inserting logic here to send out the info for a post
     recipientlist = []
     print("I know there's this user here")
     for person in profile.get_profiles_from_club(CLUB_SOCC):
-        email = person.get_email()
-        recipientlist.append(email)
+        if person.get_notifications():
+            email = person.get_email()
+            recipientlist.append(email)
 
     print(recipientlist)
+
+
     print("SENT AN EMAIL")
     message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
-    # message.body = new_post['post'].get_title() + new_post['post'].get_description()
-    message.html = render_template('message.html', post=new_post)
-    # message.body += "Body: " + new_post.get_description()
+    message.body = "You are being notified because a new post has been made for Club Soccer on ClubNet with title! To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n"
+    message.body += "The new post has title: " + new_post.get_title() + " and body: " + new_post.get_description() + ".\n"
+    message.body += "Best regards,\n"
+    message.body += "The ClubNet Team"
+    # message.html = render_template("message.html", post=new_post)
     mail.send(message)
 
     return redirect(url_for('admin_page'))
