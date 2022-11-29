@@ -69,7 +69,7 @@
                 <p id="{{post.post.get_post_id()}}">{{post.post.get_timestamp()}}</p>
               </div>
               <script>
-                document.getElementById("{{post.post.get_post_id()}}").innerHTML = new Date("{{post.post.get_timestamp()}}").toLocaleString();
+                document.getElementById("{{post.post.get_post_id()}}").innerHTML = new Date("{{post.post.get_timestamp()}}").toLocaleDateString();
               </script>
             </div>
             <!-- Post Content -->
@@ -118,10 +118,10 @@
                         <span>{{comment.comment.get_comment()}}</span>
                       </div>
                       <div class="d-flex justify-content-end">
-                        <span id="{{comment.comment.get_id()}}">{{comment.comment.get_timestamp()}}</span>
+                        <span id="{{comment.comment.get_id()}}comment">{{comment.comment.get_timestamp()}}</span>
                       </div>
                       <script>
-                        document.getElementById("{{comment.comment.get_id()}}").innerHTML = new Date("{{comment.comment.get_timestamp()}}").toLocaleString();
+                        document.getElementById("{{comment.comment.get_id()}}comment").innerHTML = new Date("{{comment.comment.get_timestamp()}}").toLocaleDateString();
                       </script>
                     </div>  
                     <hr>
