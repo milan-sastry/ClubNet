@@ -250,7 +250,7 @@ def create_profile(user_id, name, year):
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, class_year = year)
+            user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1669736194/blank_profile_qt70s6.png")
             session.add(user)
             session.commit()
     finally:
