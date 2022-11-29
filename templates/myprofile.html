@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" href="static/styles/main.css" />
   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_package/favicon.ico') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -51,7 +52,7 @@
     <div>
       <h1>Edit Profile</h1>
       <!-- Inputs -->
-      <form method="POST" action="">
+      <form method="POST" action="" id = "edit_form">
         <!-- Email -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -110,12 +111,12 @@
           <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
         </div>
         <!-- Notifications -->
-        <!-- <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Notifications</span>
-          </div>
-          <input name="notifications" id="notifications" value="{{user.get_notifications()}}" type="text" class="form-control" aria-label="Notifications">
-        </div> -->
+        <input name="notifications" type="checkbox" value=true id="notifications" class="form-check">
+        <input id='notificationshidden' type='hidden' value=false name='notifications'>
+        <label class="form-check-label" for="notifications">
+          Notifications
+        </label>
+              <br>
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Update Profile</button>
                         <!-- <script>
@@ -137,6 +138,23 @@
       </form>
     </div>
   </div>
+
+  <script>
+    const form = document.getElementById('edit_form')
+    form.addEventListener('submit', () => {
+      if(document.getElementById("notifications").checked) {
+          document.getElementById('notificationshidden').disabled = true;
+      }
+  })
+  </script>
+  <script>
+  $(document).ready(function(){
+  if ({{user.get_notifications()}} == true){
+    $('#notifications').prop("checked", true);
+  }
+});
+</script>
+  </script>
 </body>
 
 </html>

@@ -218,6 +218,8 @@ def myProfile():
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
     if request.method == 'POST':
+        print(request.form.get('notifications'))
+        print(request.form)
         profile.edit_profile(net_id, request.form)
         return redirect(url_for('members'))
     return render_template('myprofile.html', user=user, img=img, validation=response[1])
@@ -256,11 +258,12 @@ def admin_page():
     students = 'mailto:'
     alumni = 'mailto:'
     for member in members:
-        all_members += member.get_email() + ','
-        if member.is_alumni():
-            alumni += member.get_email() + ','
-        else:
-            students += member.get_email() + ','
+        if(member.get_notifications() == "true"):
+            all_members += member.get_email() + ','
+            if member.is_alumni():
+                alumni += member.get_email() + ','
+            else:
+                students += member.get_email() + ','
     return render_template('admin.html', members=members, requests=pendingRequests, posts = postRequests, validation=response[1], img=img, all_members = all_members, students = students, alumni = alumni)
 
 
@@ -363,7 +366,7 @@ def accept_post():
 
     # does get_post_by_id work?
     # alternatively, could retrieve all posts and just use last post in list as new_post
-    post_values = posts.get_posts(response[0])
+    post_values = posts.get_posts(response[0], None)
     new_post = post_values[0]['post']
     # new_post = posts.get_post_by_id(post_id)
 
@@ -371,19 +374,18 @@ def accept_post():
     recipientlist = []
     print("I know there's this user here")
     for person in profile.get_profiles_from_club(CLUB_SOCC):
-        if person.get_notifications():
+        if(person.get_notifications() == "true"):
             email = person.get_email()
             recipientlist.append(email)
-
     print(recipientlist)
 
 
     print("SENT AN EMAIL")
     message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
-    message.body = "You are being notified because a new post has been made for Club Soccer on ClubNet with title! To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n"
-    message.body += "The new post has title: " + new_post.get_title() + " and body: " + new_post.get_description() + ".\n"
+    message.body = "You are being notified because a new post has been made for Club Soccer on ClubNet with" + new_post.get_title() + "! To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n"
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team"
+    message.body += "clubnet.onrender.com"
     # message.html = render_template("message.html", post=new_post)
     mail.send(message)
 
@@ -442,7 +444,7 @@ def upload_file():
         if file_cloudinary_link != None:
             posts.add_image(post_id, file_cloudinary_link)
             response = validate_user(CLUB_SOCC)
-            post_values = posts.get_posts(response[0])
+            post_values = posts.get_posts(response[0], None)
             print("I AM HERE, I have a cloudinary link")
             return redirect(url_for('home'))
     return jsonify(upload_result)
