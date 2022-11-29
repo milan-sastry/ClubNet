@@ -51,7 +51,8 @@ class Posts(Base):
 #-----------------------------------------------------------------------
 class Post_Likes(Base):
     __tablename__ = 'likes'
-    post_id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement = True, primary_key = True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement = True, primary_key = True)
+    post_id = sqlalchemy.Column(sqlalchemy.Integer)
     user_id = sqlalchemy.Column(sqlalchemy.String)
 
 #-----------------------------------------------------------------------

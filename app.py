@@ -434,8 +434,11 @@ def upload_file():
 
 @app.route("/upload_page")
 def base_upload():
+    response = validate_user(CLUB_SOCC)
     post_id = request.args.get('post_id')
-    return render_template("image_upload.html", post_id=post_id)
+    cover_user = profile.get_profile_from_id(response[0])
+    img = cover_user.profile_image_url
+    return render_template("image_upload.html", post_id=post_id, validation=response[1], img=img)
 
 # -----------------------------------------------------------------------
 if __name__ == '__main__':
