@@ -26,6 +26,7 @@ class User (Base):
     hometown = sqlalchemy.Column(sqlalchemy.String)
     job_title = sqlalchemy.Column(sqlalchemy.String)
     user_company = sqlalchemy.Column(sqlalchemy.String)
+    notifications = sqlalchemy.Column(sqlalchemy.String)
 
 #-----------------------------------------------------------------------
 
@@ -87,32 +88,37 @@ def init_database():
                         name = "Allen Wu",
                         email = "allenwu@princeton.edu",
                         class_year = 2024,
-                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
+                        notifications = True)
             session.add(user1)
             user2 = User(user_id = "renteria",
                         name = "Emilio Cano",
                         email = "emiliocanor@princeton.edu",
                         class_year = 2023,
-                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1667797176/renteria_profile_picture.jpg")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1667797176/renteria_profile_picture.jpg",
+                        notifications = True)
             session.add(user2)
             user3 = User(user_id = "yparikh",
                         name = "Yash Parikh",
                         email = "yparikh@princeton.edu",
                         class_year = 2024,
-                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668444358/IMG_4394_hcpx3y.jpg")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668444358/IMG_4394_hcpx3y.jpg",
+                        notifications = True)
                         # profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
             user4 = User(user_id = "oguntola",
                         name = "Ayo Oguntola",
                         email = "oguntola@princeton.edu",
                         class_year = 2024,
-                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493633/Screen_Shot_2022-11-15_at_1.26.50_AM_ihanhi.png")
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493633/Screen_Shot_2022-11-15_at_1.26.50_AM_ihanhi.png",
+                        notifications = True)
             session.add(user4)
             user5 = User(user_id = "edmo",
                         name = "Ed Mo",
                         email = "chitrap@princeton.edu",
                         class_year = 2022,
-                        profile_image_url = "https://picsum.photos/500/500")
+                        profile_image_url = "https://picsum.photos/500/500",
+                        notifications = True)
             session.add(user5)
 
             user_clubs1 = Users_Clubs(username = 'allenwu',

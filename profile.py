@@ -21,6 +21,7 @@ class Profile:
     hometown = None
     job_title = None
     user_company = None
+    notifications = None
 
     def __init__(self, row):
         self.user_id = row.user_id
@@ -34,6 +35,7 @@ class Profile:
         self.hometown = row.hometown
         self.job_title = row.job_title
         self.user_company = row.user_company
+        self.notifications = row.notifications
 
 # ---------------------------EDIT----------------------------------------
 
@@ -66,6 +68,9 @@ class Profile:
 
     def edit_user_company(self, user_company):
         self.user_company = user_company
+
+    def edit_notifications(self, notifications):
+        self.notifications = notifications
 
 # ---------------------------GET-----------------------------------------
 
@@ -120,6 +125,12 @@ class Profile:
     def get_user_company(self):
         if self.user_company:
             return self.user_company
+        else:
+            return ""
+
+    def get_notifications(self):
+        if self.notifications:
+            return self.notifications
         else:
             return ""
 
@@ -213,7 +224,8 @@ def edit_profile(user_id, data):
                     "favorite_team": data["favorite_team"],
                     "hometown": data["hometown"],
                     "job_title": data["job_title"],
-                    "user_company": data["user_company"]
+                    "user_company": data["user_company"],
+                    "notifications": data["notifications"]
                 })
             else:
                 response = session.query(database.User).filter(database.User.user_id == user_id).update({
@@ -223,7 +235,8 @@ def edit_profile(user_id, data):
                 "favorite_team": data["favorite_team"],
                 "hometown": data["hometown"],
                 "job_title": data["job_title"],
-                "user_company": data["user_company"]
+                "user_company": data["user_company"],
+                "notifications": data["notifications"]
             })
             session.commit()
             print("RESPONSEE", response)

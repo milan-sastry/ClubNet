@@ -64,53 +64,61 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Class Year</span>
           </div>
-          <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year">
+          <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year" placeholder="1999">
         </div>
         <!-- Major -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Major</span>
           </div>
-          <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major">
+
+          <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major" placeholder="COS, SPA">
         </div>
         <!-- Team Position -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Position</span>
           </div>
-          <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position">
+          <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position" placeholder="CM, CB, ST">
         </div>
         <!-- Favorite Team -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Favorite Team</span>
           </div>
-          <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team">
+          <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team" placeholder="Manchester City">
         </div>
         <!-- Hometown -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Hometown</span>
           </div>
-          <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown">
+          <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown" placeholder="Memphis">
         </div>
         <!-- Job Title -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Job Title</span>
           </div>
-          <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title">
+          <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title" placeholder="Associate">
         </div>
         <!-- Company -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">Company</span>
           </div>
-          <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company">
+          <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
+        </div>
+        <!-- Notifications -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Notifications</span>
+          </div>
+          <input name="notifications" id="notifications" value="{{user.get_notifications()}}" type="text" class="form-control" aria-label="Notifications">
         </div>
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Update Profile</button>
-        <!-- <script>
+                        <!-- <script>
                         function myFunction() {
                         const classYear = document.getElementById('class-year').innerHTML
                         const major = document.getElementById('major').innerHTML
