@@ -86,7 +86,8 @@ def make_request(post_title, post_description, net_id):
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
                                 timestamp=datetime.now(),
                                 status = 0,
-                                likes = 0)
+                                likes = 0,
+                                comments = 0)
             session.add(post1)
             session.commit()
             session.refresh(post1)
@@ -95,7 +96,7 @@ def make_request(post_title, post_description, net_id):
         engine.dispose()
 
 
-def get_posts(user_id, filter):
+def get_posts(user_id, filter=None):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
