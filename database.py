@@ -150,7 +150,7 @@ def init_database():
                         title = "goat",
                         description = "is ayo",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now(),
+                        timestamp = datetime.fromtimestamp(10000),
                         status = 1,
                         likes = 0
                         )
