@@ -243,6 +243,18 @@ def edit_profile(user_id, data):
             return True
     finally:
         engine.dispose()
+def edit_profile_image(user_id, link):
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    try:
+        with sqlalchemy.orm.Session(engine) as session:
+                response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                    "profile_image_url": link,
+                })
+                session.commit()
+                print("RESPONSEE", response)
+                return True
+    finally:
+        engine.dispose()
 
 def create_profile(user_id, name, year):
     if get_profile_from_id(user_id) is not None:
