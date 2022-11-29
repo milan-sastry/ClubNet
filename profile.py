@@ -225,7 +225,7 @@ def edit_profile(user_id, data):
                     "hometown": data["hometown"],
                     "job_title": data["job_title"],
                     "user_company": data["user_company"],
-                    # "notifications": data["notifications"]
+                    "notifications": data["notifications"]
                 })
             else:
                 response = session.query(database.User).filter(database.User.user_id == user_id).update({
