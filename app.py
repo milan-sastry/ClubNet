@@ -421,7 +421,7 @@ def validate_user(club_id):
             return (netid, INVALID)
 
 # WIP here about the uploading of images
-@app.route("/upload", methods=['POST', 'GET'])
+@app.route("/upload_post_image", methods=['POST', 'GET'])
 def upload_file():
     # netid = CASClient().Authenticate()
     file_cloudinary_link = ""
@@ -456,6 +456,33 @@ def base_upload():
     cover_user = profile.get_profile_from_id(response[0])
     img = cover_user.profile_image_url
     return render_template("image_upload.html", post_id=post_id, validation=response[1], img=img)
+
+# @app.route("/upload_profile_image", methods=['POST', 'GET'])
+# def upload_file():
+#     # netid = CASClient().Authenticate()
+#     file_cloudinary_link = ""
+#     user_id = request.args.get('user_id')
+#
+#     cloudinary.config(cloud_name = 'clubnet', api_key=os.getenv('API_KEY'),
+#     api_secret=os.getenv('API_SECRET'))
+#     upload_result = None
+#     if request.method == 'POST':
+#         file_to_upload = request.files['file']
+#         # app.logger.info('%s file_to_upload', file_to_upload)
+#
+#     if file_to_upload:
+#         upload_result = cloudinary.uploader.upload(file_to_upload)
+#         app.logger.info(upload_result)
+#         print(jsonify(upload_result))
+#         file_cloudinary_link = upload_result['url']
+#         # print(file_cloudinary_link)
+#         if file_cloudinary_link != None:
+#             posts.add_image(post_id, file_cloudinary_link)
+#             response = validate_user(CLUB_SOCC)
+#             post_values = posts.get_posts(response[0], None)
+#             print("I AM HERE, I have a cloudinary link")
+#             return redirect(url_for('home'))
+#     return jsonify(upload_result)
 
 # -----------------------------------------------------------------------
 if __name__ == '__main__':
