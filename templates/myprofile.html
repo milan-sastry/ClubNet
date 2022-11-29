@@ -108,6 +108,13 @@
           </div>
           <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company">
         </div>
+        <!-- Notifications -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Notifications</span>
+          </div>
+          <input name="notifications" id="notifications" value="{{user.get_notifications()}}" type="text" class="form-control" aria-label="Notifications">
+        </div>
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Update Profile</button>
         <!-- <script>
