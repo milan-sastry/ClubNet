@@ -331,6 +331,7 @@ def accept_post():
     print("SENT AN EMAIL")
     message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
     message.body = new_post.get_title() + new_post.get_description()
+    message.html = render_template('message.html', **kwargs)
     # message.body += "Body: " + new_post.get_description()
     mail.send(message)
 
