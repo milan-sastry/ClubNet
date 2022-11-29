@@ -51,8 +51,11 @@
               </div>
               <!-- timestamp -->
               <div class="d-flex justify-content-end" style="width: 400px;">
-                <p>{{post.post.get_timestamp()}}</p>
+                <p id="{{post.post.get_timestamp()}}">{{post.post.get_timestamp()}}</p>
               </div>
+              <script>
+                document.getElementById("{{post.post.get_timestamp()}}").innerHTML = new Date("{{post.post.get_timestamp()}}").toLocaleString();
+              </script>
             </div>
             <!-- Post Content -->
             <img src={{post.post.get_image_url()}} alt="Responsive image" style="width: 100%; margin-top: 20px; border-radius: 20px">
@@ -62,14 +65,30 @@
               <h5 class="card-title">{{post.post.get_title()}}</h5>
               <p class="card-text"> {{post.post.get_description()}}</p>
             </div>
+            <!-- Likes -->
             <div>
-              <span>Likes:</span>
+             
               <span>{{post.post.get_likes()}}</span>
               <form action="/announcements/like">
                 <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
-                <button type="submit">Like this post</button>
+                <button type="submit" style="cursor: hover; width: 200px; height: 30px; background-color: rgb(255, 73, 73); border-radius: 5px; margin-top: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                  <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.creativefabrica.com/wp-content/uploads/2019/05/Like-Icon-by-demolabid.jpg">
+                </button>
               </form>
             </div>
+            <!-- Delete Post -->
+            {% if isAdmin == True %}
+              <div>
+                <!-- delete post button -->
+                <form action="announcements/delete" method = "DELETE" class="d-flex flex-column">
+                  <input type="hidden" value="{{post.post.get_post_id()}}" style="margin-bottom: 10px;" class="text" name="post_id" placeholder="postid"></input>
+                  <button style="cursor: hover; width: 200px; height: 30px; background-color: rgb(255, 73, 73); border-radius: 5px; margin-top: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                    <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png">
+                    <span style="margin-left: 5px;">Remove Post</span>
+                  </button>
+                </form>
+              </div>
+            {% endif %}
           </div>
         </div>
       {% endfor %}
@@ -84,8 +103,6 @@
       $("#Posts").load('form');
   });
   </script>
-
 <!-- {% include 'footer.html' %} -->
 </body>
-
 </html>

@@ -44,14 +44,14 @@ class Post:
 
 #-----------------------------------------------------------------------
 
-def make_request(post_title, post_description):
+def make_request(post_title, post_description, net_id):
     DATABASE_URL = os.getenv('DB_URL')
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     engine = sqlalchemy.create_engine(DATABASE_URL)
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            post1 = database.Posts(creator_id="yparikh",
+            post1 = database.Posts(creator_id=net_id,
                                 title=post_title,
                                 description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",

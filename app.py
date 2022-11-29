@@ -60,7 +60,9 @@ def pending_request():
     response = validate_user(CLUB_SOCC)
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
-    if response[1] == (VALIDATED or ADMIN):
+    if response[1] == VALIDATED:
+        return redirect(url_for('home'))
+    if response[1] == ADMIN:
         return redirect(url_for('home'))
 
     admins = admin.get_admins(CLUB_SOCC)
@@ -71,7 +73,10 @@ def pending_request():
 @app.route("/invalid", methods=['GET'])
 def invalid():
     response = validate_user(CLUB_SOCC)
-    if response[1] == (VALIDATED or ADMIN):
+    print(response[1])
+    if response[1] == VALIDATED:
+        return redirect(url_for('home'))
+    if response[1] == ADMIN:
         return redirect(url_for('home'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
@@ -132,7 +137,20 @@ def announcements():
     user = profile.get_profile_from_id(net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(CLUB_SOCC)
-    return render_template('announcements.html', posts=post_values, img=img, validation=response[1])
+    isAdmin = admin.is_admin(net_id, CLUB_SOCC)
+    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user)
+
+@app.route('/announcements/delete', methods=['GET', 'POST', 'DELETE'])
+def delete_post():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    post_id = request.args.get("post_id", None)
+    posts.delete_post(post_id)
+    return redirect(url_for('announcements'))
 
 @app.route('/announcements/like', methods=['GET'])
 def like():
@@ -257,7 +275,8 @@ def render_form():
         # make the post
         # then send them to add image
         print(request)
-        id = posts.make_request(request.form.get('Post Title'),request.form.get('Post Description'))
+        response = validate_user(CLUB_SOCC)
+        id = posts.make_request(request.form.get('Post Title'),request.form.get('Post Description'), response[0])
         return redirect(url_for('base_upload',post_id=id))
     return render_template("form.html")
 
