@@ -88,16 +88,17 @@ def get_requests(engine):
             return list
     
 def create_request(engine, user_id, club_id, name, year):
+    
+    if check_request(engine, user_id, club_id):
+        print("request already exists")
+        return 
+
     with sqlalchemy.orm.Session(engine) as session:
-            if check_request(engine, user_id, club_id):
-                print("request already exists")
-                return 
-            else:
-                new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id, name = name, year = year)
-                session.add(new_request)
-                session.commit()
-                print("Request added")
-                return
+        new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id, name = name, year = year)
+        session.add(new_request)
+        session.commit()
+        print("Request added")
+        return
 
 def check_request(engine, user_id, club_id):
     with sqlalchemy.orm.Session(engine) as session:

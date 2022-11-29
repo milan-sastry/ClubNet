@@ -1,4 +1,3 @@
-import os
 import sqlalchemy.ext.declarative
 import sqlalchemy
 from sqlalchemy import delete
@@ -96,14 +95,14 @@ def get_posts(engine, user_id, filter=None):
             for row in table:
                 # print(row)
                 post = Post(row)
-                user = profile.get_profile_from_id(engine, post._creator_id)
+                user = profile.get_profile_from_id(engine, post._creator_id, session)
                 isLiked = len(session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post._post_id and database.Post_Likes.user_id == user_id).all()) > 0
                 comment_query = session.query(database.Comments).filter(database.Comments.post_id == post._post_id).order_by(database.Comments.timestamp.desc())
                 comments_response = comment_query.all()
                 comments = []
                 for com in comments_response:
                     my_comment = Comment(com)
-                    comment_user = profile.get_profile_from_id(engine, my_comment._user_id)
+                    comment_user = profile.get_profile_from_id(engine, my_comment._user_id, session)
                     comments.append({"comment": my_comment, "user": comment_user})
                 if filter:
                     if filter == "members":
@@ -137,7 +136,6 @@ def get_post_requests(engine):
             for row in table:
                 # print(row)
                 post = Post(row)
-                user = profile.get_profile_from_id(engine, post._creator_id)
                 list.append(post)
             session.commit()
             return list
@@ -174,7 +172,7 @@ def like(engine, post_id, user_id):
                 post_like = database.Post_Likes(post_id=post_id, user_id=user_id)
                 session.add(post_like)
                 session.commit()
-                session.refresh(post_like)
+                session.refresh(post_like) #sus
             return True
 
 def unlike(engine, post_id, user_id):
@@ -196,7 +194,7 @@ def comment(engine, post_id, net_id, comment):
             post_comment = database.Comments(post_id=post_id, user_id=net_id, comment=comment, timestamp=datetime.now())
             session.add(post_comment)
             session.commit()
-            session.refresh(post_comment)
+            session.refresh(post_comment) #sus
             return True
 
 # this function is never used btw

@@ -162,15 +162,25 @@ def validate(engine, user_id, club_id):
     return bool
 
 
-def get_profile_from_id(engine, user_id):
-    with sqlalchemy.orm.Session(engine) as session:
-            query = session.query(database.User).filter(
-            database.User.user_id == user_id).all()
-            if len(query) > 0:
-                profile = query[0]
-                return Profile(profile)
-            else:
-                return None
+def get_profile_from_id(engine, user_id, session = None):
+    
+    if session is None:
+        with sqlalchemy.orm.Session(engine) as session:
+                query = session.query(database.User).filter(
+                database.User.user_id == user_id).all()
+                if len(query) > 0:
+                    profile = query[0]
+                    return Profile(profile)
+                else:
+                    return None
+    else:
+        query = session.query(database.User).filter(
+                database.User.user_id == user_id).all()
+        if len(query) > 0:
+            profile = query[0]
+            return Profile(profile)
+        else:
+            return None
 
 
 def get_profiles_from_club(engine, club_id):
