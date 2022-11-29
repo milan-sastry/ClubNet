@@ -4,11 +4,6 @@ import sqlalchemy.orm
 import sqlalchemy
 from datetime import datetime
 
-DATABASE_URL = os.getenv('DB_URL')
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-
-
 class Profile:
     user_id = None
     name = None
@@ -150,12 +145,9 @@ def get_alumni_year():
         alumniyear = datetime.now().year - 1
     return alumniyear
 
-def validate(user_id, club_id):
-    engine = sqlalchemy.create_engine(DATABASE_URL)
+def validate(engine, user_id, club_id):
     bool = False
-
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+    with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Users_Clubs).filter(
             database.Users_Clubs.username.ilike(user_id))
             # print(query)
@@ -167,15 +159,11 @@ def validate(user_id, club_id):
                     return True
             session.commit()
 
-        return bool
-    finally:
-        engine.dispose()
+    return bool
 
 
-def get_profile_from_id(user_id):
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def get_profile_from_id(engine, user_id):
+    with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.User).filter(
             database.User.user_id == user_id).all()
             if len(query) > 0:
@@ -183,15 +171,11 @@ def get_profile_from_id(user_id):
                 return Profile(profile)
             else:
                 return None
-    finally:
-        engine.dispose()
 
 
-def get_profiles_from_club(club_id):
+def get_profiles_from_club(engine, club_id):
     profiles = []
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+    with sqlalchemy.orm.Session(engine) as session:
             user_ids = session.query(database.Users_Clubs).filter(
                 database.Users_Clubs.club_id == club_id).all()
             for user in user_ids:
@@ -208,13 +192,9 @@ def get_profiles_from_club(club_id):
                     profiles.append(profile)
             session.commit()
             return profiles
-    finally:
-        engine.dispose()
 
-def edit_profile(user_id, data):
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def edit_profile(engine, user_id, data):
+    with sqlalchemy.orm.Session(engine) as session:
             if data["class_year"] != "":
                 response = session.query(database.User).filter(database.User.user_id == user_id).update({
                     "email": data["email"],
@@ -241,39 +221,28 @@ def edit_profile(user_id, data):
             session.commit()
             print("RESPONSEE", response)
             return True
-    finally:
-        engine.dispose()
-def edit_profile_image(user_id, link):
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+
+def edit_profile_image(engine, user_id, link):
+    with sqlalchemy.orm.Session(engine) as session:
                 response = session.query(database.User).filter(database.User.user_id == user_id).update({
                     "profile_image_url": link,
                 })
                 session.commit()
                 print("RESPONSEE", response)
                 return True
-    finally:
-        engine.dispose()
 
-def create_profile(user_id, name, year):
-    if get_profile_from_id(user_id) is not None:
+def create_profile(engine, user_id, name, year):
+    if get_profile_from_id(engine, user_id) is not None:
         return
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+    with sqlalchemy.orm.Session(engine) as session:
             user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png")
             session.add(user)
             session.commit()
-    finally:
-        engine.dispose()
 
-def get_club_member_count(club_id):
+def get_club_member_count(engine, club_id):
     alumni = []
     members = []
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+    with sqlalchemy.orm.Session(engine) as session:
             club_response = session.query(database.Users_Clubs).filter(
                 database.Users_Clubs.club_id == club_id).all()
             for user in club_response:
@@ -293,5 +262,3 @@ def get_club_member_count(club_id):
                         alumni.append(profile)
             session.commit()
             return (len(members), len(alumni))
-    finally:
-        engine.dispose()

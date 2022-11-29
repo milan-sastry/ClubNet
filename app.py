@@ -8,6 +8,7 @@ import cloudinary.api
 import admin
 import posts
 import profile
+import sqlalchemy
 from flask_mail import Mail, Message
 
 path.append('src')  # go to src directory to import
@@ -34,6 +35,12 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
+#databasen connection
+DATABASE_URL = os.getenv('DB_URL')
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+engine = sqlalchemy.create_engine(DATABASE_URL)
+
 
 @app.route('/')
 def hello():
@@ -49,9 +56,9 @@ def home():
         return redirect(url_for('pending_request'))
     net_id = response[0]
     print(session.get('username'))
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    member_count, alumni_count = profile.get_club_member_count(CLUB_SOCC)
+    member_count, alumni_count = profile.get_club_member_count(engine, CLUB_SOCC)
     return render_template('home.html', CASValue=response[0], validation=response[1], img=img, member_count=member_count, alumni_count=alumni_count)
 
 
@@ -65,7 +72,7 @@ def pending_request():
     if response[1] == ADMIN:
         return redirect(url_for('home'))
 
-    admins = admin.get_admins(CLUB_SOCC)
+    admins = admin.get_admins(engine)
     print(admins)
     return render_template('pending_request.html', CASValue=response[0],validation=response[1], admins = admins)
 
@@ -93,8 +100,8 @@ def process_request():
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('invalid'))
     else:
-        profile.create_profile(netid, name, year)
-        admin.create_request(netid, CLUB_SOCC, name, year)
+        profile.create_profile(engine, netid, name, year)
+        admin.create_request(engine, netid, CLUB_SOCC, name, year)
         return redirect(url_for('pending_request'))
 
 
@@ -106,9 +113,9 @@ def members():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     net_id = response[0]
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
+    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
 
     if request.method == 'POST':
         print(request)
@@ -136,12 +143,12 @@ def announcements():
         return redirect(url_for('pending_request'))
 
     filter = request.args.get("filter", None)
-    post_values = posts.get_posts(response[0], filter)
+    post_values = posts.get_posts(engine, response[0], filter)
     net_id = response[0]
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
-    isAdmin = admin.is_admin(net_id, CLUB_SOCC)
+    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
+    isAdmin = admin.is_admin(engine, net_id, CLUB_SOCC)
     return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter)
 
 @app.route('/announcements/delete', methods=['GET', 'POST', 'DELETE'])
@@ -153,7 +160,7 @@ def delete_post():
         return redirect(url_for('pending_request'))
 
     post_id = request.args.get("post_id", None)
-    posts.delete_post(post_id)
+    posts.delete_post(engine, post_id)
     return redirect(url_for('announcements'))
 
 @app.route('/announcements/like', methods=['GET'])
@@ -165,7 +172,7 @@ def like():
         return redirect(url_for('pending_request'))
 
     post_id = request.args.get("post_id", None)
-    posts.like(post_id, response[0])
+    posts.like(engine, post_id, response[0])
     return redirect(url_for('announcements'))
 
 @app.route('/announcements/unlike', methods=['GET'])
@@ -177,7 +184,7 @@ def unlike():
         return redirect(url_for('pending_request'))
 
     post_id = request.args.get("post_id", None)
-    posts.unlike(post_id, response[0])
+    posts.unlike(engine, post_id, response[0])
     return redirect(url_for('announcements'))
 
 @app.route('/announcements/comment', methods=['GET'])
@@ -190,7 +197,7 @@ def comment():
 
     comment = request.args.get("comment-input", None)
     post_id = request.args.get("post_id", None)
-    posts.comment(post_id, response[0], comment)
+    posts.comment(engine, post_id, response[0], comment)
     return redirect(url_for('announcements'))
 
 
@@ -202,11 +209,11 @@ def profiles():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     net_id = request.args.get("net_id", None)
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     cover_net_id = response[0]
-    cover_user = profile.get_profile_from_id(cover_net_id)
+    cover_user = profile.get_profile_from_id(engine, cover_net_id)
     img = cover_user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
+    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
     return render_template('profile.html', user=user, img=img, validation=response[1])
 
 @app.route('/myprofile', methods=["GET", "POST"])
@@ -217,13 +224,13 @@ def myProfile():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     net_id = CASClient().Authenticate()
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
+    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
     if request.method == 'POST':
         print(request.form.get('notifications'))
         print(request.form)
-        profile.edit_profile(net_id, request.form)
+        profile.edit_profile(engine, net_id, request.form)
         return redirect(url_for('members'))
     return render_template('myprofile.html', user=user, img=img, validation=response[1])
 
@@ -236,9 +243,9 @@ def donations():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
     net_id = response[0]
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
+    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
     return render_template('donations.html', img=img, validation=response[1])
 
 
@@ -251,12 +258,12 @@ def admin_page():
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
-    pendingRequests = admin.get_requests()
-    postRequests = posts.get_requests()
+    pendingRequests = admin.get_requests(engine)
+    postRequests = posts.get_post_requests(engine)
     net_id = response[0]
-    user = profile.get_profile_from_id(net_id)
+    user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(CLUB_SOCC)
+    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
     all_members = 'mailto:'
     students = 'mailto:'
     alumni = 'mailto:'
@@ -285,7 +292,7 @@ def admin_accept_page():
         return redirect(url_for("home"))
 
     user_id = request.args.get("user_id", None)
-    admin.approve_request(user_id, CLUB_SOCC)
+    admin.approve_request(engine, user_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
 
 @app.route('/admin/deny', methods=['GET'])
@@ -299,7 +306,7 @@ def admin_deny_page():
         return redirect(url_for("home"))
 
     user_id = request.args.get("user_id", None)
-    admin.delete_request(user_id, CLUB_SOCC)
+    admin.delete_request(engine, user_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
 
 @app.route('/form', methods=['GET', 'POST'])
@@ -309,7 +316,7 @@ def render_form():
         # then send them to add image
         print(request)
         response = validate_user(CLUB_SOCC)
-        id = posts.make_request(request.form.get('Post Title'),request.form.get('Post Description'), response[0])
+        id = posts.make_request(engine, request.form.get('Post Title'),request.form.get('Post Description'), response[0])
         return redirect(url_for('base_upload',post_id=id))
     return render_template("form.html")
 
@@ -323,7 +330,7 @@ def remove_user():
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
     net_id = request.form.get("user_id", None)
-    admin.remove_user(net_id, CLUB_SOCC)
+    admin.remove_user(engine, net_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
 
 @app.route('/admin/remove_admin', methods=["POST"])
@@ -336,7 +343,7 @@ def remove_admin():
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
     net_id = request.form.get("user_id", None)
-    admin.remove_admin(net_id, CLUB_SOCC)
+    admin.remove_admin(engine, net_id, CLUB_SOCC)
     return redirect(url_for('admin_page'))
 
 @app.route('/admin/make_admin', methods=["POST"])
@@ -350,7 +357,7 @@ def make_admin():
         return redirect(url_for("home"))
     net_id = request.form.get("user_id", None)
     officer_position = request.form.get("off_pos", None)
-    admin.make_admin(net_id, CLUB_SOCC, officer_position)
+    admin.make_admin(engine, net_id, CLUB_SOCC, officer_position)
     return redirect(url_for('admin_page'))
 
 @app.route('/admin/accept_post', methods=["GET"])
@@ -365,18 +372,18 @@ def accept_post():
     post_id = request.args.get("post_id", None)
 
 
-    posts.approve_request(post_id)
+    posts.approve_post_request(engine, post_id)
 
     # does get_post_by_id work?
     # alternatively, could retrieve all posts and just use last post in list as new_post
-    post_values = posts.get_posts(response[0], None)
+    post_values = posts.get_posts(engine, response[0], None)
     new_post = post_values[0]['post']
-    # new_post = posts.get_post_by_id(post_id)
+    # new_post = posts.get_post_by_id(engine, post_id)
 
     # inserting logic here to send out the info for a post
     recipientlist = []
     print("I know there's this user here")
-    for person in profile.get_profiles_from_club(CLUB_SOCC):
+    for person in profile.get_profiles_from_club(engine, CLUB_SOCC):
         if(person.get_notifications() == "true"):
             email = person.get_email()
             recipientlist.append(email)
@@ -404,20 +411,20 @@ def deny_post():
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
     post_id = request.args.get("post_id", None)
-    posts.reject_request(post_id)
+    posts.reject_request(engine, post_id)
     return redirect(url_for('admin_page'))
 
 
 def validate_user(club_id):
     netid = CASClient().Authenticate()
-    is_in_club = profile.validate(netid, club_id)
+    is_in_club = profile.validate(engine, netid, club_id)
     if is_in_club:
-        if admin.is_admin(netid, club_id):
+        if admin.is_admin(engine, netid, club_id):
             return (netid, ADMIN)
         else:
             return (netid, VALIDATED)
     else:
-        is_in_requests = admin.check_request(netid, CLUB_SOCC)
+        is_in_requests = admin.check_request(engine, netid, CLUB_SOCC)
         if is_in_requests:
             return (netid, REQUEST)
         else:
@@ -445,9 +452,9 @@ def upload_file():
         file_cloudinary_link = upload_result['url']
         # print(file_cloudinary_link)
         if file_cloudinary_link != None:
-            posts.add_image(post_id, file_cloudinary_link)
+            posts.add_image(engine, post_id, file_cloudinary_link)
             response = validate_user(CLUB_SOCC)
-            post_values = posts.get_posts(response[0], None)
+            post_values = posts.get_posts(engine, response[0], None)
             print("I AM HERE, I have a cloudinary link")
             return redirect(url_for('home'))
     return jsonify(upload_result)
@@ -456,14 +463,14 @@ def upload_file():
 def base_upload():
     response = validate_user(CLUB_SOCC)
     post_id = request.args.get('post_id')
-    cover_user = profile.get_profile_from_id(response[0])
+    cover_user = profile.get_profile_from_id(engine, response[0])
     img = cover_user.profile_image_url
     return render_template("post_image_upload.html", post_id=post_id, validation=response[1], img=img)
 
 @app.route("/upload_profile_image_page")
 def profile_image_url():
     response = validate_user(CLUB_SOCC)
-    cover_user = profile.get_profile_from_id(response[0])
+    cover_user = profile.get_profile_from_id(engine, response[0])
     img = cover_user.profile_image_url
     return render_template("post_image_upload.html", validation=response[1], img=img)
 
@@ -488,8 +495,8 @@ def upload_profile_image():
         # print(file_cloudinary_link)
         if file_cloudinary_link != None:
             response = validate_user(CLUB_SOCC)
-            profile.edit_profile_image(response[0], file_cloudinary_link)
-            # post_values = posts.get_posts(response[0], None)
+            profile.edit_profile_image(engine, response[0], file_cloudinary_link)
+            # post_values = posts.get_posts(engine, response[0], None)
             print("updated with a cloudinary link")
             return redirect(url_for('home'))
     return jsonify(upload_result)

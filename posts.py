@@ -5,8 +5,6 @@ from sqlalchemy import delete
 import database
 import profile
 from datetime import datetime
-
-
 class Post:
 
     def __init__(self, db_row):
@@ -73,13 +71,8 @@ class Comment:
 
 #-----------------------------------------------------------------------
 
-def make_request(post_title, post_description, net_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def make_request(engine, post_title, post_description, net_id):
+    with sqlalchemy.orm.Session(engine) as session:
             post1 = database.Posts(creator_id=net_id,
                                 title=post_title,
                                 description=post_description,
@@ -92,17 +85,10 @@ def make_request(post_title, post_description, net_id):
             session.commit()
             session.refresh(post1)
             return post1.post_id
-    finally:
-        engine.dispose()
 
 
-def get_posts(user_id, filter=None):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def get_posts(engine, user_id, filter=None):
+    with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Posts).filter(database.Posts.status == 1).order_by(database.Posts.timestamp.desc())
             # print(query)
             table = query.all()
@@ -110,14 +96,14 @@ def get_posts(user_id, filter=None):
             for row in table:
                 # print(row)
                 post = Post(row)
-                user = profile.get_profile_from_id(post._creator_id)
+                user = profile.get_profile_from_id(engine, post._creator_id)
                 isLiked = len(session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post._post_id and database.Post_Likes.user_id == user_id).all()) > 0
                 comment_query = session.query(database.Comments).filter(database.Comments.post_id == post._post_id).order_by(database.Comments.timestamp.desc())
                 comments_response = comment_query.all()
                 comments = []
                 for com in comments_response:
                     my_comment = Comment(com)
-                    comment_user = profile.get_profile_from_id(my_comment._user_id)
+                    comment_user = profile.get_profile_from_id(engine, my_comment._user_id)
                     comments.append({"comment": my_comment, "user": comment_user})
                 if filter:
                     if filter == "members":
@@ -130,16 +116,9 @@ def get_posts(user_id, filter=None):
                     list.append({"post": post, "user": user, "isLiked": isLiked, "comments": comments})
             session.commit()
             return list
-    finally:
-        engine.dispose()
 
-def add_image(post_id, post_img_url):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def add_image(engine, post_id, post_img_url):
+    with sqlalchemy.orm.Session(engine) as session:
             # print(post_netid)
             print(post_id)
             query = session.query(database.Posts).filter(
@@ -148,16 +127,9 @@ def add_image(post_id, post_img_url):
             row.club_image_url = post_img_url
             print(post_img_url)
             session.commit()
-    finally:
-        engine.dispose()
 
-def get_requests():
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def get_post_requests(engine):
+    with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Posts).filter(database.Posts.status == 0)
             # print(query)
             table = query.all()
@@ -165,20 +137,13 @@ def get_requests():
             for row in table:
                 # print(row)
                 post = Post(row)
-                user = profile.get_profile_from_id(post._creator_id)
+                user = profile.get_profile_from_id(engine, post._creator_id)
                 list.append(post)
             session.commit()
             return list
-    finally:
-        engine.dispose()
 
-def approve_request(post_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def approve_post_request(engine, post_id):
+    with sqlalchemy.orm.Session(engine) as session:
             # print(post_netid)
             print(post_id)
             query = session.query(database.Posts).filter(
@@ -186,38 +151,21 @@ def approve_request(post_id):
             row = query.one()
             row.status = 1
             session.commit()
-    finally:
-        engine.dispose()
 
-def reject_request(post_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    delete_post(post_id)
+def reject_request(engine, post_id):
+    delete_post(engine, post_id)
 
-def delete_post(post_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def delete_post(engine, post_id):
+    with sqlalchemy.orm.Session(engine) as session:
             # print(post_netid)
             print(post_id)
             stmt = sqlalchemy.delete(database.Posts).where((database.Posts.post_id == post_id))
             session.execute(stmt)
             session.commit()
             print("deleted")
-    finally:
-        engine.dispose()
 
-def like(post_id, user_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def like(engine, post_id, user_id):
+    with sqlalchemy.orm.Session(engine) as session:
             response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post_id and database.Post_Likes.user_id == user_id).all()
             if len(response) == 0:
                 session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
@@ -228,16 +176,9 @@ def like(post_id, user_id):
                 session.commit()
                 session.refresh(post_like)
             return True
-    finally:
-        engine.dispose()
 
-def unlike(post_id, user_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def unlike(engine, post_id, user_id):
+    with sqlalchemy.orm.Session(engine) as session:
             stmt = delete(database.Post_Likes).where((database.Post_Likes.user_id == user_id)&(database.Post_Likes.post_id == post_id))
             session.execute(stmt)
             session.commit()
@@ -246,16 +187,9 @@ def unlike(post_id, user_id):
             })
             session.commit()
             return True
-    finally:
-        engine.dispose()
 
-def comment(post_id, net_id, comment):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+def comment(engine, post_id, net_id, comment):
+    with sqlalchemy.orm.Session(engine) as session:
             session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
                 "comments": database.Posts.comments + 1,
             })
@@ -264,16 +198,10 @@ def comment(post_id, net_id, comment):
             session.commit()
             session.refresh(post_comment)
             return True
-    finally:
-        engine.dispose()
 
-def get_post_by_id(post_id):
-    DATABASE_URL = os.getenv('DB_URL')
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    engine = sqlalchemy.create_engine(DATABASE_URL)
-    try:
-        with sqlalchemy.orm.Session(engine) as session:
+# this function is never used btw
+def get_post_by_id(engine, post_id):
+    with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Posts).filter(database.Posts.post_id == post_id)
             # print(query)
             table = query.all()
@@ -282,10 +210,8 @@ def get_post_by_id(post_id):
                 post = Post(row)
             session.commit()
             return post
-    finally:
-        engine.dispose()
 
-# -----------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 # For testing:
 def _test():
