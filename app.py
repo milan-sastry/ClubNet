@@ -369,6 +369,7 @@ def accept_post():
     # alternatively, could retrieve all posts and just use last post in list as new_post
     post_values = posts.get_posts(engine, response[0], None)
     new_post = post_values[0]['post']
+    print(new_post)
     # new_post = posts.get_post_by_id(engine, post_id)
 
     # inserting logic here to send out the info for a post
@@ -383,7 +384,7 @@ def accept_post():
 
     print("SENT AN EMAIL")
     message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
-    message.body = 'You are being notified because a new post has been made for Club Soccer on ClubNet called: "' + new_post.get_title() + '"! \n \n To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n \n '
+    message.body = 'You are being notified because a new post has been made for Club Soccer on ClubNet! \n \n To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n \n '
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team"
     message.body += "clubnet.onrender.com"
