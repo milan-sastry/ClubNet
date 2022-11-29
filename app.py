@@ -172,7 +172,7 @@ def myProfile():
     net_id = CASClient().Authenticate()
     net_id = net_id[0:len(net_id)-1]
     user = profile.get_profile_from_id(net_id)
-    img = user.profile_image_url
+    img = user.get_profile_image_url()
     members = profile.get_profiles_from_club(CLUB_SOCC)
     if request.method == 'POST':
         profile.edit_profile(net_id, request.form)
