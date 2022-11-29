@@ -465,14 +465,14 @@ def base_upload():
     post_id = request.args.get('post_id')
     cover_user = profile.get_profile_from_id(engine, response[0])
     img = cover_user.profile_image_url
-    return render_template("post_image_upload.html", post_id=post_id, validation=response[1], img=img)
+    return render_template("image_upload.html", post_id=post_id, validation=response[1], img=img)
 
 @app.route("/upload_profile_image_page")
 def profile_image_url():
     response = validate_user(CLUB_SOCC)
     cover_user = profile.get_profile_from_id(engine, response[0])
     img = cover_user.profile_image_url
-    return render_template("post_image_upload.html", validation=response[1], img=img)
+    return render_template("profile_image_upload.html", validation=response[1], img=img)
 
 @app.route("/upload_profile_image", methods=['POST', 'GET'])
 def upload_profile_image():
