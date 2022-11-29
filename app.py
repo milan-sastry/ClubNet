@@ -385,7 +385,7 @@ def accept_post():
 
     print("SENT AN EMAIL")
     message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
-    message.body = "You are being notified because a new post has been made for Club Soccer on ClubNet with" + new_post.get_title() + "! To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n"
+    message.body = "You are being notified because a new post has been made for Club Soccer on ClubNet called " + new_post.get_title() + "! To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n"
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team"
     message.body += "clubnet.onrender.com"
