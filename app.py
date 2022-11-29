@@ -488,7 +488,7 @@ def upload_profile_image():
         # print(file_cloudinary_link)
         if file_cloudinary_link != None:
             response = validate_user(CLUB_SOCC)
-            profiles.edit_profile_image(response[0], file_cloudinary_link)
+            profile.edit_profile_image(response[0], file_cloudinary_link)
             # post_values = posts.get_posts(response[0], None)
             print("updated with a cloudinary link")
             return redirect(url_for('home'))

@@ -62,9 +62,9 @@
           body: formData,
         };
 
-        fetch("/upload_post_image?post_id={{post_id}}", options)
+        fetch("/upload_profile_image", options)
           .then((response) => {
-            window.location.assign('/announcements')
+            window.location.assign('/myprofile')
             return response.json();
           })
           .then((data) => {

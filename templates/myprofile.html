@@ -45,14 +45,16 @@
         <!-- Email -->
         <!-- <a href="mailto:{{user.email}}">{{user.get_email()}}</a> -->
         <!-- Profile Picture -->
-        <img href="/upload_profile_image_page" height=""style="width: 300px; height: 300px; margin-top: 20px; object-fit: cover; border-radius: 40px;" src="{{user.profile_image_url}}" alt="profile_picture" />
+        <img height="" style="width: 300px; height: 300px; margin-top: 20px; object-fit: cover; border-radius: 40px;" src="{{user.profile_image_url}}" alt="profile_picture" />
+        <br>
+        <a class='btn btn-primary' href="{{ url_for('profile_image_url') }}">Change Image</a>
       </div>
     </div>
     <!-- Edit Profile -->
     <div>
       <h1>Edit Profile</h1>
       <!-- Inputs -->
-      <form method="POST" action="" id = "edit_form">
+      <form method="POST" action="" id="edit_form">
         <!-- Email -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -111,15 +113,16 @@
           <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
         </div>
         <!-- Notifications -->
-        <input name="notifications" type="checkbox" value=true id="notifications" class="form-check">
-        <input id='notificationshidden' type='hidden' value=false name='notifications'>
-        <label class="form-check-label" for="notifications">
-          Notifications
-        </label>
-              <br>
+        <div class="form-check">
+          <input name="notifications" type="checkbox" value=true id="notifications" class="form-check-input">
+          <input id='notificationshidden' type='hidden' value=false name='notifications'>
+          <label class="form-check-label" for="notifications">
+            Notifications
+          </label>
+        </div>
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Update Profile</button>
-                        <!-- <script>
+        <!-- <script>
                         function myFunction() {
                         const classYear = document.getElementById('class-year').innerHTML
                         const major = document.getElementById('major').innerHTML
@@ -142,18 +145,22 @@
   <script>
     const form = document.getElementById('edit_form')
     form.addEventListener('submit', () => {
-      if(document.getElementById("notifications").checked) {
-          document.getElementById('notificationshidden').disabled = true;
+      if (document.getElementById("notifications").checked) {
+        document.getElementById('notificationshidden').disabled = true;
       }
-  })
+    })
   </script>
   <script>
-  $(document).ready(function(){
-  if ({{user.get_notifications()}} == true){
-    $('#notifications').prop("checked", true);
-  }
-});
-</script>
+    $(document).ready(function() {
+      if ({
+          {
+            user.get_notifications()
+          }
+        } == true) {
+        $('#notifications').prop("checked", true);
+      }
+    });
+  </script>
   </script>
 </body>
 
