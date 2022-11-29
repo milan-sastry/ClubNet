@@ -35,7 +35,7 @@ class Profile:
         self.hometown = row.hometown
         self.job_title = row.job_title
         self.user_company = row.user_company
-        self.notifications = notifications
+        self.notifications = row.notifications
 
 # ---------------------------EDIT----------------------------------------
 
