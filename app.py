@@ -259,12 +259,14 @@ def admin_page():
     students = 'mailto:'
     alumni = 'mailto:'
     for member in members:
-        if(member.get_notifications() == "true"):
-            all_members += member.get_email() + ','
-            if member.is_alumni():
-                alumni += member.get_email() + ','
-            else:
-                students += member.get_email() + ','
+        if member.get_email() != None:
+            if(member.get_notifications() == "true"):
+                all_members += member.get_email() + ','
+                if member.is_alumni():
+                    alumni += member.get_email() + ','
+                else:
+                    students += member.get_email() + ','
+
     return render_template('admin.html', members=members, requests=pendingRequests, posts = postRequests, validation=response[1], img=img, all_members = all_members, students = students, alumni = alumni)
 
 
