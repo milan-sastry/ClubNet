@@ -97,7 +97,7 @@ def get_posts(engine, user_id, filter=None):
                 post = Post(row)
                 user = profile.get_profile_from_id(engine, post._creator_id, session)
                 isLiked = len(session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post._post_id and database.Post_Likes.user_id == user_id).all()) > 0
-                comment_query = session.query(database.Comments).filter(database.Comments.post_id == post._post_id).order_by(database.Comments.timestamp.desc())
+                comment_query = session.query(database.Comments).filter(database.Comments.post_id == post._post_id).order_by(database.Comments.timestamp.asc())
                 comments_response = comment_query.all()
                 comments = []
                 for com in comments_response:
