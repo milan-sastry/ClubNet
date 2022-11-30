@@ -138,7 +138,13 @@ def init_database():
                         profile_image_url = "https://picsum.photos/500/500",
                         notifications = True)
             session.add(user6)
-
+            user6 = User(user_id = "player2",
+                        name = "Stew Dent",
+                        email = "abc@gmail.com",
+                        class_year = 2020,
+                        profile_image_url = "https://picsum.photos/500/500",
+                        notifications = True)
+            session.add(user6)
             user_clubs1 = Users_Clubs(username = 'allenwu',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs1)
@@ -165,8 +171,8 @@ def init_database():
                         )
             session.add(post1)
             post1 = Posts(creator_id = "oguntola",
-                        title = "goat",
-                        description = "is ayo",
+                        title = "This post was already there",
+                        description = "created by ayo",
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.fromtimestamp(10000),
                         status = 1,
@@ -175,8 +181,8 @@ def init_database():
                         )
             session.add(post1)
             post1 = Posts(creator_id = "renteria",
-                        title = "prolly",
-                        description = "struggling",
+                        title = "Another post",
+                        description = "this time by emilio",
                         club_image_url = "https://picsum.photos/500/500",
                         timestamp = datetime.now(),
                         status = 1,
