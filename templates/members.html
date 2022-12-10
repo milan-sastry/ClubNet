@@ -47,11 +47,9 @@
     <br>
     <br>
       or search by name or year
-      <input type="text" name="filter" id="filter" />
-      <input type="submit" value="Submit Here" class="btn btn-primary" />
+      <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus=""></input>
+      <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus=""></input>
     </center>
-    <input class="form-control" type="text" placeholder="name" name="name" id="name" autofocus=""></input>
-    <input class="form-control" type="text" placeholder="year" name="year" id="year" autofocus=""></input>
     </form>
 
     <div>
@@ -182,7 +180,7 @@
         console.log(year)
 
         let url = '/memberlist' +
-          '?name=' + encodeURIComponent(name) + 
+          '?name=' + encodeURIComponent(name) +
           '&year=' + encodeURIComponent(year)
           // +
         //   '&area=' + encodeURIComponent(area) +

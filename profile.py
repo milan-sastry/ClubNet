@@ -227,6 +227,10 @@ def get_profiles_from_club_filtered(engine, club_id, name, year):
                     ).all()
                     if len(admin_query) > 0:
                         profile.isAdmin = True
+                    #
+                    # if status_filter = 1:
+                    #     if profile.isAdmin():
+
                     profiles.append(profile)
             session.commit()
             return profiles
