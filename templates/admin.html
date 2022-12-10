@@ -197,28 +197,28 @@
             <th>Post Title</th>
             <th>Post Description</th>
             <th>Post Image</th>
-            <th>Accept?</th>
-            <th>Reject?</th>
+            <th>Action</th>
           </tr>
           {% for req in posts%}
           <tr>
-            <th>{{req.get_creator_id()}}</th>
-            <th>{{req.get_title()}}</th>
-            <th>{{req.get_description()}}</th>
-            <th>
+            <td>{{req.get_creator_id()}}</th>
+            <td>{{req.get_title()}}</th>
+            <td>{{req.get_description()}}</th>
+            <td>
               <a target="_blank" rel="noopener noreferrer" href={{req.get_image_url()}}><img style="width: 50px; height: 50px;" src={{req.get_image_url()}}></a>
-            </th>
-            <th>
+            </td>
+            <td>
                 <a href="/admin/accept_post?post_id={{req.get_post_id()}}" style="background-color: rgb(36, 200, 36);" class="btn btn-primary" >Accept</a>
-            </th>
-            <th>
                 <a href="/admin/deny_post?post_id={{req.get_post_id()}}" style="background-color: rgb(255, 73, 73);" class="btn btn-primary" >Reject</a>
-            </th>
+            </td>
+            
           </tr>
       {% endfor %}
           </table>
         </div>
-
+        <div class="d-flex justify-content-center">
+          <span>Contact Emilio with any questions, concerns or bugs at <a href="mailto:emiliocanor@gmail.com">emiliocanor@gmail.com</a></span>
+        </div>
     {% include 'footer.html' %}
 </body>
 </html>
