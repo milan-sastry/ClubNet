@@ -259,7 +259,7 @@ def admin_page():
     students = 'mailto:'
     alumni = 'mailto:'
     for member in members:
-        if member.get_email() != None:
+        if member.get_email() != "None":
                 all_members += member.get_email() + ','
                 if member.is_alumni():
                     alumni += member.get_email() + ','
@@ -377,7 +377,7 @@ def accept_post():
     recipientlist = []
     print("I know there's this user here")
     for person in profile.get_profiles_from_club(engine, CLUB_SOCC):
-        if person.get_email() != None:
+        if person.get_email() != "None":
             if(person.get_notifications() == "true"):
                 email = person.get_email()
                 recipientlist.append(email)
