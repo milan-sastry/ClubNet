@@ -106,7 +106,7 @@
                     <img style="width: 20px; height: 20px; object-fit: contain;" src="https://cdn-icons-png.flaticon.com/512/1380/1380338.png">
                   </button>
                 </div>
-                
+
                 </div>
                 <div  style="width: 100%;" class="collapse d-flex flex-column" id="collapseExample">
                 {% for comment in post.comments %}
@@ -123,7 +123,7 @@
                       <script>
                         document.getElementById("{{comment.comment.get_id()}}comment").innerHTML = new Date("{{comment.comment.get_timestamp()}}").toLocaleDateString();
                       </script>
-                    </div>  
+                    </div>
                     <hr>
                   </div>
                 {% endfor %}
@@ -131,7 +131,9 @@
           </div>
             <!-- Post Information/Footer -->
             <div style="margin-top: 10px;" >
-              <h5 class="card-title">{{post.post.get_title()}}</h5>
+              <center>
+                <h2 class="card-title">{{post.post.get_title()}}</h5>
+              </center>
               <p class="card-text"> {{post.post.get_description()}}</p>
             </div>
             <!-- Comments -->
