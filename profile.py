@@ -205,7 +205,7 @@ def get_profiles_from_club(engine, club_id):
             session.commit()
             return profiles
 
-def get_profiles_from_club_filtered(engine, club_id, name, year):
+def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter):
     profiles = []
     with sqlalchemy.orm.Session(engine) as session:
             user_ids = session.query(database.Users_Clubs).filter(
@@ -227,11 +227,17 @@ def get_profiles_from_club_filtered(engine, club_id, name, year):
                     ).all()
                     if len(admin_query) > 0:
                         profile.isAdmin = True
-                    #
-                    # if status_filter = 1:
-                    #     if profile.isAdmin():
 
-                    profiles.append(profile)
+                    if status_filter == 1:
+                        if profile.is_alumni() == True:
+                            profiles.append(profile)
+                    elif status_filter == 2:
+                        if profile.is_alumni() == False:
+                            profiles.append(profile)
+                    else:
+                        profiles.append(profile)
+
+
             session.commit()
             return profiles
 

@@ -128,9 +128,10 @@ def members():
 def member_list():
     name = request.args.get("name", None)
     year = request.args.get("year", None)
+    status_filter = int(request.args.get("filter", None))
     print(type(year))
     # print(name)
-    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year)
+    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year, status_filter)
     # print("I am returning the member template")
     # print(members)
     return render_template("member_list.html", members=members)

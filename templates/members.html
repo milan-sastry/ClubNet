@@ -38,17 +38,16 @@
     <h2 class="page-title">Men's Club Soccer</h2>
     <p class="page-subtitle">List of members in Men's Club Soccer</p>
 
-    <form method="post" action="/members" id="filter_form">
       <!-- probably need a for loop here -->
       <center>
-      <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni" onclick=alumniClicked() />
-      <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students" onclick= studentsClicked() />
-      <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset" onclick=resetClicked() />
-    <br>
+      <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
+      <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
+      <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset"/>
     <br>
       or search by name or year
       <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus=""></input>
       <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus=""></input>
+      <input type="hidden" id="status_filter"  value="0">
     </center>
     </form>
 
@@ -147,22 +146,19 @@
     </div>
   </div>
   <script>
-    function alumniClicked(){
-        document.getElementById("filter").value = "Alumni";
-        document.getElementById("filter_form").submit();
-      }
+    // function alumniClicked(){
+    //     document.getElementById("status_filter").value = 1;
+    //   }
   </script>
 
   <script>
     function studentsClicked(){
-        document.getElementById("filter").value = "Students";
-        document.getElementById("filter_form").submit();
+      document.getElementById("status_filter").value = 2;
       }
   </script>
   <script>
     function resetClicked(){
-        document.getElementById("filter").value = '';
-        document.getElementById("filter_form").submit();
+      document.getElementById("status_filter").value = 0;
       }
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -177,13 +173,15 @@
       function getResults() {
         var name = $('#name').val();
         var year = $('#year').val();
+        var filter = $('#status_filter').val();
         console.log(year)
 
         let url = '/memberlist' +
           '?name=' + encodeURIComponent(name) +
-          '&year=' + encodeURIComponent(year)
+          '&year=' + encodeURIComponent(year) +
+          '&filter=' + encodeURIComponent(filter)
           // +
-        //   '&area=' + encodeURIComponent(area) +
+
         //   '&title=' + encodeURIComponent(title)
         //
         if (request != null)
@@ -200,6 +198,18 @@
       function setup() {
         $('#name').on('input', getResults);
         $('#year').on('input', getResults);
+        $( "#Alumni" ).on( "click", function() {
+          $("#status_filter").val("1")
+          getResults()
+        })
+        $( "#Students" ).on( "click", function() {
+          $("#status_filter").val("2")
+          getResults()
+        })
+        $( "#Reset" ).on( "click", function() {
+          $("#status_filter").val("0")
+          getResults()
+        })
         getResults()
       }
 
