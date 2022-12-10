@@ -1,0 +1,108 @@
+{% for post in posts%}
+  <div class="d-flex">
+    <div style="margin-top: 20px;" class="post-card">
+      <!-- Post Header -->
+      <div class="d-flex flex-row">
+        <!-- creator profile picture -->
+        <img src={{post.user.get_profile_image_url()}} alt="profile pic" style="width: 60px; height: 60px; border-radius: 30px; object-fit: cover;"/>
+        <!-- creator info -->
+        <div class="d-flex justify-content-center ml-3 flex-column">
+          <b>{{post.user.name}}</b>
+          <p>{{post.user.class_year}}</p>
+        </div>
+        <!-- timestamp -->
+        <div class="d-flex justify-content-end" style="width: 400px;">
+          <p id="{{post.post.get_post_id()}}">{{post.post.get_timestamp()}}</p>
+        </div>
+        <script>
+          document.getElementById("{{post.post.get_post_id()}}").innerHTML = new Date("{{post.post.get_timestamp()}}").toLocaleDateString();
+        </script>
+      </div>
+      <!-- Post Content -->
+      <img src={{post.post.get_image_url()}} alt="Responsive image" style="width: 100%; margin-top: 20px; border-radius: 20px">
+      <!-- Responses -->
+      <div class="d-flex flex-column">
+        <div style="margin-top: 5px;" class="d-flex flex-row">
+          <!-- Likes -->
+          {% if post.isLiked %}
+            <div class="d-flex flex-row align-items-center">
+              <span>{{post.post.get_likes()}}</span>
+              <form action="/announcements/unlike">
+                <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+                <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                  <img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">
+                </button>
+              </form>
+            </div>
+          {% else %}
+            <div class="d-flex flex-row align-items-center">
+              <span>{{post.post.get_likes()}}</span>
+              <form action="/announcements/like">
+                <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+                <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+                  <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">
+                </button>
+              </form>
+            </div>
+          {% endif %}
+          <!-- Comments -->
+          <div class="d-flex flex-row align-items-center">
+            <span>{{post.post.get_comments()}}</span>
+            <button data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+              <img style="width: 20px; height: 20px; object-fit: contain;" src="https://cdn-icons-png.flaticon.com/512/1380/1380338.png">
+            </button>
+          </div>
+
+          </div>
+          <div  style="width: 100%;" class="collapse d-flex flex-column" id="collapseExample">
+          {% for comment in post.comments %}
+            <div class="d-flex flex-row align-items-center" style="margin-bottom: 5px; width: 100%;">
+              <img style="width: 50px; height: 50px; border-radius: 25px; object-fit: cover;" src={{comment.user.get_profile_image_url()}}>
+              <div style="width: 100%;" class="d-flex flex-row">
+                <div style="width: 100%; margin-left: 5px;" class="d-flex flex-column">
+                  <b>{{comment.user.get_name()}}</b>
+                  <span>{{comment.comment.get_comment()}}</span>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <span id="{{comment.comment.get_id()}}comment">{{comment.comment.get_timestamp()}}</span>
+                </div>
+                <script>
+                  document.getElementById("{{comment.comment.get_id()}}comment").innerHTML = new Date("{{comment.comment.get_timestamp()}}").toLocaleDateString();
+                </script>
+              </div>
+              <hr>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+      <!-- Post Information/Footer -->
+      <div style="margin-top: 10px;" >
+        <center>
+          <h2 class="card-title">{{post.post.get_title()}}</h2>
+        </center>
+        <p class="card-text"> {{post.post.get_description()}}</p>
+      </div>
+      <!-- Comments -->
+      <div style="margin-top: 5px;">
+        <form action="/announcements/comment">
+          <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
+          <textarea placeholder="Type your comment here..." class="form-control" id="comment-input" name="comment-input"></textarea>
+          <button style="margin-top: 5px;" class="btn btn-primary">Submit Comment</button>
+        </form>
+      </div>
+      <!-- Delete Post -->
+      {% if isAdmin == True %}
+        <div style="margin-top: 5px;">
+          <!-- delete post button -->
+          <form action="announcements/delete" method = "DELETE" class="d-flex flex-column">
+            <input type="hidden" value="{{post.post.get_post_id()}}" style="margin-bottom: 10px;" class="text" name="post_id" placeholder="postid"></input>
+            <button style="cursor: hover; width: 100%; height: 30px; background-color: rgb(255, 73, 73); border-radius: 5px; margin-top: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
+              <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png">
+              <span style="margin-left: 5px;">Remove Post</span>
+            </button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}

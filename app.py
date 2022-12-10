@@ -129,6 +129,13 @@ def member_list():
     # print(members)
     return render_template("member_list.html", members=members)
 
+@app.route('/get_announcements')
+def get_announcements():
+    filter = request.args.get("filter", None)
+    netid = request.args.get("id", None)
+    print(filter)
+    post_values = posts.get_posts(engine, netid, filter)
+    return render_template('announcement_list.html', posts=post_values)
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
@@ -145,7 +152,7 @@ def announcements():
     img = user.profile_image_url
     members = profile.get_profiles_from_club(engine, CLUB_SOCC)
     isAdmin = admin.is_admin(engine, net_id, CLUB_SOCC)
-    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter)
+    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter, netid = net_id)
 
 @app.route('/announcements/delete', methods=['GET', 'POST', 'DELETE'])
 def delete_post():
