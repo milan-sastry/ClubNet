@@ -135,7 +135,8 @@ def get_announcements():
     netid = request.args.get("id", None)
     print(filter)
     post_values = posts.get_posts(engine, netid, filter)
-    return render_template('announcement_list.html', posts=post_values)
+    isAdmin = admin.is_admin(engine, netid, CLUB_SOCC)
+    return render_template('announcement_list.html', posts=post_values, isAdmin=isAdmin)
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():

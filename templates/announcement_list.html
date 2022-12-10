@@ -19,6 +19,9 @@
         </script>
       </div>
       <!-- Post Content -->
+      <center>
+        <h2 class="card-title">{{post.post.get_title()}}</h2>
+      </center>
       <img src={{post.post.get_image_url()}} alt="Responsive image" style="width: 100%; margin-top: 20px; border-radius: 20px">
       <!-- Responses -->
       <div class="d-flex flex-column">
@@ -77,9 +80,6 @@
     </div>
       <!-- Post Information/Footer -->
       <div style="margin-top: 10px;" >
-        <center>
-          <h2 class="card-title">{{post.post.get_title()}}</h2>
-        </center>
         <p class="card-text"> {{post.post.get_description()}}</p>
       </div>
       <!-- Comments -->
