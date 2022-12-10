@@ -180,8 +180,8 @@
             <td>{{req.get_year()}}</td>
             <td>{{req.get_request_timestamp()}}</td>
             <td>
-              <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
-              <a href="/admin/deny?user_id={{req.get_user_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
+              <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: rgb(36, 200, 36);" class="btn btn-primary" >Accept</a>
+              <a href="/admin/deny?user_id={{req.get_user_id()}}" style="background-color: rgb(255, 73, 73);" class="btn btn-primary" >Reject</a>
             </td>
           </tr>
       {% endfor %}
@@ -209,10 +209,10 @@
               <a target="_blank" rel="noopener noreferrer" href={{req.get_image_url()}}><img style="width: 50px; height: 50px;" src={{req.get_image_url()}}></a>
             </th>
             <th>
-                <a href="/admin/accept_post?post_id={{req.get_post_id()}}" style="background-color: green;" class="btn btn-primary" >Accept</a>
+                <a href="/admin/accept_post?post_id={{req.get_post_id()}}" style="background-color: rgb(36, 200, 36);" class="btn btn-primary" >Accept</a>
             </th>
             <th>
-                <a href="/admin/deny_post?post_id={{req.get_post_id()}}" style="background-color: red;" class="btn btn-primary" >Reject</a>
+                <a href="/admin/deny_post?post_id={{req.get_post_id()}}" style="background-color: rgb(255, 73, 73);" class="btn btn-primary" >Reject</a>
             </th>
           </tr>
       {% endfor %}

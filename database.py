@@ -200,6 +200,17 @@ def init_database():
                         comments = 0
                         )
             session.add(post1)
+            for _ in range(30):
+                post1 = Posts(creator_id = "edmo",
+                        title = "Alumni Post",
+                        description = "testing some comments stuff",
+                        club_image_url = "https://picsum.photos/500/500",
+                        timestamp = datetime.now(),
+                        status = 1,
+                        likes = 0,
+                        comments = 0
+                        )
+                session.add(post1)
             admin1 = Admins(user_id = "renteria", club_id = CLUB_SOCC, officer_position = "president")
             session.add(admin1)
             admin2 = Admins(user_id = "yparikh", club_id = CLUB_SOCC, officer_position = "vice president")
