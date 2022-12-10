@@ -115,14 +115,7 @@ def members():
     net_id = response[0]
     user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
-    members = profile.get_profiles_from_club(engine, CLUB_SOCC)
-
-    if request.method == 'POST':
-        print(request)
-        print(request.form)
-        return render_template('members.html', members=members, img=img, validation=response[1], filter=request.form.get('filter'))
-    else:
-        return render_template('members.html', members=members, img=img, validation=response[1], filter='')
+    return render_template('members.html', img=img, validation=response[1])
 
 @app.route('/memberlist')
 def member_list():
