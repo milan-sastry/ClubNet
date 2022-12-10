@@ -186,17 +186,27 @@
         $('#year').on('input', getResults);
         $( "#Alumni" ).on( "click", function() {
           $("#status_filter").val("1")
+          $("#Alumni").prop('disabled', true)
+          $("#Students").prop('disabled', false)
+          $("#Reset").prop('disabled', false)
           getResults()
         })
         $( "#Students" ).on( "click", function() {
           $("#status_filter").val("2")
+          $("#Alumni").prop('disabled', false)
+          $("#Students").prop('disabled', true)
+          $("#Reset").prop('disabled', false)
           getResults()
         })
         $( "#Reset" ).on( "click", function() {
           $("#status_filter").val("0")
+          $("#Alumni").prop('disabled', false)
+          $("#Students").prop('disabled', false)
+          $("#Reset").prop('disabled', true)
           getResults()
         })
         getResults()
+        $("#Reset").prop('disabled', true)
       }
 
       // init JS for the DOM
