@@ -4,6 +4,7 @@ import sqlalchemy.orm
 import sqlalchemy
 from sqlalchemy import func
 from datetime import datetime
+from sqlalchemy.sql.expression import cast
 
 class Profile:
     user_id = None
@@ -204,7 +205,7 @@ def get_profiles_from_club(engine, club_id):
             session.commit()
             return profiles
 
-def get_profiles_from_club_by_name(engine, club_id,name):
+def get_profiles_from_club_filtered(engine, club_id, name, year):
     profiles = []
     with sqlalchemy.orm.Session(engine) as session:
             user_ids = session.query(database.Users_Clubs).filter(
@@ -213,7 +214,10 @@ def get_profiles_from_club_by_name(engine, club_id,name):
                 profile = session.query(database.User).filter(
                     database.User.user_id == user.username,
                     func.lower(database.User.name).contains(func.lower(name)),
+                    cast(database.User.class_year, sqlalchemy.String).contains(year)
+                    # str(database.User.class_year) == '2024'
                     ).all()
+
                 if len(profile) > 0:
                     profile = Profile(session.query(database.User).filter(
                         database.User.user_id == user.username

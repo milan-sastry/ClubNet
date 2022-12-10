@@ -178,8 +178,11 @@
       // makes the request by getting the values of the input
       function getResults() {
         var name = $('#name').val();
+        var year = $('#year').val();
+        console.log(year)
+
         let url = '/memberlist' +
-          '?name=' + encodeURIComponent(name)
+          '?name=' + encodeURIComponent(name) + 
           '&year=' + encodeURIComponent(year)
           // +
         //   '&area=' + encodeURIComponent(area) +

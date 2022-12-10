@@ -127,9 +127,10 @@ def members():
 @app.route('/memberlist')
 def member_list():
     name = request.args.get("name", None)
-    # year = request.args.get("year", None)
+    year = request.args.get("year", None)
+    print(type(year))
     # print(name)
-    members = profile.get_profiles_from_club_by_name(engine, CLUB_SOCC, name)
+    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year)
     # print("I am returning the member template")
     # print(members)
     return render_template("member_list.html", members=members)
