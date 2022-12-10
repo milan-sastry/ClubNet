@@ -80,14 +80,13 @@ def pending_request():
 @app.route("/invalid", methods=['GET'])
 def invalid():
     response = validate_user(CLUB_SOCC)
-    print(response[1])
     if response[1] == VALIDATED:
         return redirect(url_for('home'))
     if response[1] == ADMIN:
         return redirect(url_for('home'))
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
-    return render_template('invalid.html', CASValue=response[0],validation=response[1])
+    return render_template('invalid.html', CAS_Value=response[0],validation=response[1])
 
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
