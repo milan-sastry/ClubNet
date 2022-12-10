@@ -124,6 +124,16 @@ def members():
     else:
         return render_template('members.html', members=members, img=img, validation=response[1], filter='')
 
+@app.route('/memberlist')
+def member_list():
+    name = request.args.get("name", None)
+    # year = request.args.get("year", None)
+    # print(name)
+    members = profile.get_profiles_from_club_by_name(engine, CLUB_SOCC, name)
+    # print("I am returning the member template")
+    # print(members)
+    return render_template("member_list.html", members=members)
+
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():

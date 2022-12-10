@@ -2,6 +2,7 @@ import database
 import os
 import sqlalchemy.orm
 import sqlalchemy
+from sqlalchemy import func
 from datetime import datetime
 
 class Profile:
@@ -163,7 +164,7 @@ def validate(engine, user_id, club_id):
 
 
 def get_profile_from_id(engine, user_id, session = None):
-    
+
     if session is None:
         with sqlalchemy.orm.Session(engine) as session:
                 query = session.query(database.User).filter(
@@ -194,6 +195,29 @@ def get_profiles_from_club(engine, club_id):
                 if len(profile) > 0:
                     profile = Profile(session.query(database.User).filter(
                         database.User.user_id == user.username).order_by(database.User.class_year).all()[0])
+                    admin_query = session.query(database.Admins).filter(
+                        database.Admins.user_id == profile.user_id
+                    ).all()
+                    if len(admin_query) > 0:
+                        profile.isAdmin = True
+                    profiles.append(profile)
+            session.commit()
+            return profiles
+
+def get_profiles_from_club_by_name(engine, club_id,name):
+    profiles = []
+    with sqlalchemy.orm.Session(engine) as session:
+            user_ids = session.query(database.Users_Clubs).filter(
+                database.Users_Clubs.club_id == club_id).all()
+            for user in user_ids:
+                profile = session.query(database.User).filter(
+                    database.User.user_id == user.username,
+                    func.lower(database.User.name).contains(func.lower(name)),
+                    ).all()
+                if len(profile) > 0:
+                    profile = Profile(session.query(database.User).filter(
+                        database.User.user_id == user.username
+                        ).order_by(database.User.class_year).all()[0])
                     admin_query = session.query(database.Admins).filter(
                         database.Admins.user_id == profile.user_id
                     ).all()

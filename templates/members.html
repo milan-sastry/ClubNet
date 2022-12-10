@@ -50,11 +50,13 @@
       <input type="text" name="filter" id="filter" />
       <input type="submit" value="Submit Here" class="btn btn-primary" />
     </center>
+    <input class="form-control" type="text" placeholder="name" name="name" id="name" autofocus=""></input>
+    <input class="form-control" type="text" placeholder="year" name="year" id="year" autofocus=""></input>
     </form>
 
     <div>
       <!-- members -->
-      <div class="member-container">
+      <div class="member-container" id="member-list">
         <!-- user list -->
         <div class="container-fluid">
           <div class="row">
@@ -165,6 +167,44 @@
         document.getElementById("filter_form").submit();
       }
   </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script>
+      // updates the CourseTable
+      function handleResponse(response) {
+        $('#member-list').html(response);
+      }
+
+      var request = null;
+      // makes the request by getting the values of the input
+      function getResults() {
+        var name = $('#name').val();
+        let url = '/memberlist' +
+          '?name=' + encodeURIComponent(name)
+          '&year=' + encodeURIComponent(year)
+          // +
+        //   '&area=' + encodeURIComponent(area) +
+        //   '&title=' + encodeURIComponent(title)
+        //
+        if (request != null)
+          request.abort();
+        // // send the request to the function that updates the values
+        request = $.ajax({
+          type: 'GET',
+          url: url,
+          success: handleResponse
+        });
+      }
+
+      // essentially just adds listeners here
+      function setup() {
+        $('#name').on('input', getResults);
+        $('#year').on('input', getResults);
+        getResults()
+      }
+
+      // init JS for the DOM
+      $('document').ready(setup);
+      </script>
 </body>
 
 </html>

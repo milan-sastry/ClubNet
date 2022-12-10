@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="row">
+    {% for user in members %}
+        <div style="cursor: pointer;" class="">
+          <div onclick="window.location='/profile?net_id={{user.get_user_id()}}';" class="member-card">
+            <!-- top user information -->
+            <div class="d-flex flex-row align-items-center">
+              <!-- profile picture -->
+              <div class="profile-pic">
+                <img style="width: 100px; height: 100px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
+              </div>
+              <!-- basic user information -->
+              <div class="d-flex flex-column ml-2">
+                <b>{{user.get_name()}}</b>
+                <p style="margin-bottom: 0px;">Class Year: {{user.get_class_year()}}</p>
+                <p>Email: {{user.get_email()}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
