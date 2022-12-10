@@ -107,10 +107,10 @@ def get_posts(engine, user_id, filter=None):
                 if filter:
                     if filter == "members":
                         if user.get_class_year() > 2022:
-                            list.append({"post": post, "user": user, "isLiked": isLiked})
+                            list.append({"post": post, "user": user, "isLiked": isLiked, "comments": comments})
                     else:
                         if user.get_class_year() < 2023:
-                            list.append({"post": post, "user": user, "isLiked": isLiked})
+                            list.append({"post": post, "user": user, "isLiked": isLiked, "comments": comments})
                 else:
                     list.append({"post": post, "user": user, "isLiked": isLiked, "comments": comments})
             session.commit()
