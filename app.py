@@ -528,7 +528,7 @@ def base_upload():
     print(recipientlist)
     print("SENT AN EMAIL")
     message = Message("New Post Suggested on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
-    message.body = 'You are being notified because a user has suggested a new post in Club Soccer on ClubNet that may need to be processed, if an corresponding image is selected! \n \n To see if the user completed the post request, go to https://clubnet.onrender.com/admin.\n \n '
+    message.body = 'You are being notified because a user has suggested a new post in Club Soccer on ClubNet! \n \n To approve or decline, go to https://clubnet.onrender.com/admin.\n \n '
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team\n"
     message.body += "clubnet.onrender.com"
