@@ -119,6 +119,13 @@
           </div>
           <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
         </div>
+        <!-- Industry -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Industry</span>
+          </div>
+          <input name="industry" id="industry" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Industry" placeholder="Technology">
+        </div>
         <!-- Notifications -->
         <div class="form-check">
           <input name="notifications" type="checkbox" value=true id="notifications" class="form-check-input">

@@ -27,6 +27,7 @@ class User (Base):
     job_title = sqlalchemy.Column(sqlalchemy.String)
     user_company = sqlalchemy.Column(sqlalchemy.String)
     notifications = sqlalchemy.Column(sqlalchemy.String)
+    industry = sqlalchemy.Column(sqlalchemy.String)
 
 #-----------------------------------------------------------------------
 
