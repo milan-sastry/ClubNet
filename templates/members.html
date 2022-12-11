@@ -47,6 +47,7 @@
       or search by name or year
       <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus=""></input>
       <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus=""></input>
+      <input class="form-control" type="text" placeholder="Enter major here" name="major" id="major" autofocus=""></input>
       <input type="hidden" id="status_filter"  value="0">
     </center>
     </form>
@@ -71,13 +72,15 @@
       function getResults() {
         var name = $('#name').val();
         var year = $('#year').val();
+        var major = $('#major').val();
         var filter = $('#status_filter').val();
         console.log(year)
 
         let url = '/memberlist' +
           '?name=' + encodeURIComponent(name) +
           '&year=' + encodeURIComponent(year) +
-          '&filter=' + encodeURIComponent(filter)
+          '&filter=' + encodeURIComponent(filter) +
+          '&major=' + encodeURIComponent(major)
           // +
 
         //   '&title=' + encodeURIComponent(title)
@@ -96,6 +99,7 @@
       function setup() {
         $('#name').on('input', getResults);
         $('#year').on('input', getResults);
+        $('#major').on('input', getResults);
         $( "#Alumni" ).on( "click", function() {
           $("#status_filter").val("1")
           $("#Alumni").prop('disabled', true)

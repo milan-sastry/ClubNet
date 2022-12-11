@@ -95,18 +95,19 @@ def init_database():
 
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            user1 = User(user_id = "allenwu",
-                        name = "Allen Wu",
-                        email = "allenwu@princeton.edu",
-                        class_year = 2024,
-                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
-                        notifications = True)
-            session.add(user1)
+            # user1 = User(user_id = "allenwu",
+            #             name = "Allen Wu",
+            #             email = "allenwu@princeton.edu",
+            #             class_year = 2024,
+            #             profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
+            #             notifications = True)
+            # session.add(user1)
             user2 = User(user_id = "renteria",
                         name = "Emilio Cano",
                         email = "emiliocanor@princeton.edu",
                         class_year = 2023,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1667797176/renteria_profile_picture.jpg",
+                        major = "",
                         notifications = True)
             session.add(user2)
             user3 = User(user_id = "yparikh",
@@ -114,6 +115,7 @@ def init_database():
                         email = "yparikh@princeton.edu",
                         class_year = 2024,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668444358/IMG_4394_hcpx3y.jpg",
+                        major = "",
                         notifications = True)
                         # profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
@@ -122,6 +124,7 @@ def init_database():
                         email = "oguntola@princeton.edu",
                         class_year = 2024,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493633/Screen_Shot_2022-11-15_at_1.26.50_AM_ihanhi.png",
+                        major = "",
                         notifications = True)
             session.add(user4)
             user5 = User(user_id = "edmo",
@@ -129,6 +132,7 @@ def init_database():
                         email = "chitrap@princeton.edu",
                         class_year = 2022,
                         profile_image_url = "https://picsum.photos/500/500",
+                        major = "",
                         notifications = True)
             session.add(user5)
             user6 = User(user_id = "tzypman",
@@ -136,6 +140,7 @@ def init_database():
                         email = "abcdefg@gmail.com",
                         class_year = 2022,
                         profile_image_url = "https://picsum.photos/500/500",
+                        major = "",
                         notifications = True)
             session.add(user6)
             user6 = User(user_id = "player2",
@@ -143,11 +148,12 @@ def init_database():
                         email = "abc@gmail.com",
                         class_year = 2020,
                         profile_image_url = "https://picsum.photos/500/500",
+                        major = "",
                         notifications = True)
             session.add(user6)
-            user_clubs1 = Users_Clubs(username = 'allenwu',
-                                        club_id = CLUB_SOCC)
-            session.add(user_clubs1)
+            # user_clubs1 = Users_Clubs(username = 'allenwu',
+            #                             club_id = CLUB_SOCC)
+            # session.add(user_clubs1)
             user_clubs2 = Users_Clubs(username = 'yparikh',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs2)
