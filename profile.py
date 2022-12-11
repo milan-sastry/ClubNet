@@ -33,6 +33,7 @@ class Profile:
         self.job_title = row.job_title
         self.user_company = row.user_company
         self.notifications = row.notifications
+        self.industry = row.industry
 
 # ---------------------------EDIT----------------------------------------
 
@@ -69,6 +70,8 @@ class Profile:
     def edit_notifications(self, notifications):
         self.notifications = notifications
 
+    def edit_industry(self, industry):
+        self.industry = industry
 # ---------------------------GET-----------------------------------------
 
     def get_user_id(self):
@@ -128,6 +131,12 @@ class Profile:
     def get_notifications(self):
         if self.notifications:
             return self.notifications
+        else:
+            return ""
+
+    def get_industry(self):
+        if self.industry:
+            return self.industry
         else:
             return ""
 
@@ -205,7 +214,7 @@ def get_profiles_from_club(engine, club_id):
             session.commit()
             return profiles
 
-def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter):
+def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter,major):
     profiles = []
     with sqlalchemy.orm.Session(engine) as session:
             user_ids = session.query(database.Users_Clubs).filter(
@@ -214,7 +223,8 @@ def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter):
                 profile = session.query(database.User).filter(
                     database.User.user_id == user.username,
                     func.lower(database.User.name).contains(func.lower(name)),
-                    cast(database.User.class_year, sqlalchemy.String).contains(year)
+                    cast(database.User.class_year, sqlalchemy.String).contains(year),
+                    func.lower(database.User.major).contains(func.lower(major)),
                     # str(database.User.class_year) == '2024'
                     ).all()
 
@@ -243,29 +253,17 @@ def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter):
 
 def edit_profile(engine, user_id, data):
     with sqlalchemy.orm.Session(engine) as session:
-            if data["class_year"] != "":
-                response = session.query(database.User).filter(database.User.user_id == user_id).update({
-                    "email": data["email"],
-                    "class_year": data["class_year"],
-                    "major": data["major"],
-                    "team_position": data["team_position"],
-                    "favorite_team": data["favorite_team"],
-                    "hometown": data["hometown"],
-                    "job_title": data["job_title"],
-                    "user_company": data["user_company"],
-                    "notifications": data["notifications"]
-                })
-            else:
-                response = session.query(database.User).filter(database.User.user_id == user_id).update({
-                "email": data["email"],
-                "major": data["major"],
-                "team_position": data["team_position"],
-                "favorite_team": data["favorite_team"],
-                "hometown": data["hometown"],
-                "job_title": data["job_title"],
-                "user_company": data["user_company"],
-                "notifications": data["notifications"]
-            })
+#         obj2 = { "a": 1, "b": 2 }
+# >>> obj3 = {**obj2}
+# >>> del obj3["a"]
+# >>> obj3
+
+            data_new = {**data}
+            if data["class_year"] == "":
+                del data_new['class_year']
+            if data["name"] == "":
+                del data_new['name']
+            response = session.query(database.User).filter(database.User.user_id == user_id).update(data_new)
             session.commit()
             print("RESPONSEE", response)
             return True
@@ -283,7 +281,7 @@ def create_profile(engine, user_id, name, year):
     if get_profile_from_id(engine, user_id) is not None:
         return
     with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png", notifications = True)
+            user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", notifications = True)
             session.add(user)
             session.commit()
 

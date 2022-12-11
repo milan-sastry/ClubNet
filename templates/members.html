@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="static/styles/main.css">
   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_package/favicon.ico') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -34,6 +35,7 @@
           </div>
     </header>
   </div>
+
   <div class="page-container">
     <h2 class="page-title">Men's Club Soccer</h2>
     <p class="page-subtitle">List of members in Men's Club Soccer</p>
@@ -43,13 +45,13 @@
       <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
       <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
       <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset"/>
-    <br>
-      or search by name or year
-      <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus=""></input>
-      <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus=""></input>
+      <p>or filter by name, year or major below:</p>
+
+      <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus="" style="width: 80%;"></input>
+      <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus="" style="width: 80%;"></input>
+      <input class="form-control" type="text" placeholder="Enter major here" name="major" id="major" autofocus="" style="width: 80%;"></input>
       <input type="hidden" id="status_filter"  value="0">
     </center>
-    </form>
 
     <div>
       <!-- members -->
@@ -59,7 +61,6 @@
   </div>
 
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script>
       // updates the CourseTable
       function handleResponse(response) {
@@ -71,13 +72,15 @@
       function getResults() {
         var name = $('#name').val();
         var year = $('#year').val();
+        var major = $('#major').val();
         var filter = $('#status_filter').val();
         console.log(year)
 
         let url = '/memberlist' +
           '?name=' + encodeURIComponent(name) +
           '&year=' + encodeURIComponent(year) +
-          '&filter=' + encodeURIComponent(filter)
+          '&filter=' + encodeURIComponent(filter) +
+          '&major=' + encodeURIComponent(major)
           // +
 
         //   '&title=' + encodeURIComponent(title)
@@ -96,6 +99,7 @@
       function setup() {
         $('#name').on('input', getResults);
         $('#year').on('input', getResults);
+        $('#major').on('input', getResults);
         $( "#Alumni" ).on( "click", function() {
           $("#status_filter").val("1")
           $("#Alumni").prop('disabled', true)
@@ -119,11 +123,27 @@
         })
         getResults()
         $("#Reset").prop('disabled', true)
+        // FORM
       }
 
       // init JS for the DOM
       $('document').ready(setup);
       </script>
+      <script>
+//       $('#filter-toggle').on('switchChange.bootstrapSwitch', function (event, status) {
+//     console.log(status);
+// });
+      // $('#filter-section').bootstrapSwitch('state');
+      // $('#filter-section').on('switchChange.bootstrapSwitch',function () {
+      //   var check = $('.bootstrap-switch-on');
+      //   if (check.length > 0) {
+      //     console.log('ON')
+      //   } else {
+      //     console.log('OFF')
+      //   }
+      // });
+      </script>
+
 </body>
 
 </html>

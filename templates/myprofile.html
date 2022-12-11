@@ -58,6 +58,13 @@
         <!-- Email -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
+            <span class="input-group-text">Name</span>
+          </div>
+          <input name="name" id="name" value="{{user.get_name()}}" type="text" class="form-control" aria-label="name">
+        </div>
+        <!-- Email -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
             <span class="input-group-text">Email</span>
           </div>
           <input name="email" id="email" value="{{user.get_email()}}" type="text" class="form-control" aria-label="email">
@@ -111,6 +118,13 @@
             <span class="input-group-text">Company</span>
           </div>
           <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
+        </div>
+        <!-- Industry -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Industry</span>
+          </div>
+          <input name="industry" id="industry" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Industry" placeholder="Technology">
         </div>
         <!-- Notifications -->
         <div class="form-check">

@@ -95,7 +95,7 @@ def process_request():
     year = request.form.get('year', None)
     # this probably needs to be worked on further, not sure how this
     # affects alumni accounts
-    if name == '' or year == '':
+    if name == '' or year == '' or year.isnumeric() == False:
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('invalid'))
     else:
@@ -120,10 +120,11 @@ def members():
 def member_list():
     name = request.args.get("name", None)
     year = request.args.get("year", None)
+    major = request.args.get("major", None)
     status_filter = int(request.args.get("filter", None))
     print(type(year))
     # print(name)
-    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year, status_filter)
+    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year, status_filter,major)
     # print("I am returning the member template")
     # print(members)
     return render_template("member_list.html", members=members)
