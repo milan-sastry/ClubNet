@@ -58,6 +58,13 @@
         <!-- Email -->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
+            <span class="input-group-text">Name</span>
+          </div>
+          <input name="name" id="name" value="{{user.get_name()}}" type="text" class="form-control" aria-label="name">
+        </div>
+        <!-- Email -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
             <span class="input-group-text">Email</span>
           </div>
           <input name="email" id="email" value="{{user.get_email()}}" type="text" class="form-control" aria-label="email">

@@ -246,6 +246,7 @@ def edit_profile(engine, user_id, data):
     with sqlalchemy.orm.Session(engine) as session:
             if data["class_year"] != "":
                 response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                    "name": data["name"],
                     "email": data["email"],
                     "class_year": data["class_year"],
                     "major": data["major"],
@@ -258,6 +259,7 @@ def edit_profile(engine, user_id, data):
                 })
             else:
                 response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                "name": data["name"],
                 "email": data["email"],
                 "major": data["major"],
                 "team_position": data["team_position"],
