@@ -200,7 +200,7 @@ def init_database():
                         comments = 0
                         )
             session.add(post1)
-            for _ in range(30):
+            for _ in range(100):
                 post1 = Posts(creator_id = "edmo",
                         title = "Alumni Post",
                         description = "testing some comments stuff",
