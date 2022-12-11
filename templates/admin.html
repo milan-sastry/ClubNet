@@ -163,6 +163,7 @@
           <tr>
             <th>User</th>
             <th>Class Year</th>
+            <th>Email</th>
             <th>Timestamp</th>
             <th>Action</th>
           </tr>
@@ -178,6 +179,7 @@
               </div>
             </td>
             <td>{{req.get_year()}}</td>
+            <td>{{req.get_email()}}</td>
             <td>{{req.get_request_timestamp()}}</td>
             <td>
               <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: rgb(36, 200, 36);" class="btn btn-primary" >Accept</a>

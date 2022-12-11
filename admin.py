@@ -36,6 +36,7 @@ class Request:
         self._user_id = row.user_id
         self._name = row.name
         self._year = row.year
+        self._email = row.email
 
     def get_request_timestamp(self):
         return self._request_timestamp
@@ -51,6 +52,9 @@ class Request:
     
     def get_year(self):
         return self._year
+    
+    def get_email(self):
+        return self._email
 
 # test this
 # add in a login to the invalidated
@@ -87,14 +91,14 @@ def get_requests(engine):
                 list.append(user)
             return list
     
-def create_request(engine, user_id, club_id, name, year):
+def create_request(engine, user_id, club_id, name, year, email):
     
     if check_request(engine, user_id, club_id):
         print("request already exists")
         return 
 
     with sqlalchemy.orm.Session(engine) as session:
-        new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id, name = name, year = year)
+        new_request = database.Requests(request_timestamp = datetime.now(), user_id = user_id, club_id = club_id, name = name, year = year, email = email)
         session.add(new_request)
         session.commit()
         print("Request added")
@@ -149,6 +153,13 @@ def remove_user(engine, user_id, club_id):
             stmt = delete(database.Users_Clubs).where((database.Users_Clubs.username == user_id)&(database.Users_Clubs.club_id == club_id))
             session.execute(stmt)
             session.commit()
+
+def get_request_email(engine, user_id):
+    with sqlalchemy.orm.Session(engine) as session:
+        query = session.query(database.Requests.email).filter(database.Requests.user_id == user_id)
+        table = query.one()
+        print(table[0])
+        return table[0]
 
 def get_admins(engine):
     with sqlalchemy.orm.Session(engine) as session:

@@ -75,6 +75,7 @@ class Requests(Base):
     user_id = sqlalchemy.Column(sqlalchemy.String)
     name = sqlalchemy.Column(sqlalchemy.String)
     year = sqlalchemy.Column(sqlalchemy.Integer)
+    email = sqlalchemy.Column(sqlalchemy.String)
 
 #-----------------------------------------------------------------------
 class Admins(Base):
@@ -96,13 +97,13 @@ def init_database():
 
     try:
         with sqlalchemy.orm.Session(engine) as session:
-            # user1 = User(user_id = "allenwu",
-            #             name = "Allen Wu",
-            #             email = "allenwu@princeton.edu",
-            #             class_year = 2024,
-            #             profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
-            #             notifications = True)
-            # session.add(user1)
+            user1 = User(user_id = "allenwu",
+                        name = "Allen Wu",
+                        email = "allenwu@princeton.edu",
+                        class_year = 2024,
+                        profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
+                        notifications = True)
+            session.add(user1)
             user2 = User(user_id = "renteria",
                         name = "Emilio Cano",
                         email = "emiliocanor@princeton.edu",
@@ -152,9 +153,9 @@ def init_database():
                         major = "",
                         notifications = True)
             session.add(user6)
-            # user_clubs1 = Users_Clubs(username = 'allenwu',
-            #                             club_id = CLUB_SOCC)
-            # session.add(user_clubs1)
+            user_clubs1 = Users_Clubs(username = 'allenwu',
+                                        club_id = CLUB_SOCC)
+            session.add(user_clubs1)
             user_clubs2 = Users_Clubs(username = 'yparikh',
                                         club_id = CLUB_SOCC)
             session.add(user_clubs2)
@@ -224,16 +225,19 @@ def init_database():
             session.add(admin2)
             admin3 = Admins(user_id = "oguntola", club_id = CLUB_SOCC, officer_position = "tres")
             session.add(admin3)
+            admin4 = Admins(user_id = "allenwu", club_id = CLUB_SOCC, officer_position = "secretary")
+            session.add(admin4)
             req1 = Requests(user_id = "tzypman",
                          request_timestamp = datetime.now(),
                          name = "Toby Zypman",
                          year = 2022,
-                         club_id = CLUB_SOCC)
-            req2 = Requests(user_id = "player2",
-                         request_timestamp = datetime.now(),
-                         club_id = CLUB_SOCC, name = "Stew Dent", year = 1776)
+                         club_id = CLUB_SOCC,
+                         email = "tzypman@princeton.edu")
+            # req2 = Requests(user_id = "player2",
+            #              request_timestamp = datetime.now(),
+            #              club_id = CLUB_SOCC, name = "Stew Dent", year = 1776)
             session.add(req1)
-            session.add(req2)
+            # session.add(req2)
             session.commit()
     finally:
         engine.dispose()

@@ -277,11 +277,11 @@ def edit_profile_image(engine, user_id, link):
                 print("RESPONSEE", response)
                 return True
 
-def create_profile(engine, user_id, name, year):
+def create_profile(engine, user_id, name, year, email):
     if get_profile_from_id(engine, user_id) is not None:
         return
     with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", notifications = True)
+            user = database.User(user_id = user_id, name = name, email = email, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", notifications = True)
             session.add(user)
             session.commit()
 
