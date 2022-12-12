@@ -34,12 +34,13 @@
             <br>
             <h2>OR ... </h2>
             <br>
-            <span>Enter your information and request to be aproved by an admin</span>
+            <span>Enter your information and request to be approved by an admin</span>
             <br>
             <form class="d-flex flex-column align-items-center justify-content-center" method="POST" action="/process_request?user_id={{CAS_Value}}">
               <input placeholder="Full Name..." style="margin-bottom: 10px;" class="form-control" name="name">
               <input placeholder="Class year..." style="margin-bottom: 10px;" class="form-control" name="year">
-              <br>
+              <input placeholder="Email..." style ="margin-bottom: 10px;" class="form-control" name="email">
+          <br>
               <input class="btn btn-lg btn-dark" type="submit" value="Request to be Approved">
             </form>
           </div>

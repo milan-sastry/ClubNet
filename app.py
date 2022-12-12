@@ -93,14 +93,44 @@ def process_request():
     netid = request.args.get('user_id', None)
     name = request.form.get('name', None)
     year = request.form.get('year', None)
+    email = request.form.get('email', None)
+    print("process request", name, year, email)
     # this probably needs to be worked on further, not sure how this
     # affects alumni accounts
-    if name == '' or year == '' or year.isnumeric() == False:
+    if name == '' or year == '' or year.isnumeric() == False or email == '':
         flash('please enter valid, nonempty personal information')
         return redirect(url_for('invalid'))
     else:
-        profile.create_profile(engine, netid, name, year)
-        admin.create_request(engine, netid, CLUB_SOCC, name, year)
+        profile.create_profile(engine, netid, name, year, email)
+        admin.create_request(engine, netid, CLUB_SOCC, name, year, email)
+
+         # sends email to user after requests to join
+        messagetwo = Message("Your User Request on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = [email])
+        messagetwo.body = 'You are being notified because your request to join Club Soccer on ClubNet is now pending! You will be notified again if you are approved! \n \n '
+        messagetwo.body += "Best regards,\n"
+        messagetwo.body += "The ClubNet Team\n"
+        messagetwo.body += "clubnet.onrender.com"
+        mail.send(messagetwo)
+        print("SENT AN EMAIL")
+
+        # sends email to admins for new pending join requests
+        admins = admin.get_admins(engine)
+        print(admins)
+        print("I know there's this admin here")
+        recipientlistone = []
+        for each_admin in admins:
+            if each_admin.get_email() != "None":
+                email = each_admin.get_email()
+                recipientlistone.append(email)
+        print(recipientlistone)
+        message = Message("New User Request on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlistone)
+        message.body = 'You are being notified because a new user has made a request to join Club Soccer on ClubNet that needs to be processed! \n \n To view the contents of this new request, go to https://clubnet.onrender.com/admin.\n \n '
+        message.body += "Best regards,\n"
+        message.body += "The ClubNet Team\n"
+        message.body += "clubnet.onrender.com"
+        mail.send(message)
+        print("SENT AN EMAIL")
+
         return redirect(url_for('pending_request'))
 
 
@@ -297,7 +327,20 @@ def admin_accept_page():
         return redirect(url_for("home"))
 
     user_id = request.args.get("user_id", None)
+    email = admin.get_request_email(engine, user_id)
+    print("process request", email)
     admin.approve_request(engine, user_id, CLUB_SOCC)
+    print("sucessfully approved")
+
+    # sends email to user if they have newly been validated
+    message = Message("Request Approved on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = [email])
+    print("message created")
+    message.body = 'You are being notified because your request to join Club Soccer on ClubNet has been approved! \n \n To log in, go to https://clubnet.onrender.com.\n \n '
+    message.body += "Best regards,\n"
+    message.body += "The ClubNet Team\n"
+    message.body += "clubnet.onrender.com"
+    mail.send(message)
+    print("SENT AN EMAIL")
     return redirect(url_for('admin_page'))
 
 @app.route('/admin/deny', methods=['GET'])
@@ -472,6 +515,26 @@ def base_upload():
     post_id = request.args.get('post_id')
     cover_user = profile.get_profile_from_id(engine, response[0])
     img = cover_user.profile_image_url
+
+    # sends email to admins for new posts suggested
+    admins = admin.get_admins(engine)
+    print(admins)
+    print("I know there's this admin here")
+    recipientlist = []
+    for each_admin in admins:
+        if each_admin.get_email() != "None":
+            email = each_admin.get_email()
+            recipientlist.append(email)
+    print(recipientlist)
+    print("SENT AN EMAIL")
+    message = Message("New Post Suggested on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
+    message.body = 'You are being notified because a user has suggested a new post in Club Soccer on ClubNet! \n \n To approve or decline, go to https://clubnet.onrender.com/admin.\n \n '
+    message.body += "Best regards,\n"
+    message.body += "The ClubNet Team\n"
+    message.body += "clubnet.onrender.com"
+    # message.html = render_template("message.html", post=new_post)
+    mail.send(message)
+
     return render_template("image_upload.html", post_id=post_id, validation=response[1], img=img)
 
 @app.route("/upload_profile_image_page")

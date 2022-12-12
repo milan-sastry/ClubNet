@@ -189,6 +189,37 @@
           {% endfor %}
               </table>
             </div>
+      <div class="container-fluid" id="results_table">
+        <table class="table table-striped">
+          <tr>
+            <th>User</th>
+            <th>Class Year</th>
+            <th>Email</th>
+            <th>Timestamp</th>
+            <th>Action</th>
+          </tr>
+          {% for req in requests%}
+          <tr>
+            <td>
+              <div class="d-flex flex-row align-items-center">
+                <img style="width: 50px; height: 50px; border-radius: 15px; object-fit: cover;" src="https://freesvg.org/img/abstract-user-flat-4.png">
+                <div style="margin-left: 5px;" class="d-flex flex-column justify-content-center">
+                  <b class="d-flex align-items-center">{{req.get_name()}}</b>
+                  <span style="display: inline;">{{req.get_user_id()}}</span>
+                </div>
+              </div>
+            </td>
+            <td>{{req.get_year()}}</td>
+            <td>{{req.get_email()}}</td>
+            <td>{{req.get_request_timestamp()}}</td>
+            <td>
+              <a href="/admin/accept?user_id={{req.get_user_id()}}" style="background-color: rgb(36, 200, 36);" class="btn btn-primary" >Accept</a>
+              <a href="/admin/deny?user_id={{req.get_user_id()}}" style="background-color: rgb(255, 73, 73);" class="btn btn-primary" >Reject</a>
+            </td>
+          </tr>
+      {% endfor %}
+          </table>
+        </div>
 
           <br>
           <h3 class="page-title">Handle Post Requests</h3>
