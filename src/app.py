@@ -10,9 +10,7 @@ import posts
 import profile
 import sqlalchemy
 from flask_mail import Mail, Message
-
-path.append('src')  # go to src directory to import
-from src.CASClient import CASClient
+from CASClient import CASClient
 
 CLUB_SOCC = 1
 INVALID = 0
