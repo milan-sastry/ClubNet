@@ -91,8 +91,16 @@ def init_database():
     if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
+    print("This will reset the ENTIRE database, including \ninformation from all existing users. \nAre you SURE you would like to proceed? \n[if so, type 'Yes!!!']")
+    line = input()
+
+    if line != 'Yes!!!':
+        print("Execution cancelled.")
+        return
+
     engine = sqlalchemy.create_engine(DATABASE_URL)
     Base.metadata.drop_all(engine)
+    print("Database reset")
     Base.metadata.create_all(engine)
 
     try:
@@ -102,6 +110,7 @@ def init_database():
                         email = "allenwu@princeton.edu",
                         class_year = 2024,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
+                        major = "",
                         industry = "",
                         notifications = True)
             session.add(user1)
@@ -122,7 +131,6 @@ def init_database():
                         major = "",
                         industry = "",
                         notifications = True)
-                        # profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
             user4 = User(user_id = "oguntola",
                         name = "Ayo Oguntola",
@@ -244,7 +252,7 @@ def init_database():
                          request_timestamp = datetime.now(),
                          club_id = CLUB_SOCC, name = "Stew Dent", year = 1776, email="stewdent@princeton.edu")
             session.add(req1)
-            # session.add(req2)
+            session.add(req2)
             session.commit()
     finally:
         engine.dispose()
