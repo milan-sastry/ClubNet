@@ -44,10 +44,45 @@
           <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
           <input type="button" class="btn btn-primary" id="All" value="All" name="All"  />
           <input type="hidden" id="filter"  value="">
+          <input type="hidden" id="netid"  value={{netid}}>
+          <input type="hidden" id="page_number"  value={{page_number}}>
+          <input type="hidden" id="num_pages"  value={{num_pages}}>
           </div>
           <div id="Posts">
           </div>
-
+          <nav style="margin-top: 10px;">
+            <ul class="pagination">
+              <li id="previous" class="page-item">
+                <a class="page-link" href="announcements?page_number={{page_number - 1}}">Previous</a>
+              </li>
+              {% if page_number > 2 %}
+                <li class="page-item">
+                  <a class="page-link" href="announcements?page_number=1">...</a>
+                </li>
+              {% endif %}
+              {% if page_number > 1 %}
+                <li class="page-item">
+                  <a class="page-link" href="announcements?page_number={{page_number - 1}}">{{page_number - 1}}</a>
+                </li>
+              {% endif %}
+              <li class="page-item active">
+                <a class="page-link" href="announcements?page_number={{page_number}}">{{page_number}} <span class="sr-only">(current)</span></a>
+              </li>
+              {% if num_pages > page_number %}
+              <li class="page-item">
+                <a class="page-link" href="announcements?page_number={{page_number + 1}}">{{page_number + 1}}</a>
+              </li>
+              {% endif %}
+              {% if num_pages - 1 > page_number %}
+                <li class="page-item">
+                  <a class="page-link" href="announcements?page_number={{num_pages}}">...</a>
+                </li>
+              {% endif %}
+              <li id="next" class="page-item">
+                <a class="page-link" href="announcements?page_number={{page_number + 1}}">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
         <!-- Side Panel -->
         <div style="margin-left: 50px; margin-right: 50px;">
@@ -57,7 +92,7 @@
       </div>
     </div>
   </div>
-
+  
   <script>
   $('#form').click(function() {
       $("#PostArea").load('form');
@@ -70,15 +105,29 @@
         $('#Posts').html(response);
       }
 
+      const page_number = $('#page_number').val();
+      const num_pages = $('#num_pages').val();
+      const prev = document.getElementById("previous")
+      const next = document.getElementById("next")
+      if (page_number == 1) {
+        prev.className = "page-item disabled"
+      }
+      if (page_number == num_pages) {
+        next.className = "page-item disabled"
+      }
+
       var request = null;
       // makes the request by getting the values of the input
       function getResults() {
         var filter = $('#filter').val();
+        var netid = $('#netid').val();
+        var page_number = $('#page_number').val();
         console.log(filter)
 
         let url = '/get_announcements' +
           '?filter=' + encodeURIComponent(filter) +
-          '&id=' + encodeURIComponent("yparikh")
+          '&id=' + encodeURIComponent(netid) +
+          '&page_number=' + encodeURIComponent(page_number)
 
           // +
 

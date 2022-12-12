@@ -1,9 +1,11 @@
 import sqlalchemy.ext.declarative
 import sqlalchemy
+from flask_sqlalchemy import Pagination
 from sqlalchemy import delete
 import database
 import profile
 from datetime import datetime
+import math
 class Post:
 
     def __init__(self, db_row):
@@ -85,11 +87,21 @@ def make_request(engine, post_title, post_description, net_id):
             session.refresh(post1)
             return post1.post_id
 
+def paginate(data, page, per_page):
+    # Based on page and per_page info, calculate start and end index of items to keep
+    start_index = (page - 1) * per_page
+    end_index = start_index + per_page
 
-def get_posts(engine, user_id, filter=None):
+    # Get the paginated list of items
+    items = data[start_index:end_index]
+
+    # Create Pagination object
+    return Pagination(None, page, per_page, len(data), items)
+
+def get_posts(engine, user_id, filter=None, page=1, total_rows=False):
     with sqlalchemy.orm.Session(engine) as session:
-            query = session.query(database.Posts).filter(database.Posts.status == 1).order_by(database.Posts.timestamp.desc())
-            # print(query)
+            num_rows = session.query(database.Posts).count()
+            query = session.query(database.Posts).filter(database.Posts.status == 1).order_by(database.Posts.timestamp.desc()).limit(5).offset((page - 1) * 5)
             table = query.all()
             list = []
             for row in table:
@@ -114,7 +126,10 @@ def get_posts(engine, user_id, filter=None):
                 else:
                     list.append({"post": post, "user": user, "isLiked": isLiked, "comments": comments})
             session.commit()
-            return list
+            if total_rows:
+                return list, math.ceil(num_rows / 5)
+            else:
+                return list
 
 def add_image(engine, post_id, post_img_url):
     with sqlalchemy.orm.Session(engine) as session:

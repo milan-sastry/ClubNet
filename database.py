@@ -197,7 +197,7 @@ def init_database():
                         title = "This post was already there",
                         description = "created by ayo",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.fromtimestamp(10000),
+                        timestamp = datetime.fromtimestamp(1670727192),
                         status = 1,
                         likes = 0,
                         comments = 0
@@ -207,7 +207,7 @@ def init_database():
                         title = "Another post",
                         description = "this time by emilio",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now(),
+                        timestamp = datetime.fromtimestamp(1670627192),
                         status = 1,
                         likes = 0,
                         comments = 0
@@ -217,18 +217,18 @@ def init_database():
                         title = "Alumni Post",
                         description = "testing some comments stuff",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now(),
+                        timestamp = datetime.fromtimestamp(1670527192),
                         status = 1,
                         likes = 0,
                         comments = 0
                         )
             session.add(post1)
-            for _ in range(10):
+            for i in range(1000):
                 post1 = Posts(creator_id = "edmo",
                         title = "Alumni Post",
                         description = "testing some comments stuff",
                         club_image_url = "https://picsum.photos/500/500",
-                        timestamp = datetime.now(),
+                        timestamp = datetime.fromtimestamp(1670827192 - (i * 1000000)),
                         status = 1,
                         likes = 0,
                         comments = 0

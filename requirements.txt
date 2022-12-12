@@ -5,3 +5,4 @@ SQLAlchemy
 gunicorn
 cloudinary
 flask-mail
+flask_sqlalchemy

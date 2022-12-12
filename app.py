@@ -151,23 +151,32 @@ def member_list():
     name = request.args.get("name", None)
     year = request.args.get("year", None)
     major = request.args.get("major", None)
-    industry = request.args.get("industry", None)
     status_filter = int(request.args.get("filter", None))
     print(type(year))
     # print(name)
-    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year, status_filter,major, industry)
+    members = profile.get_profiles_from_club_filtered(engine, CLUB_SOCC, name, year, status_filter,major)
     # print("I am returning the member template")
     # print(members)
     return render_template("member_list.html", members=members)
 
 @app.route('/get_announcements')
 def get_announcements():
+    response = validate_user(CLUB_SOCC)
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
     filter = request.args.get("filter", None)
     netid = request.args.get("id", None)
-    print(filter)
-    post_values = posts.get_posts(engine, netid, filter)
+    page_number = request.args.get("page_number", None)
+    print("page pls", page_number)
+    if page_number:
+        page_number = int(page_number)
+    else:
+        page_number = 1
+    post_values, num_pages = posts.get_posts(engine, response[0], filter, page_number, True)
     isAdmin = admin.is_admin(engine, netid, CLUB_SOCC)
-    return render_template('announcement_list.html', posts=post_values, isAdmin=isAdmin)
+    return render_template('announcement_list.html', posts=post_values, isAdmin=isAdmin, page_number=page_number, num_pages=num_pages)
 
 @app.route('/announcements', methods=['GET', 'POST'])
 def announcements():
@@ -177,14 +186,20 @@ def announcements():
     if response[1] == REQUEST:
         return redirect(url_for('pending_request'))
 
+    page_number = request.args.get("page_number", None)
+    print("page pls", page_number)
+    if page_number:
+        page_number = int(page_number)
+    else:
+        page_number = 1
     filter = request.args.get("filter", None)
-    post_values = posts.get_posts(engine, response[0], filter)
+    post_values, num_pages = posts.get_posts(engine, response[0], filter, page_number, True)
     net_id = response[0]
     user = profile.get_profile_from_id(engine, net_id)
     img = user.profile_image_url
     members = profile.get_profiles_from_club(engine, CLUB_SOCC)
     isAdmin = admin.is_admin(engine, net_id, CLUB_SOCC)
-    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter, netid = net_id)
+    return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter, netid = net_id, page_number=page_number, num_pages=num_pages)
 
 @app.route('/announcements/delete', methods=['GET', 'POST', 'DELETE'])
 def delete_post():
