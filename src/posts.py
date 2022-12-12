@@ -187,12 +187,15 @@ def like(engine, post_id, user_id):
 
 def unlike(engine, post_id, user_id):
     with sqlalchemy.orm.Session(engine) as session:
-            stmt = delete(database.Post_Likes).where((database.Post_Likes.user_id == user_id)&(database.Post_Likes.post_id == post_id))
-            session.execute(stmt)
-            session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
-                "likes": database.Posts.likes - 1,
-            })
-            session.commit()
+            response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post_id and database.Post_Likes.user_id == user_id).all()
+            if len(response) != 0:
+                stmt = delete(database.Post_Likes).where((database.Post_Likes.user_id == user_id)&(database.Post_Likes.post_id == post_id))
+                session.execute(stmt)
+                session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
+                    "likes": database.Posts.likes - 1,
+                })
+                session.commit()
+
             return True
 
 def comment(engine, post_id, net_id, comment):
