@@ -76,7 +76,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Class Year</span>
               </div>
-              <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year" placeholder="1999">
+              <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year" placeholder="2022, 2023, etc.">
             </div>
             <!-- Major -->
             <div class="input-group mb-3">
@@ -84,76 +84,60 @@
                 <span class="input-group-text">Major</span>
               </div>
 
-              <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major" placeholder="COS, SPA">
+              <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major" placeholder="COS, SPA, HIS, etc.">
             </div>
             <!-- Team Position -->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Position</span>
               </div>
-              <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position" placeholder="CM, CB, ST">
+              <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position" placeholder="CM, CB, ST, etc.">
             </div>
             <!-- Favorite Team -->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Favorite Team</span>
               </div>
-              <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team" placeholder="Manchester City">
+              <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team" placeholder="Real Madrid, etc.">
             </div>
             <!-- Hometown -->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Hometown</span>
               </div>
-              <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown" placeholder="Memphis">
+              <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown" placeholder="Memphis, TN, etc.">
             </div>
             <!-- Job Title -->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Job Title</span>
               </div>
-              <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title" placeholder="Associate">
+              <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title" placeholder="Student, Associate, etc.">
             </div>
             <!-- Company -->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Company</span>
               </div>
-              <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
+              <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Princeton, Fidelity, etc.">
             </div>
             <!-- Industry -->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Industry</span>
               </div>
-              <input name="industry" id="industry" value="{{user.get_industry()}}" type="text" class="form-control" aria-label="Industry" placeholder="Technology">
+              <input name="industry" id="industry" value="{{user.get_industry()}}" type="text" class="form-control" aria-label="Industry" placeholder="Education, Tech, etc.">
             </div>
             <!-- Notifications -->
             <div class="form-check">
               <input name="notifications" type="checkbox" value=true id="notifications" class="form-check-input">
               <input id='notificationshidden' type='hidden' value=false name='notifications'>
               <label class="form-check-label" for="notifications">
-                Notifications
+                Email Notification for Posts
               </label>
             </div>
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Update Profile</button>
-            <!-- <script>
-                            function myFunction() {
-                            const classYear = document.getElementById('class-year').innerHTML
-                            const major = document.getElementById('major').innerHTML
-                            const position = document.getElementById('team-position').innerHTML
-                            const favoriteTeam = document.getElementById('favorite-team').innerHTML
-                            const hometown = document.getElementById('hometown').innerHTML
-                            const jobTitle = document.getElementById('job-title').innerHTML
-                            const company = document.getElementById('company').innerHTML
-                            const updates = {class_year: classYear, major: major,
-                                        team_position: position, favorite_team: favoriteTeam,
-                                        hometown: hometown, job_title: jobTitle,
-                                        user_company: company}
-                            // alert("Success")
-                            }
-                        </script> -->
           </form>
         </div>
       </div>
@@ -169,11 +153,10 @@
   </script>
   <script>
     $(document).ready(function() {
-      if ({{user.get_notifications()}} == true) {
+      if ('{{user.get_notifications()}}' === 'true') {
         $('#notifications').prop("checked", true);
       }
     });
-  </script>
   </script>
   {% include 'footer.html' %}
 </body>

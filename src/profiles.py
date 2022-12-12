@@ -1,5 +1,4 @@
 import database
-import os
 import sqlalchemy.orm
 import sqlalchemy
 from sqlalchemy import func
@@ -156,37 +155,28 @@ def get_alumni_year():
         alumniyear = datetime.now().year - 1
     return alumniyear
 
-def validate(engine, user_id, club_id):
-    bool = False
+def validate(engine, user_id):
     with sqlalchemy.orm.Session(engine) as session:
-            query = session.query(database.Users_Clubs).filter(
-            database.Users_Clubs.username.ilike(user_id))
-            # print(query)
+            query = session.query(database.Approved_users).filter(
+            database.Approved_users.user_id == user_id)
+            
             table = query.all()
-            for row in table:
-                # print("USER " + row.username + "OKAY " + str(row.club_id))
-                if (row.club_id == club_id):
-                    session.commit()
-                    return True
-            session.commit()
+            return len(table) > 0
 
-    return bool
-
-
+# returns whether a profile exists for a given user_id
 def get_profile_from_id(engine, user_id, session = None):
-
     if session is None:
         with sqlalchemy.orm.Session(engine) as session:
-                query = session.query(database.User).filter(
-                database.User.user_id == user_id).all()
+                query = session.query(database.Users_info).filter(
+                database.Users_info.user_id == user_id).all()
                 if len(query) > 0:
                     profile = query[0]
                     return Profile(profile)
                 else:
                     return None
     else:
-        query = session.query(database.User).filter(
-                database.User.user_id == user_id).all()
+        query = session.query(database.Users_info).filter(
+                database.Users_info.user_id == user_id).all()
         if len(query) > 0:
             profile = query[0]
             return Profile(profile)
@@ -194,17 +184,16 @@ def get_profile_from_id(engine, user_id, session = None):
             return None
 
 
-def get_profiles_from_club(engine, club_id):
+def get_profiles_from_club(engine):
     profiles = []
     with sqlalchemy.orm.Session(engine) as session:
-            user_ids = session.query(database.Users_Clubs).filter(
-                database.Users_Clubs.club_id == club_id).all()
+            user_ids = session.query(database.Approved_users).all()
             for user in user_ids:
-                profile = session.query(database.User).filter(
-                    database.User.user_id == user.username).all()
+                profile = session.query(database.Users_info).filter(
+                    database.Users_info.user_id == user.user_id).all()
                 if len(profile) > 0:
-                    profile = Profile(session.query(database.User).filter(
-                        database.User.user_id == user.username).order_by(database.User.class_year).all()[0])
+                    profile = Profile(session.query(database.Users_info).filter(
+                        database.Users_info.user_id == user.user_id).order_by(database.Users_info.class_year).all()[0])
                     admin_query = session.query(database.Admins).filter(
                         database.Admins.user_id == profile.user_id
                     ).all()
@@ -214,31 +203,23 @@ def get_profiles_from_club(engine, club_id):
             session.commit()
             return profiles
 
-def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter,major, industry):
+def get_profiles_from_club_filtered(engine, name, year, status_filter,major, industry):
     profiles = []
     with sqlalchemy.orm.Session(engine) as session:
-            user_ids = session.query(database.Users_Clubs).filter(
-                database.Users_Clubs.club_id == club_id).all()
+            user_ids = session.query(database.Approved_users).all()
             for user in user_ids:
-                profile = session.query(database.User).filter(
-                    database.User.user_id == user.username,
-                    func.lower(database.User.name).contains(func.lower(name)),
-                    cast(database.User.class_year, sqlalchemy.String).contains(year),
-                    func.lower(database.User.major).contains(func.lower(major)),
-                    func.lower(database.User.industry).contains(func.lower(industry)),
-                    # str(database.User.class_year) == '2024'
+                profile = session.query(database.Users_info).filter(
+                    database.Users_info.user_id == user.user_id,
+                    func.lower(database.Users_info.name).contains(func.lower(name)),
+                    cast(database.Users_info.class_year, sqlalchemy.String).contains(year),
+                    func.lower(database.Users_info.major).contains(func.lower(major)),
+                    func.lower(database.Users_info.industry).contains(func.lower(industry)),
                     ).all()
 
                 if len(profile) > 0:
-                    profile = Profile(session.query(database.User).filter(
-                        database.User.user_id == user.username
-                        ).order_by(database.User.class_year).all()[0])
-                    admin_query = session.query(database.Admins).filter(
-                        database.Admins.user_id == profile.user_id
-                    ).all()
-                    if len(admin_query) > 0:
-                        profile.isAdmin = True
-
+                    profile = Profile(session.query(database.Users_info).filter(
+                        database.Users_info.user_id == user.user_id
+                        ).order_by(database.Users_info.class_year).all()[0])
                     if status_filter == 1:
                         if profile.is_alumni() == True:
                             profiles.append(profile)
@@ -248,64 +229,53 @@ def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter,m
                     else:
                         profiles.append(profile)
 
-
             session.commit()
             return profiles
 
 def edit_profile(engine, user_id, data):
     with sqlalchemy.orm.Session(engine) as session:
-#         obj2 = { "a": 1, "b": 2 }
-# >>> obj3 = {**obj2}
-# >>> del obj3["a"]
-# >>> obj3
 
             data_new = {**data}
             if data["class_year"] == "":
                 del data_new['class_year']
             if data["name"] == "":
                 del data_new['name']
-            response = session.query(database.User).filter(database.User.user_id == user_id).update(data_new)
+            response = session.query(database.Users_info).filter(database.Users_info.user_id == user_id).update(data_new)
             session.commit()
-            print("RESPONSEE", response)
-            return True
+            return
 
 def edit_profile_image(engine, user_id, link):
     with sqlalchemy.orm.Session(engine) as session:
-                response = session.query(database.User).filter(database.User.user_id == user_id).update({
+                response = session.query(database.Users_info).filter(database.Users_info.user_id == user_id).update({
                     "profile_image_url": link,
                 })
                 session.commit()
                 print("RESPONSEE", response)
-                return True
+                return
 
 def create_profile(engine, user_id, name, year, email):
     if get_profile_from_id(engine, user_id) is not None:
         return
+
     with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, email = email, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", industry="", notifications = True)
+            user = database.Users_info(user_id = user_id, name = name, email = email, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", industry="", notifications = False)
             session.add(user)
             session.commit()
+            print(f'profile created for {user_id}')
 
-def get_club_member_count(engine, club_id):
-    alumni = []
-    members = []
+def get_club_member_count(engine):
+    alumni = 0
+    members = 0
     with sqlalchemy.orm.Session(engine) as session:
-            club_response = session.query(database.Users_Clubs).filter(
-                database.Users_Clubs.club_id == club_id).all()
+            club_response = session.query(database.Approved_users).all()
             for user in club_response:
-                profile = session.query(database.User).filter(
-                    database.User.user_id == user.username).all()
+                profile = session.query(database.Users_info).filter(
+                    database.Users_info.user_id == user.user_id).all()
                 if len(profile) > 0:
-                    profile = Profile(session.query(database.User).filter(
-                        database.User.user_id == user.username).all()[0])
-                    admin_query = session.query(database.Admins).filter(
-                        database.Admins.user_id == profile.user_id
-                    ).all()
-                    if len(admin_query) > 0:
-                        profile.isAdmin = True
-                    if (profile.class_year is None) or (profile.class_year > 2022):
-                        members.append(profile)
+                    profile_obj = Profile(profile[0])
+                    if not profile_obj.is_alumni():
+                        members += 1
                     else:
-                        alumni.append(profile)
+                        alumni += 1
             session.commit()
-            return (len(members), len(alumni))
+            return members, alumni

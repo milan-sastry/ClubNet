@@ -42,7 +42,6 @@
         <h2 class="page-title">Men's Club Soccer</h2>
         <p class="page-subtitle">List of members in Men's Club Soccer</p>
 
-          <!-- probably need a for loop here -->
           <center>
             <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
             <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
@@ -108,10 +107,7 @@
           '&filter=' + encodeURIComponent(filter) +
           '&major=' + encodeURIComponent(major) +
           '&industry=' + encodeURIComponent(industry)
-          // +
 
-        //   '&title=' + encodeURIComponent(title)
-        //
         if (request != null)
           request.abort();
         // // send the request to the function that updates the values
@@ -156,20 +152,6 @@
 
       // init JS for the DOM
       $('document').ready(setup);
-      </script>
-      <script>
-//       $('#filter-toggle').on('switchChange.bootstrapSwitch', function (event, status) {
-//     console.log(status);
-// });
-      // $('#filter-section').bootstrapSwitch('state');
-      // $('#filter-section').on('switchChange.bootstrapSwitch',function () {
-      //   var check = $('.bootstrap-switch-on');
-      //   if (check.length > 0) {
-      //     console.log('ON')
-      //   } else {
-      //     console.log('OFF')
-      //   }
-      // });
       </script>
 
 </body>

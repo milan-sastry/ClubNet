@@ -3,7 +3,7 @@ import sqlalchemy
 from flask_sqlalchemy import Pagination
 from sqlalchemy import delete
 import database
-import profile
+import profiles
 from datetime import datetime
 import math
 class Post:
@@ -72,9 +72,9 @@ class Comment:
 
 #-----------------------------------------------------------------------
 
-def make_request(engine, post_title, post_description, net_id):
+def make_request(engine, post_title, post_description, user_id):
     with sqlalchemy.orm.Session(engine) as session:
-            post1 = database.Posts(creator_id=net_id,
+            post1 = database.Posts(creator_id=user_id,
                                 title=post_title,
                                 description=post_description,
                                 club_image_url="https://www.princeton.edu/~clubsocc/img/team_main.jpeg",
@@ -84,7 +84,6 @@ def make_request(engine, post_title, post_description, net_id):
                                 comments = 0)
             session.add(post1)
             session.commit()
-            session.refresh(post1)
             return post1.post_id
 
 def paginate(data, page, per_page):
@@ -107,14 +106,14 @@ def get_posts(engine, user_id, filter=None, page=1, total_rows=False):
             for row in table:
                 # print(row)
                 post = Post(row)
-                user = profile.get_profile_from_id(engine, post._creator_id, session)
+                user = profiles.get_profile_from_id(engine, post._creator_id, session)
                 isLiked = len(session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post._post_id and database.Post_Likes.user_id == user_id).all()) > 0
                 comment_query = session.query(database.Comments).filter(database.Comments.post_id == post._post_id).order_by(database.Comments.timestamp.asc())
                 comments_response = comment_query.all()
                 comments = []
                 for com in comments_response:
                     my_comment = Comment(com)
-                    comment_user = profile.get_profile_from_id(engine, my_comment._user_id, session)
+                    comment_user = profiles.get_profile_from_id(engine, my_comment._user_id, session)
                     comments.append({"comment": my_comment, "user": comment_user})
                 if filter:
                     if filter == "members":
@@ -145,11 +144,9 @@ def add_image(engine, post_id, post_img_url):
 def get_post_requests(engine):
     with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Posts).filter(database.Posts.status == 0)
-            # print(query)
             table = query.all()
             list = []
             for row in table:
-                # print(row)
                 post = Post(row)
                 list.append(post)
             session.commit()
@@ -170,7 +167,6 @@ def reject_request(engine, post_id):
 
 def delete_post(engine, post_id):
     with sqlalchemy.orm.Session(engine) as session:
-            # print(post_netid)
             print(post_id)
             stmt = sqlalchemy.delete(database.Posts).where((database.Posts.post_id == post_id))
             session.execute(stmt)
@@ -187,14 +183,12 @@ def like(engine, post_id, user_id):
                 post_like = database.Post_Likes(post_id=post_id, user_id=user_id)
                 session.add(post_like)
                 session.commit()
-                session.refresh(post_like) #sus
             return True
 
 def unlike(engine, post_id, user_id):
     with sqlalchemy.orm.Session(engine) as session:
             stmt = delete(database.Post_Likes).where((database.Post_Likes.user_id == user_id)&(database.Post_Likes.post_id == post_id))
             session.execute(stmt)
-            session.commit()
             session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
                 "likes": database.Posts.likes - 1,
             })
