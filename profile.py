@@ -214,7 +214,7 @@ def get_profiles_from_club(engine, club_id):
             session.commit()
             return profiles
 
-def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter,major):
+def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter,major, industry):
     profiles = []
     with sqlalchemy.orm.Session(engine) as session:
             user_ids = session.query(database.Users_Clubs).filter(
@@ -225,6 +225,7 @@ def get_profiles_from_club_filtered(engine, club_id, name, year, status_filter,m
                     func.lower(database.User.name).contains(func.lower(name)),
                     cast(database.User.class_year, sqlalchemy.String).contains(year),
                     func.lower(database.User.major).contains(func.lower(major)),
+                    func.lower(database.User.industry).contains(func.lower(industry)),
                     # str(database.User.class_year) == '2024'
                     ).all()
 
@@ -281,7 +282,7 @@ def create_profile(engine, user_id, name, year, email):
     if get_profile_from_id(engine, user_id) is not None:
         return
     with sqlalchemy.orm.Session(engine) as session:
-            user = database.User(user_id = user_id, name = name, email = email, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", notifications = True)
+            user = database.User(user_id = user_id, name = name, email = email, class_year = year, profile_image_url = "https://freesvg.org/img/abstract-user-flat-4.png",major="", industry="", notifications = True)
             session.add(user)
             session.commit()
 

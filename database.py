@@ -102,6 +102,7 @@ def init_database():
                         email = "allenwu@princeton.edu",
                         class_year = 2024,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493554/Screen_Shot_2022-11-15_at_1.25.45_AM_si6xir.png",
+                        industry = "",
                         notifications = True)
             session.add(user1)
             user2 = User(user_id = "renteria",
@@ -110,6 +111,7 @@ def init_database():
                         class_year = 2023,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1667797176/renteria_profile_picture.jpg",
                         major = "",
+                        industry = "",
                         notifications = True)
             session.add(user2)
             user3 = User(user_id = "yparikh",
@@ -118,6 +120,7 @@ def init_database():
                         class_year = 2024,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668444358/IMG_4394_hcpx3y.jpg",
                         major = "",
+                        industry = "",
                         notifications = True)
                         # profile_image_url = "https://picsum.photos/500/500")
             session.add(user3)
@@ -127,6 +130,7 @@ def init_database():
                         class_year = 2024,
                         profile_image_url = "https://res.cloudinary.com/clubnet/image/upload/v1668493633/Screen_Shot_2022-11-15_at_1.26.50_AM_ihanhi.png",
                         major = "",
+                        industry = "",
                         notifications = True)
             session.add(user4)
             user5 = User(user_id = "edmo",
@@ -135,6 +139,7 @@ def init_database():
                         class_year = 2022,
                         profile_image_url = "https://picsum.photos/500/500",
                         major = "",
+                        industry = "",
                         notifications = True)
             session.add(user5)
             user6 = User(user_id = "tzypman",
@@ -143,6 +148,7 @@ def init_database():
                         class_year = 2022,
                         profile_image_url = "https://picsum.photos/500/500",
                         major = "",
+                        industry = "",
                         notifications = True)
             session.add(user6)
             user6 = User(user_id = "player2",
@@ -151,6 +157,7 @@ def init_database():
                         class_year = 2020,
                         profile_image_url = "https://picsum.photos/500/500",
                         major = "",
+                        industry = "",
                         notifications = True)
             session.add(user6)
             user_clubs1 = Users_Clubs(username = 'allenwu',

@@ -52,6 +52,7 @@
           <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus="" style="width: 80%;"></input>
           <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus="" style="width: 80%;"></input>
           <input class="form-control" type="text" placeholder="Enter major here" name="major" id="major" autofocus="" style="width: 80%;"></input>
+          <input class="form-control" type="text" placeholder="Enter industry here" name="industry" id="industry" autofocus="" style="width: 80%;"></input>
           <input type="hidden" id="status_filter"  value="0">
         </center>
 
@@ -63,7 +64,7 @@
       </div>
     </div>
   </div>
-  
+
   {% include 'footer.html' %}
 
   </script>
@@ -79,6 +80,7 @@
         var name = $('#name').val();
         var year = $('#year').val();
         var major = $('#major').val();
+        var industry = $('#industry').val();
         var filter = $('#status_filter').val();
         console.log(year)
 
@@ -86,7 +88,8 @@
           '?name=' + encodeURIComponent(name) +
           '&year=' + encodeURIComponent(year) +
           '&filter=' + encodeURIComponent(filter) +
-          '&major=' + encodeURIComponent(major)
+          '&major=' + encodeURIComponent(major) +
+          '&industry=' + encodeURIComponent(industry)
           // +
 
         //   '&title=' + encodeURIComponent(title)
@@ -106,6 +109,7 @@
         $('#name').on('input', getResults);
         $('#year').on('input', getResults);
         $('#major').on('input', getResults);
+        $('#industry').on('input', getResults);
         $( "#Alumni" ).on( "click", function() {
           $("#status_filter").val("1")
           $("#Alumni").prop('disabled', true)
