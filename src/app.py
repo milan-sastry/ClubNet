@@ -64,8 +64,6 @@ def invalid():
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
     response = validate_user()
-    if response[1] == INVALID:
-        return redirect(url_for('invalid'))
     user_id = request.args.get('user_id', None)
     name = request.form.get('name', None)
     year = request.form.get('year', None)
@@ -106,7 +104,7 @@ def process_request():
         print("SENT AN EMAIL")
 
         return redirect(url_for('pending_request'))
-    
+
 # landing page for users with pending requests
 @app.route("/pending_request")
 def pending_request():
@@ -233,7 +231,7 @@ def upload_profile_image():
             profilemod.edit_profile_image(engine, response[0], file_cloudinary_link)
             print("updated with a cloudinary link")
             return redirect(url_for('home'))
-    
+
     return jsonify(upload_result)
 
 # ---------------------- END POINTS FOR ANNOUNCEMENTS ------------------
@@ -375,7 +373,7 @@ def base_upload():
     message.body += "clubnet.onrender.com"
     mail.send(message)
     print('sent an email to admins')
-    
+
     return render_template("image_upload.html", post_id=post_id, validation=response[1], img=img)
 
 #endpoint to add an image to a post
@@ -546,7 +544,7 @@ def accept_post():
     message.body += "clubnet.onrender.com"
     mail.send(message)
     print("SENT AN EMAIL")
-    
+
     return redirect(url_for('admin_page'))
 
 #reject post request
