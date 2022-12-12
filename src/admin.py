@@ -135,7 +135,7 @@ def remove_admin(engine, user_id):
             session.commit()
 
 def remove_user(engine, user_id):
-    if not s.validate(engine, user_id):
+    if not profiles.validate(engine, user_id):
         print(f"user {user_id} is not in club")
         return
     remove_admin(engine, user_id)

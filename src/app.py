@@ -433,12 +433,8 @@ def admin_page():
 
     return render_template('admin.html', members=members, requests=pendingRequests, posts = postRequests, validation=response[1], img=img, all_members = all_members, students = students, alumni = alumni)
 
-
+#admin accept user
 @app.route('/admin/accept', methods=['GET'])
-# response.set_cookie('previous_search', ("/?dept=" + str(dept) +
-# "&coursenum=" + str(coursenum) + "&area=" + str(area) +
-# "&title=" + str(title)))
-#  previous_search = flask.request.cookies.get('previous_search')
 def admin_accept_page():
     response = validate_user()
     if response[1] == INVALID:
@@ -450,13 +446,11 @@ def admin_accept_page():
 
     user_id = request.args.get("user_id", None)
     email = adminmod.get_request_email(engine, user_id)
-    print("process request", email)
     adminmod.approve_request(engine, user_id)
     print("sucessfully approved")
 
     # sends email to user if they have newly been validated
     message = Message("Request Approved on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = [email])
-    print("message created")
     message.body = 'You are being notified because your request to join Club Soccer on ClubNet has been approved! \n \n To log in, go to https://clubnet.onrender.com.\n \n '
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team\n"
@@ -465,6 +459,7 @@ def admin_accept_page():
     print("SENT AN EMAIL")
     return redirect(url_for('admin_page'))
 
+# admin deny user
 @app.route('/admin/deny', methods=['GET'])
 def admin_deny_page():
     response = validate_user()
@@ -479,6 +474,7 @@ def admin_deny_page():
     adminmod.delete_request(engine, user_id)
     return redirect(url_for('admin_page'))
 
+#admin remove user
 @app.route('/admin/remove_user', methods=["POST"])
 def remove_user():
     response = validate_user()
@@ -488,10 +484,11 @@ def remove_user():
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
-    net_id = request.form.get("user_id", None)
-    adminmod.remove_user(engine, net_id)
+    user_id = request.form.get("user_id", None)
+    adminmod.remove_user(engine, user_id)
     return redirect(url_for('admin_page'))
 
+# remove admin privileges
 @app.route('/admin/remove_admin', methods=["POST"])
 def remove_admin():
     response = validate_user()
@@ -505,6 +502,7 @@ def remove_admin():
     adminmod.remove_admin(engine, net_id)
     return redirect(url_for('admin_page'))
 
+#give admin privileges
 @app.route('/admin/make_admin', methods=["POST"])
 def make_admin():
     response = validate_user()
@@ -514,11 +512,12 @@ def make_admin():
         return redirect(url_for('pending_request'))
     if response[1] == VALIDATED:
         return redirect(url_for("home"))
-    net_id = request.form.get("user_id", None)
+    user_id = request.form.get("user_id", None)
     officer_position = request.form.get("off_pos", None)
-    adminmod.make_admin(engine, net_id, officer_position)
+    adminmod.make_admin(engine, user_id, officer_position)
     return redirect(url_for('admin_page'))
 
+#accept post request
 @app.route('/admin/accept_post', methods=["GET"])
 def accept_post():
     response = validate_user()
@@ -532,17 +531,7 @@ def accept_post():
 
 
     postsmod.approve_post_request(engine, post_id)
-
-    # does get_post_by_id work?
-    # alternatively, could retrieve all posts and just use last post in list as new_post
-    post_values = postsmod.get_posts(engine, response[0], None)
-    new_post = post_values[0]['post']
-    print(new_post)
-    # new_post = postsmod.get_post_by_id(engine, post_id)
-
-    # inserting logic here to send out the info for a post
     recipientlist = []
-    print("I know there's this user here")
     for person in profilemod.get_profiles_from_club(engine):
         if person.get_email() != "None":
             if(person.get_notifications() == "true"):
@@ -550,18 +539,17 @@ def accept_post():
                 recipientlist.append(email)
     print(recipientlist)
 
-
-    print("SENT AN EMAIL")
     message = Message("New Post on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
     message.body = 'You are being notified because a new post has been made for Club Soccer on ClubNet! \n \n To view the contents of the new post, go to https://clubnet.onrender.com/announcements.\n \n '
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team"
     message.body += "clubnet.onrender.com"
-    # message.html = render_template("message.html", post=new_post)
     mail.send(message)
-
+    print("SENT AN EMAIL")
+    
     return redirect(url_for('admin_page'))
 
+#reject post request
 @app.route('/admin/deny_post', methods=["GET"])
 def deny_post():
     response = validate_user()
