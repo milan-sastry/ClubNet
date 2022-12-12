@@ -240,9 +240,9 @@ def init_database():
                          year = 2022,
                          club_id = CLUB_SOCC,
                          email = "tzypman@princeton.edu")
-            # req2 = Requests(user_id = "player2",
-            #              request_timestamp = datetime.now(),
-            #              club_id = CLUB_SOCC, name = "Stew Dent", year = 1776)
+            req2 = Requests(user_id = "player2",
+                         request_timestamp = datetime.now(),
+                         club_id = CLUB_SOCC, name = "Stew Dent", year = 1776, email="stewdent@princeton.edu")
             session.add(req1)
             # session.add(req2)
             session.commit()
