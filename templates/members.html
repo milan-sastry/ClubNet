@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div style="background-color: #f58025; margin-bottom: 20px;" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+  <div style="background-color: #f58025; margin-bottom: 20px;" class="cover-container d-flex  p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
       <div class="d-flex flex-row">
         <div class="d-flex flex-row">
@@ -26,7 +26,7 @@
             <a class="nav-link" href="/home">Home</a>
             <a class="nav-link" href="/announcements">Announcements</a>
             <a class="nav-link active" href="/members">Members</a>
-            <a class="nav-link" href="/donations">More</a>
+            <a class="nav-link" href="/donations">Donate</a>
             <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
               <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
             </div>
@@ -36,29 +36,35 @@
     </header>
   </div>
 
-  <div class="page-container">
-    <h2 class="page-title">Men's Club Soccer</h2>
-    <p class="page-subtitle">List of members in Men's Club Soccer</p>
+  <div class="wrap">
+    <div class="main">
+      <div class="page-container">
+        <h2 class="page-title">Men's Club Soccer</h2>
+        <p class="page-subtitle">List of members in Men's Club Soccer</p>
 
-      <!-- probably need a for loop here -->
-      <center>
-      <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
-      <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
-      <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset"/>
-      <p>or filter by name, year or major below:</p>
+          <!-- probably need a for loop here -->
+          <center>
+          <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
+          <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
+          <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset"/>
+          <p>or filter by name, year or major below:</p>
 
-      <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus="" style="width: 80%;"></input>
-      <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus="" style="width: 80%;"></input>
-      <input class="form-control" type="text" placeholder="Enter major here" name="major" id="major" autofocus="" style="width: 80%;"></input>
-      <input type="hidden" id="status_filter"  value="0">
-    </center>
+          <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus="" style="width: 80%;"></input>
+          <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus="" style="width: 80%;"></input>
+          <input class="form-control" type="text" placeholder="Enter major here" name="major" id="major" autofocus="" style="width: 80%;"></input>
+          <input type="hidden" id="status_filter"  value="0">
+        </center>
 
-    <div>
-      <!-- members -->
-      <div class="member-container" id="member-list">
+        <div>
+          <!-- members -->
+          <div class="member-container" id="member-list">
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  
+  {% include 'footer.html' %}
 
   </script>
   <script>

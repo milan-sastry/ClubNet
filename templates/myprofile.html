@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div style="background-color: #f58025;" class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+  <div style="background-color: #f58025;" class="cover-container d-flex  p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
       <div class="d-flex flex-row">
         <div class="d-flex flex-row">
@@ -26,7 +26,7 @@
             <a class="nav-link" href="/home">Home</a>
             <a class="nav-link" href="/announcements">Announcements</a>
             <a class="nav-link" href="/members">Members</a>
-            <a class="nav-link" href="/donations">More</a>
+            <a class="nav-link" href="/donations">Donate</a>
             <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
               <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
             </div>
@@ -36,126 +36,129 @@
     </header>
   </div>
   <h1 style="margin-top: 10px;" class="page-title">My Profile</h1>
-  <div class="d-flex justify-content-around">
-    <div class="d-flex justify-content-center">
-      <!-- Profile Card -->
-      <div class="d-flex align-items-center flex-column">
-        <!-- Name -->
-        <h2 style="margin-top: 20px;">{{user.get_name()}}</h2>
-        <!-- Email -->
-        <!-- <a href="mailto:{{user.email}}">{{user.get_email()}}</a> -->
-        <!-- Profile Picture -->
-        <img height="" style="width: 300px; height: 300px; margin-top: 20px; object-fit: cover; border-radius: 40px;" src="{{user.profile_image_url}}" alt="profile_picture" />
-        <br>
-        <a class='btn btn-primary' href="{{ url_for('profile_image_url') }}">Change Image</a>
+  <div class="wrap">
+    <div style="margin-bottom: 10px;" class="main">
+      <div class="d-flex justify-content-around">
+        <div class="d-flex justify-content-center">
+          <!-- Profile Card -->
+          <div class="d-flex align-items-center flex-column">
+            <!-- Name -->
+            <h2 style="margin-top: 20px;">{{user.get_name()}}</h2>
+            <!-- Email -->
+            <!-- <a href="mailto:{{user.email}}">{{user.get_email()}}</a> -->
+            <!-- Profile Picture -->
+            <img height="" style="width: 300px; height: 300px; margin-top: 20px; object-fit: cover; border-radius: 40px;" src="{{user.profile_image_url}}" alt="profile_picture" />
+            <br>
+            <a class='btn btn-primary' href="{{ url_for('profile_image_url') }}">Change Image</a>
+          </div>
+        </div>
+        <!-- Edit Profile -->
+        <div>
+          <h1>Edit Profile</h1>
+          <!-- Inputs -->
+          <form method="POST" action="" id="edit_form">
+            <!-- Email -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Name</span>
+              </div>
+              <input name="name" id="name" value="{{user.get_name()}}" type="text" class="form-control" aria-label="name">
+            </div>
+            <!-- Email -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Email</span>
+              </div>
+              <input name="email" id="email" value="{{user.get_email()}}" type="text" class="form-control" aria-label="email">
+            </div>
+            <!-- Class Year -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Class Year</span>
+              </div>
+              <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year" placeholder="1999">
+            </div>
+            <!-- Major -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Major</span>
+              </div>
+
+              <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major" placeholder="COS, SPA">
+            </div>
+            <!-- Team Position -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Position</span>
+              </div>
+              <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position" placeholder="CM, CB, ST">
+            </div>
+            <!-- Favorite Team -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Favorite Team</span>
+              </div>
+              <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team" placeholder="Manchester City">
+            </div>
+            <!-- Hometown -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Hometown</span>
+              </div>
+              <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown" placeholder="Memphis">
+            </div>
+            <!-- Job Title -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Job Title</span>
+              </div>
+              <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title" placeholder="Associate">
+            </div>
+            <!-- Company -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Company</span>
+              </div>
+              <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
+            </div>
+            <!-- Industry -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Industry</span>
+              </div>
+              <input name="industry" id="industry" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Industry" placeholder="Technology">
+            </div>
+            <!-- Notifications -->
+            <div class="form-check">
+              <input name="notifications" type="checkbox" value=true id="notifications" class="form-check-input">
+              <input id='notificationshidden' type='hidden' value=false name='notifications'>
+              <label class="form-check-label" for="notifications">
+                Notifications
+              </label>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+            <!-- <script>
+                            function myFunction() {
+                            const classYear = document.getElementById('class-year').innerHTML
+                            const major = document.getElementById('major').innerHTML
+                            const position = document.getElementById('team-position').innerHTML
+                            const favoriteTeam = document.getElementById('favorite-team').innerHTML
+                            const hometown = document.getElementById('hometown').innerHTML
+                            const jobTitle = document.getElementById('job-title').innerHTML
+                            const company = document.getElementById('company').innerHTML
+                            const updates = {class_year: classYear, major: major,
+                                        team_position: position, favorite_team: favoriteTeam,
+                                        hometown: hometown, job_title: jobTitle,
+                                        user_company: company}
+                            // alert("Success")
+                            }
+                        </script> -->
+          </form>
+        </div>
       </div>
-    </div>
-    <!-- Edit Profile -->
-    <div>
-      <h1>Edit Profile</h1>
-      <!-- Inputs -->
-      <form method="POST" action="" id="edit_form">
-        <!-- Email -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Name</span>
-          </div>
-          <input name="name" id="name" value="{{user.get_name()}}" type="text" class="form-control" aria-label="name">
-        </div>
-        <!-- Email -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Email</span>
-          </div>
-          <input name="email" id="email" value="{{user.get_email()}}" type="text" class="form-control" aria-label="email">
-        </div>
-        <!-- Class Year -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Class Year</span>
-          </div>
-          <input name="class_year" id="class-year" value="{{user.get_class_year()}}" type="text" class="form-control" aria-label="Class Year" placeholder="1999">
-        </div>
-        <!-- Major -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Major</span>
-          </div>
-
-          <input name="major" id="major" value="{{user.get_major()}}" type="text" class="form-control" aria-label="Major" placeholder="COS, SPA">
-        </div>
-        <!-- Team Position -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Position</span>
-          </div>
-          <input name="team_position" id="team-position" value="{{user.get_team_position()}}" type="text" class="form-control" aria-label="Position" placeholder="CM, CB, ST">
-        </div>
-        <!-- Favorite Team -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Favorite Team</span>
-          </div>
-          <input name="favorite_team" id="favorite-team" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Favorite Team" placeholder="Manchester City">
-        </div>
-        <!-- Hometown -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Hometown</span>
-          </div>
-          <input name="hometown" id="hometown" value="{{user.get_hometown()}}" type="text" class="form-control" aria-label="Hometown" placeholder="Memphis">
-        </div>
-        <!-- Job Title -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Job Title</span>
-          </div>
-          <input name="job_title" id="job-title" value="{{user.get_job_title()}}" type="text" class="form-control" aria-label="Job Title" placeholder="Associate">
-        </div>
-        <!-- Company -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Company</span>
-          </div>
-          <input name="user_company" id="company" value="{{user.get_user_company()}}" type="text" class="form-control" aria-label="Company" placeholder="Fidelity">
-        </div>
-        <!-- Industry -->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">Industry</span>
-          </div>
-          <input name="industry" id="industry" value="{{user.get_favorite_team()}}" type="text" class="form-control" aria-label="Industry" placeholder="Technology">
-        </div>
-        <!-- Notifications -->
-        <div class="form-check">
-          <input name="notifications" type="checkbox" value=true id="notifications" class="form-check-input">
-          <input id='notificationshidden' type='hidden' value=false name='notifications'>
-          <label class="form-check-label" for="notifications">
-            Notifications
-          </label>
-        </div>
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">Update Profile</button>
-        <!-- <script>
-                        function myFunction() {
-                        const classYear = document.getElementById('class-year').innerHTML
-                        const major = document.getElementById('major').innerHTML
-                        const position = document.getElementById('team-position').innerHTML
-                        const favoriteTeam = document.getElementById('favorite-team').innerHTML
-                        const hometown = document.getElementById('hometown').innerHTML
-                        const jobTitle = document.getElementById('job-title').innerHTML
-                        const company = document.getElementById('company').innerHTML
-                        const updates = {class_year: classYear, major: major,
-                                    team_position: position, favorite_team: favoriteTeam,
-                                    hometown: hometown, job_title: jobTitle,
-                                    user_company: company}
-                        // alert("Success")
-                        }
-                    </script> -->
-      </form>
-    </div>
+    </div>  
   </div>
-
   <script>
     const form = document.getElementById('edit_form')
     form.addEventListener('submit', () => {
@@ -172,6 +175,7 @@
     });
   </script>
   </script>
+  {% include 'footer.html' %}
 </body>
 
 </html>

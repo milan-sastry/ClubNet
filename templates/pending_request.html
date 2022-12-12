@@ -11,27 +11,30 @@
 
 </head>
 <body>
-  <center>
-    <h1>{{CASValue}}, your request is pending.</h1>
-  <br>
-  <p> In the meantime, you could contact one of the administrators below to ask for an update on your approval process:</p>
-  <br>
-  <div class="container-fluid" id="results_table">
-    <table class="table table-striped">
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Officer Position</th>
-      </tr>
-      {% for admin in admins%}
-      <tr>
-        <th>{{admin.get_name()}}</th>
-        <th>{{admin.get_email()}}</th>
-        <th>{{admin.get_officer_position()}}</th>
-      </tr>
-  {% endfor %}
-      </table>
+  <div class="wrap">
+    <div class="main">
+      <h1>{{CASValue}}, your request is pending.</h1>
+      <br>
+      <p> In the meantime, you could contact one of the administrators below to ask for an update on your approval process:</p>
+      <br>
+      <div class="container-fluid" id="results_table">
+        <table class="table table-striped">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Officer Position</th>
+          </tr>
+          {% for admin in admins%}
+            <tr>
+              <th>{{admin.get_name()}}</th>
+              <th>{{admin.get_email()}}</th>
+              <th>{{admin.get_officer_position()}}</th>
+            </tr>
+          {% endfor %}
+          </table>
       </div>
+    </div>
+  </div>
   {% include 'footer.html' %}
 </body>
 </html>
