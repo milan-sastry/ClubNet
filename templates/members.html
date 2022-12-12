@@ -44,17 +44,35 @@
 
           <!-- probably need a for loop here -->
           <center>
-          <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
-          <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
-          <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset"/>
-          <p>or filter by name, year or major below:</p>
+            <input type="button" class="btn btn-primary" id="Alumni" value="Alumni" name="Alumni"  />
+            <input type="button" class="btn btn-primary" id="Students" value="Students" name="Students"/>
+            <input type="button" class="btn btn-primary" id="Reset" value="Reset" name="Reset"/>
+            <p>or filter by name, year or major below:</p>
+          </center>
 
-          <input class="form-control" type="text" placeholder="Enter name here" name="name" id="name" autofocus="" style="width: 80%;"></input>
-          <input class="form-control" type="text" placeholder="Enter year here" name="year" id="year" autofocus="" style="width: 80%;"></input>
-          <input class="form-control" type="text" placeholder="Enter major here" name="major" id="major" autofocus="" style="width: 80%;"></input>
-          <input class="form-control" type="text" placeholder="Enter industry here" name="industry" id="industry" autofocus="" style="width: 80%;"></input>
+          <div class="box-wrap d-flex justify-content-around">
+            <!-- <div class="d-flex flex-row"> -->
+              <div>
+                <b>Search by Name</b>
+                <input class="form-control" type="text" placeholder="Any" name="name" id="name" autofocus="" style="width: 100%;">
+              </div>
+              <div>
+                <b>Search by Class Year</b>
+                <input class="form-control" type="text" placeholder="Any" name="year" id="year" autofocus="" style="">
+              </div>
+            <!-- </div> -->
+            <!-- <div class="d-flex flex-row"> -->
+              <div>
+                <b>Search by Major</b>
+                <input class="form-control" type="text" placeholder="Any" name="major" id="major" autofocus="" style="">
+              </div>
+              <div>
+                <b>Search by Industry</b>
+                <input class="form-control" type="text" placeholder="Any" name="industry" id="industry" autofocus="" style="">
+              </div>
+            <!-- </div>  -->
+          </div>
           <input type="hidden" id="status_filter"  value="0">
-        </center>
 
         <div>
           <!-- members -->

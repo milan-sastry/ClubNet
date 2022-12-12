@@ -7,7 +7,7 @@
             <div class="d-flex flex-row align-items-center">
               <!-- profile picture -->
               <div class="profile-pic">
-                <img style="width: 100px; height: 100px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
+                <img style="width: 120px; height: 120px; border-radius: 20px; object-fit: cover;" src="{{user.get_profile_image_url()}}" alt="profile_picture" />
               </div>
               <!-- basic user information -->
               <div class="d-flex flex-column ml-2">
@@ -15,6 +15,7 @@
                 <p style="margin-bottom: 0px;">Class Year: {{user.get_class_year()}}</p>
                 <p style="margin-bottom: 0px;">Email: {{user.get_email()}}</p>
                 <p style="margin-bottom: 0px;">Major: {{user.get_major()}}</p>
+                <p style="margin-bottom: 0px;">Industry: {{user.get_industry()}}</p>
               </div>
             </div>
           </div>

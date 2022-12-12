@@ -24,6 +24,14 @@ html {
 
 }
 
+@media (max-width: 800px) {
+  .box-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+  }
+}
+
 .masthead {
   margin-bottom: 2rem;
 }
