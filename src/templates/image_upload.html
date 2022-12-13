@@ -28,7 +28,7 @@
             <a class="nav-link" href="/announcements">Announcements</a>
             <a class="nav-link" href="/members">Members</a>
             <a class="nav-link" href="/donations">Donate</a>
-            <div style="width: 40px; height: 40px; margin-left: 10px;  cursor: pointer" onclick="window.location='/myprofile';">
+            <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
               <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
             </div>
           </nav>
@@ -44,7 +44,7 @@
           <!-- <img src="" style="background-color: gray; width: 50%; height: 50%;"> -->
           <form class="d-flex flex-column ">
             <!-- <label for="media" class="form-label">File upload</label> -->
-            <input class="btn" type="file" id="media">
+            <input class="btn" type="file" id="media" accept="image/jpeg">
             <!-- Picture File: <input id="media" type="file" /> -->
             <br >
             <br>
@@ -75,8 +75,6 @@
               .catch((error) => {
                 console.log(error);
               });
-
-
           });
         </script>
         </div>
@@ -84,5 +82,5 @@
   </div>
     {% include 'footer.html' %}
   </body>
-  
+
 </html>
