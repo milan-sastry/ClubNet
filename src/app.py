@@ -96,7 +96,7 @@ def process_request():
                 email = each_admin.get_email()
                 recipientlistone.append(email)
         message = Message("New User Request on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlistone)
-        message.body = 'You are being notified because a new user has made a request to join Club Soccer on ClubNet that needs to be processed! \n \n To view the contents of this new request, go to https://clubnet.onrender.com/adminmod.\n \n '
+        message.body = 'You are being notified because a new user has made a request to join Club Soccer on ClubNet that needs to be processed! \n \n To view the contents of this new request, go to https://clubnet.onrender.com/admin.\n \n '
         message.body += "Best regards,\n"
         message.body += "The ClubNet Team\n"
         message.body += "clubnet.onrender.com"
@@ -369,7 +369,7 @@ def base_upload():
             recipientlist.append(email)
 
     message = Message("New Post Suggested on ClubNet!",sender ='ClubNetPrinceton@gmail.com', recipients = recipientlist)
-    message.body = 'You are being notified because a user has suggested a new post in Club Soccer on ClubNet! \n \n To approve or decline, go to https://clubnet.onrender.com/adminmod.\n \n '
+    message.body = 'You are being notified because a user has suggested a new post in Club Soccer on ClubNet! \n \n To approve or decline, go to https://clubnet.onrender.com/admin.\n \n '
     message.body += "Best regards,\n"
     message.body += "The ClubNet Team\n"
     message.body += "clubnet.onrender.com"
