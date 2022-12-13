@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="static/styles/main.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon_package/favicon.ico') }}">
 </head>
 <div style="background-color: #f58025; margin-bottom: 10px;" class="cover-container d-flex  p-3 mx-auto flex-column">
@@ -98,7 +99,10 @@
       $("#PostArea").load('form');
   });
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+
+
   <script>
       // updates the CourseTable
       function handleResponse(response) {
@@ -143,8 +147,12 @@
         });
       }
 
+
+
       // essentially just adds listeners here
       function setup() {
+        getResults()
+
         $( "#Alumni" ).on( "click", function() {
           $("#filter").val("alumni")
           $("#Alumni").prop('disabled', true)
@@ -166,13 +174,119 @@
           $("#All").prop('disabled', true)
           getResults()
         })
-        getResults()
+
         $("#All").prop('disabled', true)
-        // $("#Reset").prop('disabled', true)
+
+
       }
 
       // init JS for the DOM
       $('document').ready(setup);
+
+
+
+      $( document ).ajaxComplete(function() {
+        // initialize everything to the right color
+        $("button[name='heart']").each(function(){
+            var post_id = $(this).parent().find("input[name='post_id']").val()
+            // console.log(post_id)
+
+            var currentlyLiked = $(this).parent().find("input[name='post_liked']").val()
+            console.log(post_id + " has the status of " + currentlyLiked)
+            if (currentlyLiked == "False") {
+              $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">')
+            }
+          })
+
+        // figure out what I've clicked
+
+        $( "button[name='heart']" ).on( "click", function() {
+          var currentlyLiked = $(this).parent().find("input[name='post_liked']").val()
+          post_id = $(this).parent().find("input[name='post_id']").val()
+
+          if (currentlyLiked == "False"){
+            console.log("you clicked a false value")
+            // set the post_liked status to true
+            $(this).parent().find("input[name='post_liked']").val("True")
+
+            // update the like count
+            var newVal = parseInt($(this).parent().find("span[name='like_count']").html()) + 1
+            console.log(newVal)
+            $(this).parent().find("span[name='like_count']").html(newVal)
+            // var newVal = parseInt($(this).parent().find("span[name='likeCount']").val()) + 1
+            // console.log(newVal)
+            // $(this).parent().find("span[name='likeCount']").val(newVal)
+
+            // actually update it in the backend
+            let url = '/announcements/like/silent' +
+                '?post_id=' + encodeURIComponent(post_id)
+
+              if (request != null)
+                request.abort();
+              // // send the request to the function that updates the values
+              request = $.ajax({
+                type: 'GET',
+                url: url,
+                success: $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">')
+              });
+            } else {
+              console.log("you clicked a true value")
+              // Now we're at the case where the post was liked
+              // set the post_liked status to true
+              $(this).parent().find("input[name='post_liked']").val("False")
+
+              // update the like count
+              var newVal = parseInt($(this).parent().find("span[name='like_count']").html()) - 1
+              $(this).parent().find("span[name='like_count']").html(newVal)
+              console.log(newVal)
+              // actually update it in the backend
+              let url = '/announcements/unlike/silent' +
+                  '?post_id=' + encodeURIComponent(post_id)
+
+                if (request != null)
+                  request.abort();
+                // // send the request to the function that updates the values
+                request = $.ajax({
+                  type: 'GET',
+                  url: url,
+                  success: $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">')
+                });
+            }
+            });
+        });
+
+      </script>
+
+      <script>
+
+
+      // function handleResponse2(response) {
+      //   console.log("silently liked post")
+      // }
+      //
+      //
+      //
+      // $(document).on("click", "#heart", function(){
+      //   post_id = $(this).parent().find("input[name='post_id']").val()
+      //
+      //
+      //   console.log($(this).parent().find("input[name='post_liked']").val())
+      //
+      //
+      //   // let url = '/announcements/like/silent' +
+      //   //   '?post_id=' + encodeURIComponent(post_id)
+      //   //
+      //   // if (request != null)
+      //   //   request.abort();
+      //   // // // send the request to the function that updates the values
+      //   // request = $.ajax({
+      //   //   type: 'GET',
+      //   //   url: url,
+      //   //   success: handleResponse2
+      //   // });
+      // });
+      //
+      // // $('document').ready(setup2);
       </script>
     {% include 'footer.html' %}
 </body>

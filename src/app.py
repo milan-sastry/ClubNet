@@ -298,7 +298,6 @@ def delete_post():
 # ednpoint to like a post
 @app.route('/announcements/like', methods=['GET'])
 def like():
-    print("----- POST WAS JUST LIKED")
     response = validate_user()
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
@@ -308,6 +307,20 @@ def like():
     post_id = request.args.get("post_id", None)
     postsmod.like(engine, post_id, response[0])
     return redirect(url_for('announcements'))
+
+# ednpoint to like a post
+@app.route('/announcements/like/silent', methods=['GET'])
+def like_silent():
+    response = validate_user()
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    print("I am liking this post here using the silent method")
+    post_id = request.args.get("post_id", None)
+    postsmod.like(engine, post_id, response[0])
+    return("liked")
 
 # ednpoint to unlike a post
 @app.route('/announcements/unlike', methods=['GET'])
@@ -322,6 +335,20 @@ def unlike():
     post_id = request.args.get("post_id", None)
     postsmod.unlike(engine, post_id, response[0])
     return redirect(url_for('announcements'))
+
+
+@app.route('/announcements/unlike/silent', methods=['GET'])
+def unlike_silent():
+    print("----- POST WAS JUST UNLIKED")
+    response = validate_user()
+    if response[1] == INVALID:
+        return redirect(url_for('invalid'))
+    if response[1] == REQUEST:
+        return redirect(url_for('pending_request'))
+
+    post_id = request.args.get("post_id", None)
+    postsmod.unlike(engine, post_id, response[0])
+    return "unliked"
 
 # endpoint to comment on a post
 @app.route('/announcements/comment', methods=['GET'])
