@@ -298,6 +298,7 @@ def delete_post():
 # ednpoint to like a post
 @app.route('/announcements/like', methods=['GET'])
 def like():
+    print("----- POST WAS JUST LIKED")
     response = validate_user()
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
@@ -311,6 +312,7 @@ def like():
 # ednpoint to unlike a post
 @app.route('/announcements/unlike', methods=['GET'])
 def unlike():
+    print("----- POST WAS JUST UNLIKED")
     response = validate_user()
     if response[1] == INVALID:
         return redirect(url_for('invalid'))

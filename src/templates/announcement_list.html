@@ -28,12 +28,14 @@
         <div style="margin-top: 5px;" class="d-flex flex-row">
           <!-- Likes -->
           {% if post.isLiked %}
+
             <div class="d-flex flex-row align-items-center">
               <span>{{post.post.get_likes()}}</span>
               <form action="/announcements/unlike">
                 <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
                 <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
                   <img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">
+                  <p>{{post.isLiked}}</p>
                 </button>
               </form>
             </div>
@@ -44,6 +46,7 @@
                 <input type="hidden" id="post_id" name="post_id" value="{{post.post.get_post_id()}}">
                 <button type="submit" style="padding-left: 10px; padding-right: 10px;" class="btn d-flex flex-row align-items-center justify-content-center">
                   <img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">
+                  <p>{{post.isLiked}}</p>
                 </button>
               </form>
             </div>
