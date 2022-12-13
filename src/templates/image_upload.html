@@ -28,7 +28,7 @@
             <a class="nav-link" href="/announcements">Announcements</a>
             <a class="nav-link" href="/members">Members</a>
             <a class="nav-link" href="/donations">Donate</a>
-            <div style="width: 40px; height: 40px; margin-left: 10px;" onclick="window.location='/myprofile';">
+            <div style="width: 40px; height: 40px; margin-left: 10px; cursor: pointer;" onclick="window.location='/myprofile';">
               <img src={{img}} style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover;">
             </div>
           </nav>
@@ -36,17 +36,25 @@
           </div>
     </header>
   </div>
+  <center>
+    <h3 style="margin-top: 50px">Successfully submitted your announcement for review!</h3>
+    <br>
+     <h7>Would you like an image to go alongside your announcement? If so, upload one below.</h7><br>
+     <h7> Otherwise, no worries, the default team image will be used. </h7>
+    <br>
+  </center>
   <div class="wrap">
     <div class="main">
       <div style="margin-top: 50px;" class="d-flex align-items-center justify-content-center">
         <div class="d-flex flex-column align-items-center" style="border-radius: 20px; padding: 20px; background-color: rgb(226, 226, 226)">
-          <h1>Upload An Image For Your New Post</h1>
-          <p>valid inputs: jpg</p>
+          <h1>Upload An Image!</h1>
+          <br>
+          <p>You can upload either a .jpg or .png. </p>
           <!-- <img src="" style="background-color: gray; width: 50%; height: 50%;"> -->
           <div class="d-flex flex-column ">
           <form class="d-flex flex-column ">
             <!-- <label for="media" class="form-label">File upload</label> -->
-            <input class="btn" type="file" id="media" accept="image/jpeg">
+            <input class="btn" type="file" id="media" accept="image/jpeg, image/png">
             <!-- Picture File: <input id="media" type="file" /> -->
             <br>
             <br>
@@ -54,9 +62,7 @@
           </form>
           <br>
 
-          <form action="/announcements" class="d-flex flex-column">
-            <button type="skip" class="btn btn-white" name="" value="Skip"> Click here to skip</button>
-          </form>
+          <a href= "/announcements?submitted=True" class="btn btn-secondary"> Skip</a>
         </div>
         </div>
         <script>
@@ -74,7 +80,7 @@
 
             fetch("/upload_post_image?post_id={{post_id}}", options)
               .then((response) => {
-                window.location.assign('/announcements')
+                window.location.assign('/announcements?submitted=True')
                 return response.json();
               })
               .then((data) => {

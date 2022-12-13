@@ -33,6 +33,15 @@
     </div>
   </header>
 </div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <h5>{{ message }}</h5>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <body>
   <div class="wrap">
     <div class="main">
@@ -87,7 +96,7 @@
         <!-- Side Panel -->
         <div style="margin-left: 50px; margin-right: 50px;">
           <!-- Create Announcement -->
-          <button type="button" class="btn btn-primary" id="form">Submit an Announcement!</button>
+          <button type="button" class="btn btn-primary" id="form">Suggest an Announcement!</button>
         </div>
       </div>
     </div>

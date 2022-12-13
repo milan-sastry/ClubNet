@@ -1,15 +1,23 @@
 
 <div class="col-md-9" style="width:90%;margin:auto;">
+  <center>
+    <h3>Submit an Announcement for Review!</h3>
+    <br>
+     <h7>At ClubNet, anyone can suggest an announcement, but only admin can approve one. Suggest your announcement below and submit it for review!</h7>
+    <br>
+    <br>
+  </center>
   <form method="post" action="/form">
     <form>
       <div class="form-group">
-        <label for="postTitle">Post Title</label>
-        <input type="text" class="form-control" id="postTitle" aria-describedby="titleHelp" placeholder="Post Title" name = "Post Title">
-        <small id="titleHelp" class="form-text text-muted">Describe your post briefly here...</small>
+        <label for="postTitle">Announcement Title</label>
+        <input type="text" class="form-control" id="postTitle" aria-describedby="titleHelp" placeholder="Club Soccer wins!" name = "Post Title">
+        <small id="titleHelp" class="form-text text-muted">Provide a catchy title...</small>
       </div>
       <div class="form-group">
-        <label for="postDescription">Post Description</label>
-        <input type="textarea" class="form-control" id="postDescription" placeholder="Description" name = "Post Description">
+        <label for="postDescription">Announcement Description</label>
+        <textarea class="form-control" id="postDescription" placeholder="We have not lost a game this season! Not looking like we will lose any time soon..." name = "Post Description"></textarea>
+        <small id="descHelp" class="form-text text-muted">Provide a short description...</small>
       </div>
       <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary">Next</button>

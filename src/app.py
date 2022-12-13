@@ -63,7 +63,6 @@ def invalid():
 #endpoint for processing a join request
 @app.route("/process_request", methods=['GET', 'POST'])
 def process_request():
-    response = validate_user()
     user_id = request.args.get('user_id', None)
     name = request.form.get('name', None)
     year = request.form.get('year', None)
@@ -256,9 +255,10 @@ def announcements():
     post_values, num_pages = postsmod.get_posts(engine, user_id = response[0], filter=filter, page=page_number, total_rows = True)
     net_id = response[0]
     user = profilemod.get_profile_from_id(engine, net_id)
-    img = user.profile_image_url
-    members = profilemod.get_profiles_from_club(engine)
+    img = user.get_profile_image_url()
     isAdmin = adminmod.is_admin(engine, net_id)
+    if request.args.get("submitted", None) == "True":
+        flash("Thanks for suggesting an announcement. Check back soon to see it after approval!")
     return render_template('announcements.html', posts=post_values, img=img, validation=response[1], isAdmin=isAdmin, user=user, filter=filter, netid = net_id, page_number=page_number, num_pages=num_pages)
 
 # internal endpoint to handle filtering
