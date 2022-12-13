@@ -43,14 +43,21 @@
           <h1>Upload An Image For Your New Post</h1>
           <p>valid inputs: jpg</p>
           <!-- <img src="" style="background-color: gray; width: 50%; height: 50%;"> -->
+          <div class="d-flex flex-column ">
           <form class="d-flex flex-column ">
             <!-- <label for="media" class="form-label">File upload</label> -->
             <input class="btn" type="file" id="media" accept="image/jpeg">
             <!-- Picture File: <input id="media" type="file" /> -->
-            <br >
+            <br>
             <br>
             <button type="submit" class="btn btn-primary" name="" value="Upload Picture">Submit</button>
           </form>
+          <br>
+
+          <form action="/announcements" class="d-flex flex-column">
+            <button type="skip" class="btn btn-white" name="" value="Skip"> Click here to skip</button>
+          </form>
+        </div>
         </div>
         <script>
           document.querySelector("form").addEventListener("submit", (event) => {
