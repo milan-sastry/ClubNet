@@ -110,18 +110,18 @@
 
         $( "button[name='heart']" ).on( "click", function() {
           var currentlyLiked = $(this).parent().find("input[name='post_liked']").val()
-          console.log("this has the value of " + currentlyLiked)
+
           post_id = $(this).parent().find("input[name='post_id']").val()
-          console.log("this is clicked")
+
 
           if (currentlyLiked == "False"){
-            console.log("you clicked a false value")
+
             // set the post_liked status to true
             $(this).parent().find("input[name='post_liked']").val("True")
 
             // update the like count
             var newVal = parseInt($(this).parent().find("span[name='like_count']").html()) + 1
-            console.log(newVal)
+
             $(this).parent().find("span[name='like_count']").html(newVal)
 
             // actually update it in the backend
@@ -137,9 +137,8 @@
                 success: $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">')
               });
 
-              console.log("alright this should have liked")
             } else {
-              console.log("you clicked a true value")
+
               // Now we're at the case where the post was liked
               // set the post_liked status to true
               $(this).parent().find("input[name='post_liked']").val("False")
@@ -147,7 +146,6 @@
               // update the like count
               var newVal = parseInt($(this).parent().find("span[name='like_count']").html()) - 1
               $(this).parent().find("span[name='like_count']").html(newVal)
-              console.log(newVal)
               // actually update it in the backend
               let url = '/announcements/unlike/silent' +
                   '?post_id=' + encodeURIComponent(post_id)
@@ -160,7 +158,6 @@
                   url: url,
                   success: $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">')
                 });
-                console.log("alright this should have unliked")
             }
           })
       }
@@ -182,7 +179,6 @@
         var filter = $('#filter').val();
         var netid = $('#netid').val();
         var page_number = $('#page_number').val();
-        console.log(filter)
 
         let url = '/get_announcements' +
           '?filter=' + encodeURIComponent(filter) +
