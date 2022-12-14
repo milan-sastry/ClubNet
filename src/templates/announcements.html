@@ -125,7 +125,7 @@
             $(this).parent().find("span[name='like_count']").html(newVal)
 
             // actually update it in the backend
-            let url = '/announcements/like/silent' +
+            let url = '/announcements/like' +
                 '?post_id=' + encodeURIComponent(post_id)
 
               if (request != null)
@@ -147,7 +147,7 @@
               var newVal = parseInt($(this).parent().find("span[name='like_count']").html()) - 1
               $(this).parent().find("span[name='like_count']").html(newVal)
               // actually update it in the backend
-              let url = '/announcements/unlike/silent' +
+              let url = '/announcements/unlike' +
                   '?post_id=' + encodeURIComponent(post_id)
 
                 if (request != null)
