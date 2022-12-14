@@ -298,7 +298,6 @@ def delete_post():
 # ednpoint to like a post
 @app.route('/announcements/like', methods=['GET'])
 def like():
-    print("----- POST WAS JUST LIKED")
     response = validate_user()
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
@@ -307,12 +306,11 @@ def like():
 
     post_id = request.args.get("post_id", None)
     postsmod.like(engine, post_id, response[0])
-    return redirect(url_for('announcements'))
+    return("liked")
 
 # ednpoint to unlike a post
 @app.route('/announcements/unlike', methods=['GET'])
 def unlike():
-    print("----- POST WAS JUST UNLIKED")
     response = validate_user()
     if response[1] == INVALID:
         return redirect(url_for('invalid'))
@@ -321,7 +319,9 @@ def unlike():
 
     post_id = request.args.get("post_id", None)
     postsmod.unlike(engine, post_id, response[0])
-    return redirect(url_for('announcements'))
+    return "unliked"
+
+
 
 # endpoint to comment on a post
 @app.route('/announcements/comment', methods=['GET'])

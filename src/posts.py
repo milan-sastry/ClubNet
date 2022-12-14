@@ -104,14 +104,10 @@ def get_posts(engine, user_id, filter=None, page=1, total_rows=False):
             table = query.all()
             list = []
             for row in table:
-                # print(row)
                 post = Post(row)
                 user = profiles.get_profile_from_id(engine, post._creator_id, session)
                 response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post._post_id).filter(database.Post_Likes.user_id == user_id).all()
                 isLiked = len(response) > 0
-                print(post._post_id)
-                print(isLiked)
-                # print("POST " + post.post_id + " is liked: " +  isLiked)
                 comment_query = session.query(database.Comments).filter(database.Comments.post_id == post._post_id).order_by(database.Comments.timestamp.asc())
                 comments_response = comment_query.all()
                 comments = []
@@ -136,13 +132,10 @@ def get_posts(engine, user_id, filter=None, page=1, total_rows=False):
 
 def add_image(engine, post_id, post_img_url):
     with sqlalchemy.orm.Session(engine) as session:
-            # print(post_netid)
-            print(post_id)
             query = session.query(database.Posts).filter(
                     database.Posts.post_id == post_id)
             row = query.one()
             row.club_image_url = post_img_url
-            print(post_img_url)
             session.commit()
 
 def get_post_requests(engine):
@@ -158,8 +151,6 @@ def get_post_requests(engine):
 
 def approve_post_request(engine, post_id):
     with sqlalchemy.orm.Session(engine) as session:
-            # print(post_netid)
-            print(post_id)
             query = session.query(database.Posts).filter(
                     database.Posts.post_id == post_id)
             row = query.one()
@@ -179,11 +170,8 @@ def delete_post(engine, post_id):
 
 def like(engine, post_id, user_id):
     with sqlalchemy.orm.Session(engine) as session:
-            print("-----SQL IS LIKING")
-            print("looking for the following netid " + user_id)
             response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post_id).filter(database.Post_Likes.user_id == user_id).all()
             if len(response) == 0:
-                print("it was not found " + user_id)
                 session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
                     "likes": database.Posts.likes + 1,
                 })
@@ -194,14 +182,10 @@ def like(engine, post_id, user_id):
 
 def unlike(engine, post_id, user_id):
     with sqlalchemy.orm.Session(engine) as session:
-            print("-----SQL IS UNLIKING")
-            print("looking into post id "  + post_id)
-            print("looking into user id "  + user_id)
             response = session.query(database.Post_Likes).filter(database.Post_Likes.post_id == post_id).filter(database.Post_Likes.user_id == user_id).all()
             for row in response:
                 print(row.user_id)
             if len(response) != 0:
-                print("I am unliking herem ")
                 stmt = delete(database.Post_Likes).where((database.Post_Likes.user_id == user_id)&(database.Post_Likes.post_id == post_id))
                 session.execute(stmt)
                 session.query(database.Posts).filter(database.Posts.post_id == post_id).update({
@@ -226,10 +210,8 @@ def comment(engine, post_id, net_id, comment):
 def get_post_by_id(engine, post_id):
     with sqlalchemy.orm.Session(engine) as session:
             query = session.query(database.Posts).filter(database.Posts.post_id == post_id)
-            # print(query)
             table = query.all()
             for row in table:
-                # print(row)
                 post = Post(row)
             session.commit()
             return post
