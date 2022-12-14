@@ -23,6 +23,10 @@
         <h2 class="card-title">{{post.post.get_title()}}</h2>
       </center>
       <img src={{post.post.get_image_url()}} alt="Responsive image" style="width: 100%; margin-top: 20px; border-radius: 20px">
+       <!-- Post Information/Footer -->
+       <div style="margin-top: 10px;" >
+        <h5 class="card-text"> {{post.post.get_description()}}</h5>
+      </div>
       <!-- Responses -->
       <div class="d-flex flex-column">
         <div style="margin-top: 5px;" class="d-flex flex-row">
@@ -79,10 +83,6 @@
           {% endfor %}
         </div>
     </div>
-      <!-- Post Information/Footer -->
-      <div style="margin-top: 10px;" >
-        <p class="card-text"> {{post.post.get_description()}}</p>
-      </div>
       <!-- Comments -->
       <div style="margin-top: 5px;">
         <form action="/announcements/comment">
