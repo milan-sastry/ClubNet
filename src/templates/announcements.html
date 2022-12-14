@@ -123,9 +123,6 @@
             var newVal = parseInt($(this).parent().find("span[name='like_count']").html()) + 1
             console.log(newVal)
             $(this).parent().find("span[name='like_count']").html(newVal)
-            // var newVal = parseInt($(this).parent().find("span[name='likeCount']").val()) + 1
-            // console.log(newVal)
-            // $(this).parent().find("span[name='likeCount']").val(newVal)
 
             // actually update it in the backend
             let url = '/announcements/like/silent' +
@@ -192,13 +189,10 @@
           '&id=' + encodeURIComponent(netid) +
           '&page_number=' + encodeURIComponent(page_number)
 
-          // +
 
-        //   '&title=' + encodeURIComponent(title)
-        //
         if (request != null)
           request.abort();
-        // // send the request to the function that updates the values
+        // send the request to the function that updates the values
         request = $.ajax({
           type: 'GET',
           url: url,
@@ -244,59 +238,17 @@
 
 
       $(document).ajaxComplete(function() {
-        // initialize everything to the right color
-
-        // loops through and makes everything the right color
         $("button[name='heart']").each(function(){
             var post_id = $(this).parent().find("input[name='post_id']").val()
-            // console.log(post_id)
-
             var currentlyLiked = $(this).parent().find("input[name='post_liked']").val()
-            console.log(post_id + " has the status of " + currentlyLiked)
             if (currentlyLiked == "False") {
               $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png">')
             } else{
               $(this).html('<img style="width: 20px; height: 20px; object-fit: contain;" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/512/heart-icon.png">')
             }
           })
-
-          // allows you to change the color of the item by clicking on it.
-
-        // figure out what I've clicked
         });
 
-      </script>
-
-      <script>
-
-
-      // function handleResponse2(response) {
-      //   console.log("silently liked post")
-      // }
-      //
-      //
-      //
-      // $(document).on("click", "#heart", function(){
-      //   post_id = $(this).parent().find("input[name='post_id']").val()
-      //
-      //
-      //   console.log($(this).parent().find("input[name='post_liked']").val())
-      //
-      //
-      //   // let url = '/announcements/like/silent' +
-      //   //   '?post_id=' + encodeURIComponent(post_id)
-      //   //
-      //   // if (request != null)
-      //   //   request.abort();
-      //   // // // send the request to the function that updates the values
-      //   // request = $.ajax({
-      //   //   type: 'GET',
-      //   //   url: url,
-      //   //   success: handleResponse2
-      //   // });
-      // });
-      //
-      // // $('document').ready(setup2);
       </script>
     {% include 'footer.html' %}
 </body>
