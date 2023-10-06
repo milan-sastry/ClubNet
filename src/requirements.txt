@@ -5,4 +5,4 @@ SQLAlchemy
 gunicorn
 cloudinary
 flask-mail
-flask_sqlalchemy
+flask_sqlalchemy==3.0.5
